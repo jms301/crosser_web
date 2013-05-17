@@ -1,0 +1,97 @@
+{% extends "crosser_frontend/base_site.html"%}
+{% load staticfiles %}
+
+
+{% block title %}
+Home
+{% endblock %}
+
+
+{% block header %}
+{% for message in messages %}
+<div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+    <p>{{ message }}</p>
+</div>
+{% endfor %} 
+
+<div class="header">
+
+{% endblock %}
+
+
+
+{% block header-end %}
+<div class="row">
+<div class="span6 offset3 header-title">
+<h1 class="h1-head">Crosser V2</h1>
+<p> 
+Everyone knows when you take a trip to the wilderness, you should tell someone where you've gone and when you'll be back.
+</p>
+<p>But...</p>
+<h4>Will you actually do it?</h4>
+<br/>
+<a class="btn btn-primary btn-large"></a>
+</div>
+</div>
+
+</div><!--header-->
+
+
+{% endblock %}
+
+{% block content %} 
+<div class="row">
+<div class="span12"><h1 class="index-title"></h1></div>
+</div>
+<div class="row">
+<div class="span2 offset1">
+    <div class="thumbnail">
+        <img src="{%static ''%}" alt="Plan your trip" height="100px">
+        <h4 class="index">Plan your trip</h4>
+        <p>Plan your awesome wilderness adventure, CallSAR helps you fill in important details should an emergency occur.</p>
+    </div>
+</div>
+<div class="span2">
+    <div class="thumbnail">
+        <img src="{%static ''%}" alt="We send the plan on">
+        <h4 class="index">We send the plan</h4>
+        <p></p>
+    </div>
+</div>
+<div class="span2">
+    <div class="thumbnail">
+        <img src="{%static ''%}" alt="Wilderness Ho!">
+        <h4 class="index">Adventure time!</h4>
+        <p>You go have awesome adventures! Happy in the knowledge your friend or family member knows where you are.</p>
+    </div>
+</div>
+<div class="span2">
+    <div class="thumbnail">
+        <img src="{%static ''%}" alt="Are you lost?">
+        <h4 class="index">Are you lost?</h4>
+        <p>If you don't check in on time we'll remind your designated contacts to check up on you.*</p>
+    </div>
+</div>
+<div class="span2">
+    <div class="thumbnail">
+        <img src="{%static ''%}" alt="Your friend calls SAR">
+        <h4 class="index">Your Friend contacts Search and Rescue</h4>
+        <p>Armed with the trip plan your designated contact can contact Search and Rescue.</p>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block js_ready %}
+
+boxes = $('.thumbnail');
+maxHeight = Math.max.apply(
+  Math, boxes.map(function() {
+    return $(this).height();
+}).get());
+boxes.css('min-height', maxHeight + 'px');
+
+
+
+{% endblock %}

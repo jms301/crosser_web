@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="end">
+
+{% load i18n %}
+{% load staticfiles %}
+<head>
+
+<title>
+{% block title %}{{ title }}{% endblock %} | {% trans 'Crosser' %}
+</title>
+
+
+<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<link href="{% static "callsar/site.css" %}" rel="stylesheet">
+{% block extra_head %}{% endblock %}
+</head>
+
+<div id="wrap">
+
+<div class="container">
+{% block header %}
+
+{% endblock %}
+
+{% block nav-global %}
+{# load current from tags#}
+<div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+        <a class="brand" href="{%url 'index'%}">Crosser</a>
+        <ul class="nav">
+            <li id='home'> <a href="{%url 'index'%}">Home</a> </li>
+        </ul>
+    </div>
+</div><!--/navbar-->
+{% endblock %}
+
+{% block header-end %}
+
+{% endblock %}
+
+</div><!--/nav & header container-->
+
+<div class="container">
+{% block content %} {% endblock %}
+</div><!--/page container -->
+
+<div id='push'>
+</div>
+</div><!-- /#wrap -->
+
+<div id='footer'>
+    <div class='container'>
+        <div class="span12 muted text-center ">
+            © James Southern 2013
+        </div>
+    </div>
+</div><!-- /#footer -->
+
+{#js at end to speed loading#}
+<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script type='text/javascript'>
+
+$(document).ready(function () {
+    $("#{% block navid %}home{% endblock %}").addClass('active');
+{%block js_ready %}
+
+{% endblock %}
+
+});
+
+{% block js_code %}
+{% endblock %}
+
+</script>
+</html>
