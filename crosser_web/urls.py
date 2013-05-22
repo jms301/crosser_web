@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^su-config/', include(admin.site.urls)),
 
     #crosser frontend as default
-    url(r'^$', include('crosser_frontend.urls')),
+    url(r'^', include('crosser_frontend.urls')),
+    url(r'^', include('django.contrib.auth.urls')),
 )
