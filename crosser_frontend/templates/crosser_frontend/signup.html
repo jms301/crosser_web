@@ -1,8 +1,18 @@
 {% extends "crosser_frontend/base_site.html" %}
 
+{% block title %}
+Sign Up
+{% endblock %}
+
 {% block content %}
-
-
+<div class="row">
+<div class="span12">
+<h1 class="page-title">Sign Up</h1>
+</div>
+</div>
+<div class="row">
+<div class="span12">
+<div class="signup-form">
 <form method="post" action="{% url 'signup' %}">
 {{ form.non_field_errors }}
 {% csrf_token %}
@@ -21,10 +31,12 @@
     {{ form.password2.label_tag }}
     {{ form.password2 }}
 </div>
-<div>
-<input type="submit" value="sign up" class="btn btn-primary"/>
+<div class="signup-button">
+<input type="submit" value="Sign Up" class="btn btn-primary"/>
 <input type="hidden" name="next" value="/" />
 </div>
 </form>
-
+</div>
+</div> <!-- class="span12"-->
+</div> <!-- class="row"-->
 {% endblock %}

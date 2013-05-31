@@ -7,91 +7,46 @@ Home
 {% endblock %}
 
 
-{% block header %}
+{% block content %} 
+
 {% for message in messages %}
 <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
     <p>{{ message }}</p>
 </div>
 {% endfor %} 
 
-<div class="header">
 
-{% endblock %}
-
-
-
-{% block header-end %}
 <div class="row">
-<div class="span6 offset3 header-title">
-<h1 class="h1-head">Crosser V2</h1>
-<p> 
-Everyone knows when you take a trip to the wilderness, you should tell someone where you've gone and when you'll be back.
-</p>
-<p>But...</p>
-<h4>Will you actually do it?</h4>
-<br/>
-<a class="btn btn-primary btn-large"></a>
+<div class="span8">
+
+<h1 class="index-title">Hello!</h1>
+
+<p>Welcome to Crosser a program to explore plant breeding strategies. The user enters the donor plants and a crossing scheme, and Crosser calculates the proportion of the genome that comes from the recombinant parent, and the number of offspring that need to be tested to give a 95% chance of having 5 plants with the desired traits.</p>
+
+<p>Crosser deals with averages, so the outputs are of the average situation. In real life, there is of course a range of possible outcomes around this.</p>
+
+<p class="text-error">Users of the program need to <strong>sign up</strong> for an account above and then contact the Trust Secretary or Deputy Trust Secretary with their user name for the account to be authorized before they can create and edit crosses. Guest users can view crosses and their outputs to the right.</p>
+
+
+<p>Crosser is open source software built and maintained by the Kirkhouse Trust.  You can find a copy of the crosser source code on Git Hub.</p>
+
+</div>
+<div class="span4">
+<h1>&nbsp;</h1>
+<ul>
+<li>Cross1</li>
+<li>Cross2</li>
+<li>Cross3</li>
+<li>Cross4</li>
+<li>Cross5</li>
+</ul>
 </div>
 </div>
 
-</div><!--header-->
-
-
-{% endblock %}
-
-{% block content %} 
-<div class="row">
-<div class="span12"><h1 class="index-title"></h1></div>
-</div>
-<div class="row">
-<div class="span2 offset1">
-    <div class="thumbnail">
-        <img src="{%static ''%}" alt="Plan your trip" height="100px">
-        <h4 class="index">Plan your trip</h4>
-        <p>Plan your awesome wilderness adventure, CallSAR helps you fill in important details should an emergency occur.</p>
-    </div>
-</div>
-<div class="span2">
-    <div class="thumbnail">
-        <img src="{%static ''%}" alt="We send the plan on">
-        <h4 class="index">We send the plan</h4>
-        <p></p>
-    </div>
-</div>
-<div class="span2">
-    <div class="thumbnail">
-        <img src="{%static ''%}" alt="Wilderness Ho!">
-        <h4 class="index">Adventure time!</h4>
-        <p>You go have awesome adventures! Happy in the knowledge your friend or family member knows where you are.</p>
-    </div>
-</div>
-<div class="span2">
-    <div class="thumbnail">
-        <img src="{%static ''%}" alt="Are you lost?">
-        <h4 class="index">Are you lost?</h4>
-        <p>If you don't check in on time we'll remind your designated contacts to check up on you.*</p>
-    </div>
-</div>
-<div class="span2">
-    <div class="thumbnail">
-        <img src="{%static ''%}" alt="Your friend calls SAR">
-        <h4 class="index">Your Friend contacts Search and Rescue</h4>
-        <p>Armed with the trip plan your designated contact can contact Search and Rescue.</p>
-    </div>
-</div>
-</div>
 {% endblock %}
 
 
 {% block js_ready %}
-
-boxes = $('.thumbnail');
-maxHeight = Math.max.apply(
-  Math, boxes.map(function() {
-    return $(this).height();
-}).get());
-boxes.css('min-height', maxHeight + 'px');
-
 
 
 {% endblock %}

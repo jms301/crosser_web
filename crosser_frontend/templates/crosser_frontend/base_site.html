@@ -25,7 +25,8 @@
 {% block nav-global %}
 {# load current from tags#}
 <div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
+<div class="navbar-inner">
+    <div class="container">
         <a class="brand" href="{%url 'index'%}">Crosser</a>
         <ul class="nav">
             <li id='home'> <a href="{%url 'index'%}">Home</a> </li>
@@ -53,6 +54,7 @@
             </ul>
         </div>
     </div>
+</div>
 </div><!--/navbar-->
 {% endblock %}
 
@@ -62,7 +64,7 @@
 
 </div><!--/nav & header container-->
 
-<div class="container">
+<div id="content" class="container">
 {% block content %} {% endblock %}
 </div><!--/page container -->
 
