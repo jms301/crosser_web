@@ -7,6 +7,8 @@ class Plan(models.Model):
     conf_recombination_prob = models.IntegerField( )
     conf_tolerance = models.IntegerField( )
     name = models.CharField(max_length = 100)
+    def __unicode__(self): 
+        return self.name
 
 class Plant(models.Model):
     name = models.CharField(max_length = 100)
