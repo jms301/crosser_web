@@ -14,7 +14,7 @@
 <link href="{% static "crosser_frontend/site.css" %}" rel="stylesheet">
 {% block extra_head %}{% endblock %}
 </head>
-
+<body>
 <div id="wrap">
 
 <div class="container">
@@ -87,6 +87,9 @@
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+{%block js_libs %}
+{%endblock%}
 <script type='text/javascript'>
 
 $(document).ready(function () {
@@ -100,7 +103,6 @@ $(document).ready(function () {
     });
 
 {%block js_ready %}
-
 {% endblock %}
 
 });
@@ -109,4 +111,5 @@ $(document).ready(function () {
 {% endblock %}
 
 </script>
+</body>
 </html>
