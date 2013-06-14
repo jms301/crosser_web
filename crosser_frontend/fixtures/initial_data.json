@@ -1,0 +1,103 @@
+[
+{
+  "pk": 1, 
+  "model": "crosser_frontend.species", 
+  "fields": {
+    "chromosome_lengths": "12,34,22,11,15,18,10", 
+    "name": "Test Bean"
+  }
+},
+{
+  "pk": 1, 
+  "model": "crosser_frontend.plan", 
+  "fields": {
+    "conf_recombination_prob": 13, 
+    "conf_tolerance": 24, 
+    "conf_chunk_size": 22, 
+    "name": "Test Plan", 
+    "species": 1
+  }
+},
+{
+  "pk": 1, 
+  "model": "crosser_frontend.plant", 
+  "fields": {
+    "output": true, 
+    "name": "Parent 1", 
+    "plan": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "crosser_frontend.plant", 
+  "fields": {
+    "output": true, 
+    "name": "Parent 2 ", 
+    "plan": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "crosser_frontend.plant", 
+  "fields": {
+    "output": true, 
+    "name": "AddPlant A", 
+    "plan": 1
+  }
+},
+{
+  "pk": 1, 
+  "model": "crosser_frontend.loci", 
+  "fields": {
+    "plant": 1, 
+    "position": 5, 
+    "linkageGroup": 22, 
+    "loci_type": "Ma", 
+    "name": "Tasty Beans"
+  }
+},
+{
+  "pk": 2, 
+  "model": "crosser_frontend.loci", 
+  "fields": {
+    "plant": 3, 
+    "position": 5, 
+    "linkageGroup": 22, 
+    "loci_type": "Tr", 
+    "name": "Tall Bean"
+  }
+},
+{
+  "pk": 3, 
+  "model": "crosser_frontend.loci", 
+  "fields": {
+    "plant": 2, 
+    "position": 8, 
+    "linkageGroup": 10, 
+    "loci_type": "Tr", 
+    "name": "Drought resistant bean"
+  }
+},
+{
+  "pk": 4, 
+  "model": "crosser_frontend.loci", 
+  "fields": {
+    "plant": 1, 
+    "position": 19, 
+    "linkageGroup": 15, 
+    "loci_type": "Tr", 
+    "name": "Wibble wobble"
+  }
+},
+{
+  "pk": 1, 
+  "model": "crosser_frontend.cross", 
+  "fields": {
+    "right_parent": 2, 
+    "left_parent": 1, 
+    "protocol_zygosity": "Ho", 
+    "name": "First Cross", 
+    "plan": 1
+  }
+}
+]

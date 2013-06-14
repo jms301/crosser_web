@@ -37,7 +37,6 @@ class Loci(models.Model):
     plant =  models.ForeignKey(Plant)
 
 class Cross(models.Model):
-
     HETEROZYGOUS = 'He'
     HOMOZYGOUS = 'Ho' 
     ZYGOSITY_CHOICES = (

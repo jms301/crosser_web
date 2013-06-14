@@ -1,5 +1,5 @@
 from django.contrib import admin
-from crosser_frontend.models import Plan, Plant, Species, Loci, Cross, PlanOutputPlant
+from crosser_frontend.models import Plan, Plant, Species, Loci, Cross 
 
 admin.site.register(Plan)
 admin.site.register(Plant)
