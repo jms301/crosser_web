@@ -10,7 +10,7 @@ class SpeciesResource(ModelResource):
         resource_name = 'species'
 
 class PlanResource(ModelResource):
-    species = fields.ForeignKey(SpeciesResource, 'species')
+    species = fields.ForeignKey(SpeciesResource, 'species', full=True)
 
     class Meta:
         queryset = Plan.objects.all()
