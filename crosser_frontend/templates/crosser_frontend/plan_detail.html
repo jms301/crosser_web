@@ -5,21 +5,61 @@
 Crosses {{plan.name}}
 {% endblock %}
 
+{% block extra_head %}
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+<script src='{% static "crosser_frontend/plan.js" %}'></script>
+
+{% endblock %}
+
 {% block content %}
-<h1>{{plan.name}}</h1>
-<p>
-foobarbazbazbaz
-</p>
+<div ng-app="plan">
+<div ng-controller="PlanCtrl">
+<input type="text" ng-model="plan.name" placeholder="Plan Name Here"/> 
+<label>Species:</label>
+<input type="text" ng-model="plan.species" placeholder="Species Name Here"/> 
+<hr>
+<h1> Plants:</h1>
+<div ng:repeat="plant in plan.plants">
+<input type="text" ng-model="plant.name" placeholder="Plant Name Here"/>
+<h3>Loci</h3>
+<table ng:hide="plant.loci.length == 0" class="table table-condensed">
+<thead>
+<tr>
+    <th>Name:</th>
+    <th>Type:</th>
+    <th>LinkageGroup:</th>
+    <th>Position:</th>
+</tr>
+</thead>
+<tr ng:repeat="l in plant.loci">
+    <td><input type="text" ng-model="l.name" placeholder="foobar"></td>
+    <td><input type="text" ng-model="l.type"></td>
+    <td><input type="text" ng-model="l.linkageGroup"></td>
+    <td><input type="text" ng-model="l.position"></td>
+</tr>
+</table>
+<button class="btn" ng-click="addLoci(plant)"><i class="icon-plus"></i>Add</button>
+<hr>
+</div>
+<h1> Crosses:</h1>
+<table class="table">
+<tr>
+    <th>Name:</th> 
+    <th>foobar</th>
+    <th>baz</th>
+</tr>
+<tr>
+<td>wibble</td>
+<td>wibble</td>
+<td>wibble</td>
+</tr>
+</table>
 
+<h1> Outputs:</h1>
 
-
-
+</div>
+</div>
 {% endblock %}
 {% block navid%}crosses{% endblock %}
 
-{% block js_libs %}
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/backbone-relational/0.8.5/backbone-relational.min.js'></script>
-    <script src='{% static "crosser_frontend/plan-backbone.js" %}'></script>
-{% endblock %}
