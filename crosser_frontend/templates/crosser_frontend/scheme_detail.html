@@ -1,0 +1,116 @@
+{% extends "crosser_frontend/base_site.html"%}
+{% load staticfiles %}
+
+{% block title %}
+Crosses {{scheme.name}}
+{% endblock %}
+
+{% block extra_head %}
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+
+<script src='{% static "crosser_frontend/filters.js" %}'></script>
+<script src='{% static "crosser_frontend/schemeRes.js" %}'></script>
+<script src='{% static "crosser_frontend/scheme.js" %}'></script>
+
+{% endblock %}
+
+{% block content %}
+<div ng-app="scheme">
+<div ng-controller="PlanCtrl">
+<input type="text" ng-model="scheme.name" placeholder="Plan Name Here"/> 
+<label>Species:</label>
+<input type="text" ng-model="scheme.species.name" placeholder="Species Name Here"/> 
+<span>{[{scheme.species.chromosome_lengths[1]}]}</span>
+<hr>
+<h1> Plants:</h1>
+<div ng:repeat="plant in scheme.plants">
+<input type="text" ng-model="plant.name" placeholder="Plant Name Here"/>
+<h4>Loci</h4> 
+
+<table ng:hide="plant.loci.length == 0" class="table table-condensed">
+<thead>
+<tr>
+    <th>Name:</th>
+    <th>Type:</th>
+    <th>LinkageGroup:</th>
+    <th>Position:</th>
+</tr>
+</thead>
+<tr ng:repeat="l in plant.loci">
+    <td><input type="text" ng-model="l.name" placeholder="Loci Name"></td>
+    <td><input type="text" ng-model="l.locus_type"></td>
+    <td><input type="text" ng-model="l.linkageGroup"></td>
+    <td><input type="text" ng-model="l.position"></td>
+</tr>
+</table>
+<button class="btn" ng-click="addLoci(plant)"><i class="icon-plus"></i>Add</button>
+<hr>
+</div>
+<h1> Crosses:</h1>
+<table class="table table-condensed">
+<thead>
+<tr>
+    <th>L Parent:</th>
+    <th>R Parent:</th>
+    <th>Name:</th> 
+    <th>Protocol Zygosity:</th>
+    <th>Loci</th>
+</tr>
+</thead>
+
+<tr ng:repeat="c in scheme.crosses">
+    <td>
+        <select>
+            <option></option>
+            <optgroup label="Plants:">
+            <option ng-repeat="plnt in scheme.plants" value="plnt.resource_uri" 
+                ng-selected="isSelected(c.left_plant_parent,plnt.resource_uri)">
+                {[{plnt.name}]}
+            </option>
+            </optgroup>
+            <optgroup label="Crosses:">
+            <option ng-repeat="crs in scheme.crosses" value="crs.resource_uri"
+                ng-selected="isSelected(c.left_cross_parent,crs.resource_uri)">
+                {[{crs.name}]}
+            </option>
+            </optgroup>
+        </select>
+    </td>
+    <td>
+        <select>
+            <option></option>
+            <optgroup label="Plants:">
+            <option ng-repeat="plnt in scheme.plants" value="plnt.resource_uri" 
+                ng-selected="isSelected(c.right_plant_parent,plnt.resource_uri)">
+                {[{plnt.name}]}
+            </option>
+            </optgroup>
+            <optgroup label="Crosses:">
+            <option ng-repeat="crs in scheme.crosses" value="crs.resource_uri"
+                ng-selected="isSelected(c.right_cross_parent,crs.resource_uri)">
+                {[{crs.name}]}
+            </option>
+            </optgroup>
+        </select>
+    </td>
+    <td><input type="text" ng-model="c.name" placeholder="Cross Name"></td>
+    <td>
+        <select ng-model="c.protocol_zygosity">
+            <option value="Heterozygous">Heterozygous</option>
+            <option value="Homozygous">Homozygous</option>
+        </select>
+
+    <td> 
+        <span ng:repeat="l in c.loci" type="text">{[{scheme | loci:l}]}, </span>
+    </td>
+</tr>
+</table>
+<button class="btn" ng-click="addCross(scheme)"><i class="icon-plus"></i>Add</button>
+
+</div>
+</div>
+{% endblock %}
+{% block navid%}crosses{% endblock %}
+

@@ -8,8 +8,11 @@ from django.contrib import admin
 admin.autodiscover()
 
 v1_api = Api(api_name='v1')
-v1_api.register(PlanResource())
+v1_api.register(SchemeResource())
 v1_api.register(SpeciesResource())
+v1_api.register(CrossResource())
+v1_api.register(PlantResource())
+v1_api.register(LocusResource())
 
 urlpatterns = patterns('',
     # Examples:

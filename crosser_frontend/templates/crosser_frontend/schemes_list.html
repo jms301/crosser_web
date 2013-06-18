@@ -1,0 +1,25 @@
+{% extends "crosser_frontend/base_site.html"%}
+
+{% block title %}
+My Crosses 
+{% endblock %}
+
+{% block content %}
+<h1>My Crossing Schemes</h1>
+<p>
+<a href="" class="btn btn-primary">Create Crossing Scheme </a>
+</p>
+{% if scheme_list %}
+    <ul>
+    {% for scheme in scheme_list %}
+        <li><a href="{%url 'scheme_detail' scheme.id%}">{{ scheme }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No schemes are available.</p>
+{% endif %}
+
+<h1>Public Crosses</h1>
+{% endblock %}
+
+{% block navid%}plans{% endblock %}

@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.views.generic import DetailView, ListView, TemplateView
-from crosser_frontend.models import Plan
+from crosser_frontend.models import Scheme
 
 urlpatterns = patterns('',
     url(r'^$',
@@ -10,14 +10,14 @@ urlpatterns = patterns('',
     
     url(r'^cross/(?P<pk>\d)/$',
         DetailView.as_view(
-            model = Plan,
-            template_name = 'crosser_frontend/plan_detail.html'),
-        name='cross_detail'),
+            model = Scheme,
+            template_name = 'crosser_frontend/scheme_detail.html'),
+        name='scheme_detail'),
     url(r'^crosses/$',
         ListView.as_view(
-            queryset = Plan.objects.all(),
-            template_name = 'crosser_frontend/plans_list.html'),
-        name='crosses_list'),
+            queryset = Scheme.objects.all(),
+            template_name = 'crosser_frontend/schemes_list.html'),
+        name='schemes_list'),
 
     url(r'^signup/$', 'crosser_frontend.views.signup',
         name='signup'),

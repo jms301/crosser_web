@@ -1,13 +1,11 @@
 from django.db import models
 
 # Create your models here.
-
 class Species(models.Model):
     name = models.CharField(max_length = 100)
     chromosome_lengths = models.CommaSeparatedIntegerField(max_length = 100)
-
-
-class Plan(models.Model):
+    
+class Scheme(models.Model):
     conf_chunk_size = models.IntegerField( )
     conf_recombination_prob = models.IntegerField( )
     conf_tolerance = models.IntegerField( )
@@ -18,10 +16,9 @@ class Plan(models.Model):
 
 class Plant(models.Model):
     name = models.CharField(max_length = 100)
-    output = models.BooleanField(default=False)
-    plan = models.ForeignKey(Plan)
+    scheme = models.ForeignKey(Scheme, related_name='plants')
 
-class Loci(models.Model):
+class Locus(models.Model):
     TRAIT = 'Tr'
     MARKER = 'Ma'
     TYPE_CHOICES = (
@@ -29,12 +26,12 @@ class Loci(models.Model):
         (MARKER, 'Marker'),
     )
     name = models.CharField(max_length = 100)
-    loci_type = models.CharField(max_length=2, 
+    locus_type = models.CharField(max_length=2, 
                                 choices = TYPE_CHOICES, 
                                 default=TRAIT)
     linkageGroup = models.IntegerField()
     position = models.IntegerField()
-    plant =  models.ForeignKey(Plant)
+    plant =  models.ForeignKey(Plant, related_name='loci')
 
 class Cross(models.Model):
     HETEROZYGOUS = 'He'
@@ -45,19 +42,31 @@ class Cross(models.Model):
     )
     name = models.CharField(max_length = 100)
 
-    plan =  models.ForeignKey(Plan)
-    left_parent = models.ForeignKey(Plant, related_name='+')
-    right_parent = models.ForeignKey(Plant, related_name='+')
+    loci = models.ManyToManyField(Locus)
+
+    scheme =  models.ForeignKey(Scheme, related_name='crosses')
+    left_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None)
+    left_cross_parent = models.ForeignKey('Cross', related_name='+', null=True, blank=True, default=None)
+    right_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None)
+    right_cross_parent = models.ForeignKey('Cross', related_name='+', null=True, blank=True, default=None)
     protocol_zygosity = models.CharField(max_length=2, 
                                 choices = ZYGOSITY_CHOICES, 
                                 default=HOMOZYGOUS)
 
-class CrossLoci(models.Model):
-    cross = models.ForeignKey(Cross)
-    loci = models.ForeignKey(Loci)
-    class Meta:
-        unique_together = ('cross', 'loci')
-    
+class OutputSubject(models.Model):
+    PREFVAR = 'Pv'
+    FOOBAR = 'Fb'
+    CONT_CHOICES = (
+        (PREFVAR, 'PreferredVariety'),
+        (FOOBAR, 'foobar'),
+    ) 
+    contribution = models.CharField(max_length=2,
+                                    choices = CONT_CHOICES,
+                                    default = PREFVAR)
+    scheme  = models.ForeignKey(Scheme)
+    subject = models.ForeignKey(Cross)
+
+   
 #TODO: 
 # How long can the species cromosome length comma seperated list be? 
 #( what is 4 x max chromosome number??)
