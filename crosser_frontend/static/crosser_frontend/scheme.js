@@ -1,7 +1,11 @@
 angular.module('scheme', ['schemecon', 'crosserFilters']).
     config(function($interpolateProvider){
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
-    });
+    }).
+    config(["$httpProvider", function(provider) {
+      provider.defaults.headers.common['X-CSRFToken'] = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+  }]);
+
 
 function PlanCtrl($scope, Scheme) { 
     $scope.scheme = Scheme.get({id: 1}, function () {
@@ -11,7 +15,7 @@ function PlanCtrl($scope, Scheme) {
      });
 
     $scope.addLoci =   function ( plant ) {
-        plant.loci.push({"name": null, "type": null, "linkageGroup": null});
+        plant.loci.push({"name": null, "locus_type": null, "linkageGroup": null});
     };
 
     $scope.addCross = function ( scheme ) {
@@ -23,5 +27,11 @@ function PlanCtrl($scope, Scheme) {
             return false; 
         else
             return true; 
-    }
+    };
+   
+    $scope.updateScheme = function ( scheme ) {
+        var _species = scheme.species; 
+        scheme.update();
+        scheme.species = _species;
+    };
 }

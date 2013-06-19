@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-Crosses {{scheme.name}}
+Cross Scheme: {{scheme.name}}
 {% endblock %}
 
 {% block extra_head %}
@@ -18,7 +18,10 @@ Crosses {{scheme.name}}
 
 {% block content %}
 <div ng-app="scheme">
+<div ng:hide="true">{% csrf_token %}</div>
 <div ng-controller="PlanCtrl">
+
+<h1> Cross Scheme: </h1>
 <input type="text" ng-model="scheme.name" placeholder="Plan Name Here"/> 
 <label>Species:</label>
 <input type="text" ng-model="scheme.species.name" placeholder="Species Name Here"/> 
@@ -40,7 +43,12 @@ Crosses {{scheme.name}}
 </thead>
 <tr ng:repeat="l in plant.loci">
     <td><input type="text" ng-model="l.name" placeholder="Loci Name"></td>
-    <td><input type="text" ng-model="l.locus_type"></td>
+    <td>
+        <select ng-model="l.locus_type">
+            <option value="Tr">Trait</option>
+            <option value="Ma">Marker</option>
+        </select>
+    </td>
     <td><input type="text" ng-model="l.linkageGroup"></td>
     <td><input type="text" ng-model="l.position"></td>
 </tr>
@@ -98,8 +106,8 @@ Crosses {{scheme.name}}
     <td><input type="text" ng-model="c.name" placeholder="Cross Name"></td>
     <td>
         <select ng-model="c.protocol_zygosity">
-            <option value="Heterozygous">Heterozygous</option>
-            <option value="Homozygous">Homozygous</option>
+            <option value="He">Heterozygous</option>
+            <option value="Ho">Homozygous</option>
         </select>
 
     <td> 
@@ -108,7 +116,7 @@ Crosses {{scheme.name}}
 </tr>
 </table>
 <button class="btn" ng-click="addCross(scheme)"><i class="icon-plus"></i>Add</button>
-
+<button class="btn btn-primary" ng-click="updateScheme(scheme)">Save Scheme</button>
 </div>
 </div>
 {% endblock %}
