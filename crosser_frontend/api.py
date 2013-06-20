@@ -2,7 +2,6 @@ from tastypie import fields
 from tastypie.resources import ModelResource 
 from tastypie.authentication import SessionAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
-from tastypie.authorization import Authorization
 from crosser_frontend.auth import UserAuthorization
 from models import Scheme, Species, Cross, Plant, Locus
 from django.contrib.auth.models import User
@@ -25,15 +24,13 @@ class SpeciesResource(ModelResource):
 class SchemeResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
     plants = fields.ToManyField('crosser_frontend.api.PlantResource', 'plants', full=True, related_name='scheme')
-    species = fields.ForeignKey(SpeciesResource, 'species', full=True)
-
-
+    species = fields.ForeignKey(SpeciesResource, 'species')
     crosses = fields.ToManyField('crosser_frontend.api.CrossResource', 'crosses', full=True, related_name='scheme')
 
     class Meta:
         queryset = Scheme.objects.all()
         authentication = SessionAuthentication()
-        authorization = Authorization()
+        authorization = UserAuthorization()
         resource_name = 'scheme'
 
 class PlantResource(ModelResource):

@@ -24,8 +24,9 @@ Cross Scheme: {{scheme.name}}
 <h1> Cross Scheme: </h1>
 <input type="text" ng-model="scheme.name" placeholder="Plan Name Here"/> 
 <label>Species:</label>
-<input type="text" ng-model="scheme.species.name" placeholder="Species Name Here"/> 
-<span>{[{scheme.species.chromosome_lengths[1]}]}</span>
+<select ng-model="scheme.species" ng-options="spec.resource_uri as spec.name for spec in species.objects" >
+</select>
+ 
 <hr>
 <h1> Plants:</h1>
 <div ng:repeat="plant in scheme.plants">
@@ -39,6 +40,7 @@ Cross Scheme: {{scheme.name}}
     <th>Type:</th>
     <th>LinkageGroup:</th>
     <th>Position:</th>
+    <th></th>
 </tr>
 </thead>
 <tr ng:repeat="l in plant.loci">
@@ -51,6 +53,11 @@ Cross Scheme: {{scheme.name}}
     </td>
     <td><input type="text" ng-model="l.linkageGroup"></td>
     <td><input type="text" ng-model="l.position"></td>
+    <td>
+        <a class="btn btn-danger" ng-click="removeItem(l, plant.loci)" >
+            <i class="icon-trash icon-white"></i>
+        </a>
+    </td>
 </tr>
 </table>
 <button class="btn" ng-click="addLoci(plant)"><i class="icon-plus"></i>Add</button>
@@ -65,6 +72,7 @@ Cross Scheme: {{scheme.name}}
     <th>Name:</th> 
     <th>Protocol Zygosity:</th>
     <th>Loci</th>
+    <th></th>
 </tr>
 </thead>
 
@@ -113,10 +121,15 @@ Cross Scheme: {{scheme.name}}
     <td> 
         <span ng:repeat="l in c.loci" type="text">{[{scheme | loci:l}]}, </span>
     </td>
+    <td>
+        <a class="btn btn-danger" ng-click="removeItem(c, scheme.crosses)" >
+            <i class="icon-trash icon-white"></i>
+        </a>
+    </td>
 </tr>
 </table>
 <button class="btn" ng-click="addCross(scheme)"><i class="icon-plus"></i>Add</button>
-<button class="btn btn-primary" ng-click="updateScheme(scheme)">Save Scheme</button>
+<button class="btn btn-primary" ng-click="updateScheme(scheme, to_del)">Save Scheme</button>
 </div>
 </div>
 {% endblock %}

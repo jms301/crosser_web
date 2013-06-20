@@ -9,6 +9,9 @@ class Species(models.Model):
     class Meta:
         verbose_name_plural = "Species"
 
+    def __unicode__(self): 
+        return self.name
+
 class Scheme(models.Model):
     owner = models.ForeignKey(User) 
     conf_chunk_size = models.IntegerField( )
