@@ -14,9 +14,11 @@ class Species(models.Model):
 
 class Scheme(models.Model):
     owner = models.ForeignKey(User) 
-    conf_chunk_size = models.IntegerField( )
-    conf_recombination_prob = models.IntegerField( )
-    conf_tolerance = models.IntegerField( )
+    chunk_size = models.IntegerField( )
+    recombination_prob = models.FloatField()
+    tolerance = models.FloatField()
+    
+    
     name = models.CharField(max_length = 100)
     species = models.ForeignKey(Species, related_name='+')
     def __unicode__(self): 
@@ -41,8 +43,9 @@ class Locus(models.Model):
     locus_type = models.CharField(max_length=2, 
                                 choices = TYPE_CHOICES, 
                                 default=TRAIT)
-    linkageGroup = models.IntegerField()
-    position = models.IntegerField()
+    linkage_group = models.IntegerField()
+    position = models.IntegerField  
+    
     plant =  models.ForeignKey(Plant, related_name='loci')
     def __unicode__(self): 
         return self.name
