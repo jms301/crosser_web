@@ -11,12 +11,12 @@
   "pk": 1, 
   "model": "crosser_frontend.scheme", 
   "fields": {
-    "conf_recombination_prob": 13, 
-    "conf_tolerance": 24, 
-    "conf_chunk_size": 22, 
+    "tolerance": 24, 
+    "chunk_size": 22, 
     "name": "Test Plan", 
     "species": 1,
-    "owner": 1
+    "owner": 1,
+    "recombination_prob": 5
   }
 },
 {
@@ -52,7 +52,7 @@
   "fields": {
     "plant": 1, 
     "position": 5, 
-    "linkageGroup": 22, 
+    "linkage_group": 22, 
     "locus_type": "Ma", 
     "name": "Tasty Beans",
     "owner": 1
@@ -64,7 +64,7 @@
   "fields": {
     "plant": 3, 
     "position": 5, 
-    "linkageGroup": 22, 
+    "linkage_group": 22, 
     "locus_type": "Tr", 
     "name": "Tall Bean",
     "owner": 1
@@ -76,7 +76,7 @@
   "fields": {
     "plant": 2, 
     "position": 8, 
-    "linkageGroup": 10, 
+    "linkage_group": 10, 
     "locus_type": "Tr", 
     "name": "Drought resistant bean",
     "owner": 1
@@ -88,7 +88,7 @@
   "fields": {
     "plant": 1, 
     "position": 19, 
-    "linkageGroup": 15, 
+    "linkage_group": 15, 
     "locus_type": "Tr", 
     "name": "Wibble wobble",
     "owner": 1
