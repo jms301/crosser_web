@@ -1,15 +1,18 @@
 angular.module('scheme', ['schemecon', 'crosserFilters']).
     config(function($interpolateProvider){
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
-    });//.
+    });
+
+//.
     //config(["$httpProvider", function(provider) {
      // provider.defaults.headers.common['X-CSRFToken'] = document.getElementsByName('csrfmiddlewaretoken')[0].value;
   //}]);
 
 
-function PlanCtrl($scope, Scheme, Species) { 
+function PlanCtrl($scope, Scheme, Species, $location) { 
     // set up the PlanController context
-    $scope.scheme = Scheme.get({id: 1}, function () {
+    $scope.plan_id = window.location.pathname.split("/")[2]; 
+    $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
      });
 
     $scope.species = Species.get(function () {

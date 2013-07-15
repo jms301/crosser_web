@@ -30,7 +30,7 @@ Cross Scheme: {{scheme.name}}
 <hr>
 <h1> Plants:</h1>
 <div ng:repeat="plant in scheme.plants">
-<input type="text" ng-model="plant.name" placeholder="Plant Name Here"/>
+<b>Name:</b> <input type="text" ng-model="plant.name" placeholder="Plant Name Here"/>
 <h4>Loci</h4> 
 
 <table ng:hide="plant.loci.length == 0" class="table table-condensed">
@@ -51,7 +51,7 @@ Cross Scheme: {{scheme.name}}
             <option value="Ma">Marker</option>
         </select>
     </td>
-    <td><input type="text" ng-model="l.linkageGroup"></td>
+    <td><input type="text" ng-model="l.linkage_group"></td>
     <td><input type="text" ng-model="l.position"></td>
     <td>
         <a class="btn btn-danger" ng-click="removeItem(l, plant.loci)" >
