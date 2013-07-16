@@ -20,6 +20,21 @@ angular.module('schemecon', ['ngResource']).
 
         return Scheme;
     })
+    .factory('Cross', function($resource) { 
+        var Cross = $resource('../../api/v1/crosses/', {},
+        {patch: {method: 'PATCH'}});
+        return Cross;
+    })
+    .factory('Locus', function($resource) { 
+        var Locus = $resource('../../api/v1/locus/', {},
+        {patch: {method: 'PATCH'}});
+        return Locus;
+    })
+    .factory('Plant', function($resource) { 
+        var Plant = $resource('../../api/v1/plant/', {},
+        {patch: {method: 'PATCH'}});
+        return Plant
+    })
     .factory('Species', function($resource) {
         var Species = $resource('../../api/v1/species/', {},
             {});

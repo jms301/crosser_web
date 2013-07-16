@@ -54,7 +54,7 @@ Cross Scheme: {{scheme.name}}
     <td><input type="text" ng-model="l.linkage_group"></td>
     <td><input type="text" ng-model="l.position"></td>
     <td>
-        <a class="btn btn-danger" ng-click="removeItem(l, plant.loci)" >
+        <a class="btn btn-danger" ng-click="removeLocus(l, plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>
@@ -102,8 +102,7 @@ Cross Scheme: {{scheme.name}}
         <span ng:repeat="l in c.loci" type="text">{[{scheme|loci:l}]} </span>
     </td>
     <td>
-        <a class="btn btn-danger" ng-click="removeItem(c, scheme.crosses);
-                                            removeItem(c, parents)" >
+        <a class="btn btn-danger" ng-click="removeCross(c)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>

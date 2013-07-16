@@ -5,7 +5,7 @@ angular.module('scheme', ['schemecon', 'crosserFilters']).
 
 
 
-function PlanCtrl($scope, Scheme, Species, $location) { 
+function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) { 
     // set up the PlanController context
     $scope.plan_id = window.location.pathname.split("/")[2]; 
 
@@ -76,15 +76,32 @@ function PlanCtrl($scope, Scheme, Species, $location) {
     $scope.addLocus =   function ( plant ) {
         plant.loci.push({"name": null, "locus_type": null, "linkageGroup": null});
     };
+    // function to remove a locus from the scheme & any crosses
+    $scope.removeLocus = function (locus, plant) {
+        _.each($scope.scheme.crosses, function(cross){ 
+            cross.loci = _.reject(cross.loci, function(l){
+               return locus.resource_uri == l;
+            });
+        });
 
+        plant.loci = _.reject(plant.loci, function (item){ 
+            return item.resource_uri == locus.resource_uri;
+        }); 
+        $scope.to_del.push(locus.resource_uri);
+    };
+
+    // function to remove a cross from the scheme & parent array
+    $scope.removeCross = function (cross) {
+        $scope.parents = _.reject($scope.parents, function (item){ return item.resource_uri == cross.resource_uri}); 
+        $scope.scheme.crosses = _.reject($scope.scheme.crosses, function (item){ return item.resource_uri == cross.resource_uri}); 
+        $scope.to_del.push(cross.resource_uri);
+    };
     // function to remove an item from an arbitrary array
     $scope.removeItem = function ( item, arry) {
-        if(!_.contains($scope.to_del, item.resource_uri))
-            $scope.to_del.push(item.resource_uri);
+        $scope.to_del.push(item.resource_uri);
         var index = arry.indexOf(item);
         arry.splice(index, 1);
-        //console.log($scope.to_del);
-    }
+    };
 
     // function to add a new cross to a scheme
     $scope.addCross = function ( scheme ) {
@@ -103,8 +120,6 @@ function PlanCtrl($scope, Scheme, Species, $location) {
 
     // update function 
     $scope.updateScheme = function ( scheme, to_del ) {
-        console.log(to_del);
-    
         _.each(scheme.crosses, $scope.strip_parents);
         scheme.update(scheme);
         _.each(scheme.crosses, $scope.add_parents);
