@@ -45,7 +45,8 @@ function PlanCtrl($scope, Scheme, Species, $location) {
 
     // function to remove an item from an arbitrary array
     $scope.removeItem = function ( item, arry) {
-        $scope.to_del.push(item.resource_uri);
+        if(!_.contains($scope.to_del, item.resource_uri))
+            $scope.to_del.push(item.resource_uri);
         var index = arry.indexOf(item);
         arry.splice(index, 1);
         console.log($scope.to_del);

@@ -79,18 +79,16 @@ Cross Scheme: {{scheme.name}}
 <tr ng:repeat="c in scheme.crosses">
     <td>
         <select ng-model="c.left_parent" 
-                ng-options="item.resource_uri as item.name 
+                ng-options="item.resource_uri as item.name
                             group by item.type
-                            for item in parents">
-            <option></option>
+                            for item in parents | parents: c.resource_uri">
         </select>
     </td>
     <td>
         <select ng-model="c.right_parent" 
                 ng-options="item.resource_uri as item.name 
                             group by item.type
-                            for item in parents">
-            <option></option>
+                            for item in parents | parents: c.resource_uri">
         </select>
     </td>
     <td><input type="text" ng-model="c.name" placeholder="Cross Name"></td>
@@ -104,7 +102,8 @@ Cross Scheme: {{scheme.name}}
         <span ng:repeat="l in c.loci" type="text">{[{l.name}]} </span>
     </td>
     <td>
-        <a class="btn btn-danger" ng-click="removeItem(c, scheme.crosses)" >
+        <a class="btn btn-danger" ng-click="removeItem(c, scheme.crosses);
+                                            removeItem(c, parents)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>
