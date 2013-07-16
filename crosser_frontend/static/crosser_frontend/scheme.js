@@ -3,11 +3,13 @@ angular.module('scheme', ['schemecon', 'crosserFilters']).
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
     });
 
+
+
 function PlanCtrl($scope, Scheme, Species, $location) { 
     // set up the PlanController context
     $scope.plan_id = window.location.pathname.split("/")[2]; 
-    $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
-        _.each($scope.scheme.crosses, function(c, index, crosses) {
+
+    $scope.add_parents = function(c, index, crosses) {
             if (c.left_plant_parent != null)
                 c.left_parent = c.left_plant_parent;
             else
@@ -18,16 +20,48 @@ function PlanCtrl($scope, Scheme, Species, $location) {
             else
                 c.right_parent = c.right_cross_parent;
             
-        });
-        // setup arrays that can be used to populate select options 
+        };
+    
+   $scope.strip_parents = function(c, index, crosses) {
+            if (c.left_parent != null) {
+                if (c.left_parent.indexOf('/api/v1/cross/')==0)
+                    c.left_cross_parent = c.left_parent
+                else if (c.left_parent.indexOf('/api/v1/plant/')==0)
+                    c.left_plant_parent = c.left_parent
+
+            }
+            if (c.right_parent != null) {
+                if (c.right_parent.indexOf('/api/v1/cross/')==0)
+                    c.right_cross_parent = c.right_parent
+                else if (c.right_parent.indexOf('/api/v1/plant/')==0)
+                    c.right_plant_parent = c.right_parent
+
+            }
+
+            delete c.left_parent 
+            delete c.right_parent 
+        };
+
+
+    $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
+        // add in fake left_parent & right_parent properties to the crosses
+        // this allows us to use convenient ng-options stuff in the frontend
+        // the properties will be split out before saving.
+        _.each($scope.scheme.crosses, $scope.add_parents);
+
+        // setup array 'parents' that can be used to populate select options 
         // the type field is used to provide groupings in the dropdown
-        _.each($scope.scheme.plants, function(plant, index, parents){
-            plant.type = "Plants";
+        tmp_plants =  _.map($scope.scheme.plants, 
+        function(plant, index, parents){
+            return {type: "Plants", name: plant.name, 
+                    resource_uri: plant.resource_uri};
         });
-        _.each($scope.scheme.crosses, function(cross, index, parents){
-            cross.type = "Crosses";
+        tmp_cross = _.map($scope.scheme.crosses, 
+        function(cross, index, parents){
+            return {type: "Crosses", name: cross.name, 
+                    resource_uri: cross.resource_uri};
         });
-        $scope.parents = $scope.scheme.plants.concat($scope.scheme.crosses);
+        $scope.parents = tmp_cross.concat(tmp_plants); 
     });
 
     $scope.species = Species.get(function () {
@@ -49,7 +83,7 @@ function PlanCtrl($scope, Scheme, Species, $location) {
             $scope.to_del.push(item.resource_uri);
         var index = arry.indexOf(item);
         arry.splice(index, 1);
-        console.log($scope.to_del);
+        //console.log($scope.to_del);
     }
 
     // function to add a new cross to a scheme
@@ -70,7 +104,9 @@ function PlanCtrl($scope, Scheme, Species, $location) {
     // update function 
     $scope.updateScheme = function ( scheme, to_del ) {
         console.log(to_del);
-        scheme.patch({"objects" : [scheme], 
-                "deleted_objects" : to_del}, {});
+    
+        _.each(scheme.crosses, $scope.strip_parents);
+        scheme.update(scheme);
+        _.each(scheme.crosses, $scope.add_parents);
     };
 }
