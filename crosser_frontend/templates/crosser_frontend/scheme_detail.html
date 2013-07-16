@@ -99,7 +99,7 @@ Cross Scheme: {{scheme.name}}
         </select>
 
     <td> 
-        <span ng:repeat="l in c.loci" type="text">{[{l.name}]} </span>
+        <span ng:repeat="l in c.loci" type="text">{[{scheme|loci:l}]} </span>
     </td>
     <td>
         <a class="btn btn-danger" ng-click="removeItem(c, scheme.crosses);

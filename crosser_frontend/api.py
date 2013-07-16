@@ -57,7 +57,7 @@ class LocusResource(ModelResource):
 
 class CrossResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
-    loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci', full=True)
+    loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci')
     left_plant_parent = fields.ForeignKey(PlantResource, 'left_plant_parent', null=True, blank=True)
     right_plant_parent = fields.ForeignKey(PlantResource, 'right_plant_parent', null=True, blank=True)
     left_cross_parent = fields.ForeignKey('crosser_frontend.api.CrossResource', 'left_cross_parent', null=True, blank=True)
