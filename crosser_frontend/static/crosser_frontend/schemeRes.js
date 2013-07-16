@@ -10,9 +10,9 @@ angular.module('schemecon', ['ngResource']).
             {update: { method: 'PUT'},
             patch: {method: 'PATCH'}});
 
-        //Scheme.prototype.update = function(cb) {
-         //   return Scheme.update({id: this.id},this,cb);
-        //};
+        Scheme.prototype.update = function(cb) {
+            return Scheme.update({id: this.id},this,cb);
+        };
 
         Scheme.prototype.patch = function(cb) {
             return Scheme.patch({},cb);
