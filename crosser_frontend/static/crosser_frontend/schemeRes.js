@@ -10,9 +10,9 @@ angular.module('schemecon', ['ngResource']).
             {update: { method: 'PUT'},
             patch: {method: 'PATCH'}});
 
-        Scheme.prototype.update = function(cb) {
-            return Scheme.update({id: this.id},this,cb);
-        };
+        //Scheme.prototype.update = function(cb) {
+         //   return Scheme.update({id: this.id},this,cb);
+        //};
 
         Scheme.prototype.patch = function(cb) {
             return Scheme.patch({},cb);
@@ -20,18 +20,6 @@ angular.module('schemecon', ['ngResource']).
 
         return Scheme;
     })
-    .factory('Cross', function($resource) { 
-        var Crosses = $resource('../../api/v1/crosses/', {},
-        {patch: {method: 'PATCH'}});
-    }
-    .factory('Locus', function($resource) { 
-        var Crosses = $resource('../../api/v1/locus/', {},
-        {patch: {method: 'PATCH'}});
-    }
-    .factory('Plant', function($resource) { 
-        var Crosses = $resource('../../api/v1/plant/', {},
-        {patch: {method: 'PATCH'}});
-    }
     .factory('Species', function($resource) {
         var Species = $resource('../../api/v1/species/', {},
             {});
