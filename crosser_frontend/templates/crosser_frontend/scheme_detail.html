@@ -78,37 +78,19 @@ Cross Scheme: {{scheme.name}}
 
 <tr ng:repeat="c in scheme.crosses">
     <td>
-        <select>
+        <select ng-model="c.left_parent" 
+                ng-options="item.resource_uri as item.name 
+                            group by item.type
+                            for item in parents">
             <option></option>
-            <optgroup label="Plants:">
-            <option ng-repeat="plnt in scheme.plants" value="plnt.resource_uri" 
-                ng-selected="isSelected(c.left_plant_parent,plnt.resource_uri)">
-                {[{plnt.name}]}
-            </option>
-            </optgroup>
-            <optgroup label="Crosses:">
-            <option ng-repeat="crs in scheme.crosses" value="crs.resource_uri"
-                ng-selected="isSelected(c.left_cross_parent,crs.resource_uri)">
-                {[{crs.name}]}
-            </option>
-            </optgroup>
         </select>
     </td>
     <td>
-        <select>
+        <select ng-model="c.right_parent" 
+                ng-options="item.resource_uri as item.name 
+                            group by item.type
+                            for item in parents">
             <option></option>
-            <optgroup label="Plants:">
-            <option ng-repeat="plnt in scheme.plants" value="plnt.resource_uri" 
-                ng-selected="isSelected(c.right_plant_parent,plnt.resource_uri)">
-                {[{plnt.name}]}
-            </option>
-            </optgroup>
-            <optgroup label="Crosses:">
-            <option ng-repeat="crs in scheme.crosses" value="crs.resource_uri"
-                ng-selected="isSelected(c.right_cross_parent,crs.resource_uri)">
-                {[{crs.name}]}
-            </option>
-            </optgroup>
         </select>
     </td>
     <td><input type="text" ng-model="c.name" placeholder="Cross Name"></td>

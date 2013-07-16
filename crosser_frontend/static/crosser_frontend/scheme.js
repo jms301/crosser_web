@@ -3,17 +3,32 @@ angular.module('scheme', ['schemecon', 'crosserFilters']).
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
     });
 
-//.
-    //config(["$httpProvider", function(provider) {
-     // provider.defaults.headers.common['X-CSRFToken'] = document.getElementsByName('csrfmiddlewaretoken')[0].value;
-  //}]);
-
-
 function PlanCtrl($scope, Scheme, Species, $location) { 
     // set up the PlanController context
     $scope.plan_id = window.location.pathname.split("/")[2]; 
     $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
-     });
+        _.each($scope.scheme.crosses, function(c, index, crosses) {
+            if (c.left_plant_parent != null)
+                c.left_parent = c.left_plant_parent;
+            else
+                c.left_parent = c.left_cross_parent;
+    
+            if (c.right_plant_parent != null)
+                c.right_parent = c.right_plant_parent;
+            else
+                c.right_parent = c.right_cross_parent;
+            
+        });
+        // setup arrays that can be used to populate select options 
+        // the type field is used to provide groupings in the dropdown
+        _.each($scope.scheme.plants, function(plant, index, parents){
+            plant.type = "Plants";
+        });
+        _.each($scope.scheme.crosses, function(cross, index, parents){
+            cross.type = "Crosses";
+        });
+        $scope.parents = $scope.scheme.plants.concat($scope.scheme.crosses);
+    });
 
     $scope.species = Species.get(function () {
         _.each($scope.species.objects, function(element, index, list) { 
