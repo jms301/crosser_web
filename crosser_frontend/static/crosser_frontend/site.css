@@ -85,3 +85,8 @@ div.signup-button {
     float:right;
     margin-top:2px;
 }
+
+.small-drop {
+  min-width: 0px;
+  width: 180px;
+}
