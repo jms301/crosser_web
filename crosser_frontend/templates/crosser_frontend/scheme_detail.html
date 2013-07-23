@@ -67,33 +67,36 @@ Cross Scheme: {{scheme.name}}
 <table class="table table-condensed">
 <thead>
 <tr>
+    <th>Name:</th> 
     <th>L Parent:</th>
     <th>R Parent:</th>
-    <th>Name:</th> 
     <th>Protocol Zygosity:</th>
-    <th>Loci</th>
+    <th>Loci:</th>
     <th></th>
 </tr>
 </thead>
 
 <tr ng:repeat="c in scheme.crosses">
+    <td><input type="text" ng-model="c.name" placeholder="Cross Name"
+               class="small-drop"> </td>
     <td>
         <select ng-model="c.left_parent" 
                 ng-options="item.resource_uri as item.name
                             group by item.type
-                            for item in parents | parents: c.resource_uri">
+                            for item in parents | parents: c.resource_uri"
+                class="small-drop">
         </select>
     </td>
     <td>
         <select ng-model="c.right_parent" 
                 ng-options="item.resource_uri as item.name 
                             group by item.type
-                            for item in parents | parents: c.resource_uri">
+                            for item in parents | parents: c.resource_uri"
+                class="small-drop">
         </select>
     </td>
-    <td><input type="text" ng-model="c.name" placeholder="Cross Name"></td>
     <td>
-        <select ng-model="c.protocol_zygosity">
+        <select ng-model="c.protocol_zygosity" class="small-drop">
             <option value="He">Heterozygous</option>
             <option value="Ho">Homozygous</option>
         </select>
