@@ -9,6 +9,7 @@ Cross Scheme: {{scheme.name}}
  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js"></script>
 
 <script src='{% static "crosser_frontend/filters.js" %}'></script>
 <script src='{% static "crosser_frontend/schemeRes.js" %}'></script>
@@ -60,7 +61,7 @@ Cross Scheme: {{scheme.name}}
     </td>
 </tr>
 </table>
-<button class="btn" ng-click="addLocus(plant)"><i class="icon-plus"></i>Add</button>
+<button class="btn" ng-click="add_locus(plant)"><i class="icon-plus"></i>Add</button>
 <hr>
 </div>
 <h1> Crosses:</h1>
@@ -102,7 +103,17 @@ Cross Scheme: {{scheme.name}}
         </select>
 
     <td> 
-        <span ng:repeat="l in c.loci" type="text">{[{scheme|loci:l}]} </span>
+        <span ng:repeat="l in c.loci" type="text">
+        <span class="badge badge-important"> {[{scheme|loci:l}]} <i class="icon-remove icon-white" ng-click="removeCrossLocus(c, l)"></i>
+        </span>
+        &nbsp;
+        </span>
+        <div class="dropdown">
+        <a class="dropdown-toggle badge badge-info"> Add <i class="icon-plus icon-white"></i></a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li ng:repeat="l in c.ancestor_loci"><a>{[{l.name}]}</a></li>
+        </ul>   
+        </div> 
     </td>
     <td>
         <a class="btn btn-danger" ng-click="removeCross(c)" >

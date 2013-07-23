@@ -85,23 +85,22 @@
 {#js at end to speed loading#}
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
-<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<!--<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>-->
 
 <script type='text/javascript'>
 
 $(document).ready(function () {
     $("#{% block navid %}home{% endblock %}").addClass('active');
-    $(function() {
-        $('.dropdown-toggle').dropdown();
- 
-        $('.dropdown input, .dropdown label').click(function(e) {
-           e.stopPropagation();
-        });
-    });
+   // $(function() {
+    //    $('.dropdown-toggle').dropdown();
+// 
+ //       $('.dropdown input, .dropdown label').click(function(e) {
+  //         e.stopPropagation();
+   //     });
+    //});
 
 {%block js_ready %}
 {% endblock %}
-
 });
 
 {% block js_code %}
