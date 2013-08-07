@@ -26,7 +26,7 @@ angular.module('schemecon', ['ngResource']).
         return Cross;
     })
     .factory('Locus', function($resource) { 
-        var Locus = $resource('../../api/v1/locus/', {},
+        var Locus = $resource('../../api/v1/locus/:id', {},
         {patch: {method: 'PATCH'}});
         return Locus;
     })

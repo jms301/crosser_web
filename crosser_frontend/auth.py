@@ -1,6 +1,6 @@
 from tastypie.authorization import Authorization
 from tastypie.exceptions import Unauthorized
-
+#from tastypie import
 
 class UserAuthorization(Authorization):
     def read_list(self, object_list, bundle):

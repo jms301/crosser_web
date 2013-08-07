@@ -20,6 +20,7 @@ Cross Scheme: {{scheme.name}}
 {% block content %}
 <div ng-app="scheme">
 <div ng:hide="true">{% csrf_token %}</div>
+<div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
 <div ng-controller="PlanCtrl">
 
 <h1> Cross Scheme: </h1>
@@ -31,7 +32,7 @@ Cross Scheme: {{scheme.name}}
 <hr>
 <h1> Plants:</h1>
 <div ng:repeat="plant in scheme.plants">
-<b>Name:</b> <input type="text" ng-model="plant.name" placeholder="Plant Name Here"/>
+<b>Name:</b> <input type="text" ng-change="update_plant(plant)" ng-model="plant.name" placeholder="Plant Name Here"/>
 <h4>Loci</h4> 
 
 <table ng:hide="plant.loci.length == 0" class="table table-condensed">
@@ -55,7 +56,7 @@ Cross Scheme: {{scheme.name}}
     <td><input type="text" ng-model="l.linkage_group"></td>
     <td><input type="text" ng-model="l.position"></td>
     <td>
-        <a class="btn btn-danger" ng-click="removeLocus(l, plant)" >
+        <a class="btn btn-danger" ng-click="remove_locus(l, plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>
@@ -78,21 +79,21 @@ Cross Scheme: {{scheme.name}}
 </thead>
 
 <tr ng:repeat="c in scheme.crosses">
-    <td><input type="text" ng-model="c.name" placeholder="Cross Name"
+    <td><input type="text" ng-change="update_cross(c)" ng-model="c.name" placeholder="Cross Name"
                class="small-drop"> </td>
     <td>
-        <select ng-model="c.left_parent" 
+        <select ng-model="cross_data[c.resource_uri].left_parent" 
                 ng-options="item.resource_uri as item.name
                             group by item.type
-                            for item in parents | parents: c.resource_uri"
+                            for item in poss_parents | parents: c.resource_uri"
                 class="small-drop">
         </select>
     </td>
     <td>
-        <select ng-model="c.right_parent" 
+        <select ng-model="cross_data[c.resource_uri].right_parent" 
                 ng-options="item.resource_uri as item.name 
                             group by item.type
-                            for item in parents | parents: c.resource_uri"
+                            for item in poss_parents | parents: c.resource_uri"
                 class="small-drop">
         </select>
     </td>
@@ -102,27 +103,27 @@ Cross Scheme: {{scheme.name}}
             <option value="Ho">Homozygous</option>
         </select>
 
-    <td> 
+    <td>
         <span ng:repeat="l in c.loci" type="text">
-        <span class="badge badge-important"> {[{scheme|loci:l}]} <i class="icon-remove icon-white" ng-click="removeCrossLocus(c, l)"></i>
+        <span class="badge badge-important"> {[{l}]} <i class="icon-remove icon-white" ng-click="remove_cross_locus(c, l)"></i>
         </span>
         &nbsp;
         </span>
         <div class="dropdown">
-        <a class="dropdown-toggle badge badge-info"> Add <i class="icon-plus icon-white"></i></a>
+        <a class="dropdown-toggle badge badge-info">Add<i class="icon-plus icon-white"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li ng:repeat="l in c.ancestor_loci"><a>{[{l.name}]}</a></li>
+            <li ng:repeat="l in cross_data[c.resource_uri].poss_loci"><a>{[{l.name}]}</a></li>
         </ul>   
         </div> 
     </td>
     <td>
-        <a class="btn btn-danger" ng-click="removeCross(c)" >
+        <a class="btn btn-danger" ng-click="remove_cross(c)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>
 </tr>
 </table>
-<button class="btn" ng-click="addCross(scheme)"><i class="icon-plus"></i>Add</button>
+<button class="btn" ng-click="add_cross(scheme)"><i class="icon-plus"></i>Add</button>
 <button class="btn btn-primary" ng-click="updateScheme(scheme, to_del)">Save Scheme</button>
 </div>
 </div>

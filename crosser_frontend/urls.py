@@ -7,7 +7,11 @@ urlpatterns = patterns('',
         TemplateView.as_view(
             template_name = 'crosser_frontend/index.html'),
         name='index'),
-    
+     url(r'^cross/new$',
+        TemplateView.as_view(
+            template_name = 'crosser_frontend/scheme_detail.html'),
+        name='scheme_detail'),
+        
     url(r'^cross/(?P<pk>\d)/$',
         DetailView.as_view(
             model = Scheme,

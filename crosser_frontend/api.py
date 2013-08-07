@@ -32,6 +32,7 @@ class SchemeResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'scheme'
+        always_return_data=True
 
 class PlantResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
@@ -42,6 +43,7 @@ class PlantResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'plant'
+        always_return_data=True
 
 class LocusResource(ModelResource): 
     owner = fields.ForeignKey(UserResource, 'owner')    
@@ -53,6 +55,7 @@ class LocusResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'locus'
+        always_return_data=True
 
 
 class CrossResource(ModelResource):
@@ -70,4 +73,5 @@ class CrossResource(ModelResource):
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'cross'
+        always_return_data=True
  
