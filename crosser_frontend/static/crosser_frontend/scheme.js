@@ -6,17 +6,19 @@ $scope.species - a list of species names & their genome array fetched from tasty
 $scope.cross_data - object holding local data for the display of crosses, 
                     each key is the cross resource_uri and holds:
                      *  left_parent & right_parent - the parent resource_uris 
-                        can be a cross or a plant, and will be converted to 
-                        cross_left/right_parent or plant_left/right_parent for
-                         upload. 
+                        can be a cross or a plant, 
+                        This is used in the drop down to show what is
+                        currently selected.
+                        Kept in sync with right_cross_parent, right_plant_parent                        etc.
                         
-                     *  poss_loci - the loci that can theoretically be 
-                        selected for in that cross 
-                        (since their parents have them)
+                     *  ancestor_list - the plants, which are parents of this 
+                        cross. Used to show the loci that this cross can select
+                        for. 
 
-                     *  ancestor_list - the crosses & plants? which could be
-                       parents of this cross.
-
+                     *  descendant_list - the crosses which descend from this 
+                        cross. Used to filter the parent drop down & prevent 
+                        user from trying to create looping family trees
+ 
 $scope.poss_parents  - a list of all possible parents (crosses & plants) 
                   each including a type variable for cross parent select 
                   drop down.
@@ -31,10 +33,42 @@ TODO:
 angular.module('scheme', ['ui.bootstrap', 'schemecon', 'crosserFilters']).
     config(function($interpolateProvider){
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
+    })
+    .directive('leftCrossParent', function() { 
+        return function (scope, element, attrs) { 
+            scope.$watch(attrs.ngModel, function(new_value) { //,old_value) { 
+             //  scope.change_left_cross_parent(scope.$parent.c, new_value);//, old_value);
+            }); 
+        };
     });
+   
+function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
+    $scope.change_left_cross_parent = function(cross,  new_value){//, old_value){   
+        if(new_value == null)
+            return;
+        console.log("new & old");
+        console.log(new_value);
+        //if (typeof old_value  === 'undefined')
+         //   console.log("undefined");
+        c.left_cross_parent = null;
+        c.left_plant_parent = null;
+        
+        if(new_value.split('/')[3]=="plant")
+            c.left_plant_parent = new_value;
+        else
+            c.left_cross_parent = new_value;
 
+        
+            
+    };
 
-function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) { 
+    $scope.change_right_cross_parent = function(cross,  new_value, old_value){
+        c.right_cross_parent = null;
+        c.right_plant_parent = null;
+
+        
+    };
+
     // set up the PlanController context
     $scope.plan_id = window.location.pathname.split("/")[2];
     $scope.user_id = document.getElementsByName('userid')[0].value;
@@ -100,14 +134,14 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         if($scope.cross_data[c.resource_uri] == null)
             $scope.cross_data[c.resource_uri] = {};
         if (c.left_plant_parent != null)
-        $scope.cross_data[c.resource_uri].left_parent = c.left_plant_parent;
+            $scope.cross_data[c.resource_uri].left_parent = c.left_plant_parent;
         else
-        $scope.cross_data[c.resource_uri].left_parent = c.left_cross_parent;
+            $scope.cross_data[c.resource_uri].left_parent = c.left_cross_parent;
    
         if (c.right_plant_parent != null)
-        $scope.cross_data[c.resource_uri].right_parent = c.right_plant_parent;
+            $scope.cross_data[c.resource_uri].right_parent = c.right_plant_parent;
         else
-        $scope.cross_data[c.resource_uri].right_parent = c.right_cross_parent;
+            $scope.cross_data[c.resource_uri].right_parent = c.right_cross_parent;
     };
 
     $scope.update_cross = function(cross) { 
@@ -125,6 +159,11 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
     $scope.get_cross_by_uri = function (ref) {
         return _.findWhere($scope.scheme.crosses, {resource_uri: ref});
     };
+    
+    $scope.get_locus_by_uri = function (ref) { 
+        loci = _.pluck($scope.scheme.plants, "loci"); 
+        return _.findWhere(_.flatten(loci), {resource_uri: ref});
+    };
 
     $scope.get_cross_left_parent = function(c) {   
         return $scope.cross_data[c.resource_uri].left_parent;
@@ -134,6 +173,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         return $scope.cross_data[c.resource_uri].right_parent;
     }; 
 
+    // create / update the ancestor list for a cross. 
     $scope.add_ancestor_list = function(cross, index, crosses) {
         plants = [];
         parents = [];
@@ -153,20 +193,16 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         }
         plants = _.uniq(plants);
         $scope.cross_data[cross.resource_uri].ancestor_list = plants;
-        $scope.cross_data[cross.resource_uri].poss_loci = 
-            _.flatten(_.map(plants, function(plant){
-            return plant.loci;
-        }));
     };
 
+
+    // TODO function to create a new plant, save it and if the save works
+    // add it to the scheme
     $scope.add_plant = function ( scheme ) { 
-        scheme.plants.push ( 
-            Plant.save(
-                {"name":null, })
-        )
     }
 
-    // function to add a new locus to a plant
+    // function to create a new locus, save it and if the save works add it 
+    //     to the plant
     $scope.add_locus =   function ( plant ) {
         Locus.save(
             {"name": null, 
@@ -194,13 +230,13 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
             });
         });
     };
-    // function to remove a locus from the scheme & any crosses
+
+    // function to remove a locus from a plant & any crosses
     $scope.remove_locus = function (locus, plant) {
-        Locus.delete({id: locus.id}, function(value) { 
-            console.log(value);
+        id = locus.resource_uri.split('/').pop();
+        if(id)
+        Locus.delete({id: id}, function(value) { 
             _.each($scope.scheme.crosses, function(cross){ 
-                $scope.cross_data[cross.resource_uri].poss_loci = 
-                _.without($scope.cross_data[cross.resource_uri].poss_loci, locus);
                     cross.loci = _.without(cross.loci, locus.resource_uri);
                 });
 
@@ -217,6 +253,13 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         });
     }
 
+    $scope.new_left_parent = function(data)
+    {
+    };
+
+    $scope.new_right_parent = function(data)
+    {
+    };
     // function to remove a cross from the scheme & parent array
     $scope.remove_cross = function (cross) {
         $scope.poss_parents = _.reject($scope.poss_parents, function (item){ return item.resource_uri == cross.resource_uri}); 

@@ -5,6 +5,13 @@ angular.module('crosserFilters', [])
     return function(parents, current_cross) {
         return _.reject(parents, function(item){return item.resource_uri == current_cross}); 
     };
+})
+.filter('without_loci', function() {
+    return function(loci_list, cross_loci) {
+        return _.reject(loci_list, function(loci){
+            return _.contains(cross_loci, loci.resource_uri);
+        });
+    };
 });
 //.filter('loci', function() {
     //return function(plants, locus_url) {

@@ -7,8 +7,8 @@ Cross Scheme: {{scheme.name}}
 
 {% block extra_head %}
  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js"></script>
 
 <script src='{% static "crosser_frontend/filters.js" %}'></script>
@@ -73,7 +73,7 @@ Cross Scheme: {{scheme.name}}
     <th>L Parent:</th>
     <th>R Parent:</th>
     <th>Protocol Zygosity:</th>
-    <th>Loci:</th>
+    <th>Loci To Select For:</th>
     <th></th>
 </tr>
 </thead>
@@ -83,6 +83,7 @@ Cross Scheme: {{scheme.name}}
                class="small-drop"> </td>
     <td>
         <select ng-model="cross_data[c.resource_uri].left_parent" 
+                left-cross-parent
                 ng-options="item.resource_uri as item.name
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri"
@@ -91,6 +92,7 @@ Cross Scheme: {{scheme.name}}
     </td>
     <td>
         <select ng-model="cross_data[c.resource_uri].right_parent" 
+                right-cross-parent
                 ng-options="item.resource_uri as item.name 
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri"
@@ -105,14 +107,16 @@ Cross Scheme: {{scheme.name}}
 
     <td>
         <span ng:repeat="l in c.loci" type="text">
-        <span class="badge badge-important"> {[{l}]} <i class="icon-remove icon-white" ng-click="remove_cross_locus(c, l)"></i>
+        <span class="badge badge-important"> {[{get_locus_by_uri(l).name}]} <i class="icon-remove icon-white" ng-click="remove_cross_locus(c, l)"></i>
         </span>
         &nbsp;
         </span>
         <div class="dropdown">
         <a class="dropdown-toggle badge badge-info">Add<i class="icon-plus icon-white"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-            <li ng:repeat="l in cross_data[c.resource_uri].poss_loci"><a>{[{l.name}]}</a></li>
+            <rep ng:repeat="p in cross_data[c.resource_uri].ancestor_list">
+            <li ng:repeat="l in p.loci | without_loci: c.loci "><a ng-click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
+            </rep>
         </ul>   
         </div> 
     </td>
