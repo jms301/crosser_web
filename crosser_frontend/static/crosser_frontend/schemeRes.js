@@ -21,7 +21,7 @@ angular.module('schemecon', ['ngResource']).
         return Scheme;
     })
     .factory('Cross', function($resource) { 
-        var Cross = $resource('../../api/v1/crosses/', {},
+        var Cross = $resource('../../api/v1/cross/:id', {},
         {patch: {method: 'PATCH'}});
         return Cross;
     })

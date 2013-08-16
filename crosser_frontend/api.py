@@ -63,9 +63,10 @@ class CrossResource(ModelResource):
     loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci')
     left_plant_parent = fields.ForeignKey(PlantResource, 'left_plant_parent', null=True, blank=True)
     right_plant_parent = fields.ForeignKey(PlantResource, 'right_plant_parent', null=True, blank=True)
-    left_cross_parent = fields.ForeignKey('crosser_frontend.api.CrossResource', 'left_cross_parent', null=True, blank=True)
-    right_cross_parent = fields.ForeignKey('crosser_frontend.api.CrossResource', 'right_cross_parent', null=True, blank=True)
 
+    left_cross_parent = fields.ForeignKey('self', 'left_cross_parent', null=True, blank=True)
+
+    right_cross_parent = fields.ForeignKey('self', 'right_cross_parent', null=True, blank=True)
     scheme = fields.ForeignKey(SchemeResource, 'scheme')
     
     class Meta: 
