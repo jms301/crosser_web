@@ -294,6 +294,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
                 name: null, 
                 owner: value.owner,
                 scheme: scheme.resource_uri, 
+                loci: [],
                 resource_uri: value.resource_uri
             });
             // re-calculate the local data possible parents list 
