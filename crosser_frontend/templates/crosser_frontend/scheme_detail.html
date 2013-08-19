@@ -31,8 +31,11 @@ Cross Scheme: {{scheme.name}}
  
 <hr>
 <h1> Plants:</h1>
-<div ng:repeat="plant in scheme.plants">
-<b>Name:</b> <input type="text" ng-change="update_plant(plant)" ng-model="plant.name" placeholder="Plant Name Here"/>
+<div ng:repeat="plant in scheme.plants | orderBy : 'resource_uri'">
+<b>Name:</b> <input type="text" ng-change="change_plant(plant)" ng-model="plant.name" placeholder="Plant Name Here"/>
+        <a class="btn btn-danger" ng-click="remove_plant(plant)" >
+            <i class="icon-trash icon-white"></i>
+        </a>
 <h4>Loci</h4> 
 
 <table ng:hide="plant.loci.length == 0" class="table table-condensed">
@@ -62,9 +65,10 @@ Cross Scheme: {{scheme.name}}
     </td>
 </tr>
 </table>
-<button class="btn" ng-click="add_locus(plant)"><i class="icon-plus"></i>Add</button>
+<button class="btn" ng-click="add_locus(plant)"><i class="icon-plus"></i>Add Locus</button>
 <hr>
 </div>
+<button class="btn" ng-click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
 <h1> Crosses:</h1>
 <table class="table table-condensed">
 <thead>
@@ -79,7 +83,7 @@ Cross Scheme: {{scheme.name}}
 </thead>
 
 <tr ng:repeat="c in scheme.crosses | orderBy : 'resource_uri'">
-    <td><input type="text" ng-change="update_cross(c)" ng-model="c.name" placeholder="Cross Name"
+    <td><input type="text" ng-change="change_cross(c)" ng-model="c.name" placeholder="Cross Name"
                class="small-drop"></td>
     <td class="ng-binding">
         <select ng-model="cross_data[c.resource_uri].left_parent" 
@@ -128,7 +132,7 @@ Cross Scheme: {{scheme.name}}
 </tr>
 </table>
 <button class="btn" ng-click="add_cross(scheme)"><i class="icon-plus"></i>Add</button>
-<button class="btn btn-primary" ng-click="updateScheme(scheme, to_del)">Save Scheme</button>
+<button class="btn btn-primary" ng-click="scheme_update(scheme)">Save Scheme</button>
 </div>
 </div>
 {% endblock %}

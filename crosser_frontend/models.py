@@ -67,10 +67,10 @@ class Cross(models.Model):
 
     scheme =  models.ForeignKey(Scheme, related_name='crosses')
 
-    left_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None)
-    left_cross_parent = models.ForeignKey('Cross', related_name='+', null=True, blank=True, default=None)
-    right_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None)
-    right_cross_parent = models.ForeignKey('Cross', related_name='+', null=True, blank=True, default=None)
+    left_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None, on_delete=models.SET_NULL)
+    left_cross_parent = models.ForeignKey('Cross', related_name='+', null=True, blank=True, default=None, on_delete=models.SET_NULL)
+    right_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None, on_delete=models.SET_NULL)
+    right_cross_parent = models.ForeignKey('Cross', related_name='+', null=True, blank=True, default=None, on_delete=models.SET_NULL)
     protocol_zygosity = models.CharField(max_length=2, 
                                 choices = ZYGOSITY_CHOICES, 
                                 default=HOMOZYGOUS)

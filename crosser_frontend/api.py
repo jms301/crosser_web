@@ -36,7 +36,7 @@ class SchemeResource(ModelResource):
 
 class PlantResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
-    loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci', full=True, related_name='plant')
+    loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci', full=True, related_name='plant', null=True)
     scheme = fields.ForeignKey(SchemeResource, 'scheme')
     class Meta:
         queryset = Plant.objects.all()
