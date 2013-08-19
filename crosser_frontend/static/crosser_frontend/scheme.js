@@ -24,11 +24,13 @@ $scope.poss_parents  - a list of all possible parents (crosses & plants)
                   drop down.
 
 TODO: 
-    * implement saving the removal of a loci from a cross (currently you have no
+    * Implement saving the removal of a loci from a cross (currently you have no
       choice but to delete the cross and re-implement which isn't ideal!) 
 
-    * update to use the latest version of the JSON data structure.
-
+    * Update to use the latest version of the JSON data structure.
+    
+    * Enforce constraints on the Loci to match the species array 
+        (position / Linkage group).  
 *************************/
 
 angular.module('scheme', ['ui.bootstrap', 'schemecon', 'crosserFilters']).
