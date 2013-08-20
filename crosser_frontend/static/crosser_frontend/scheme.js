@@ -338,9 +338,10 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         if(id)
         Plant.delete({id: id}, function(value) { 
             // remove the plant from the scheme.
-            $scope.scheme.plants = _.reject(plant.loci, function (item){ 
-                return item === plant; 
-            });           
+            $scope.scheme.plants = _.reject($scope.scheme.plants, 
+                function (item){ 
+                    return item === plant; 
+                });           
 
             // remove any locus from crosses that reference them. 
             _.each(plant.loci, function (locus) { 
