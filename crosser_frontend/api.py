@@ -48,7 +48,6 @@ class PlantResource(ModelResource):
 class LocusResource(ModelResource): 
     owner = fields.ForeignKey(UserResource, 'owner')    
     plant = fields.ForeignKey(PlantResource, 'plant', null=True)
-    crosses = fields.ToManyField('crosser_frontend.api.CrossResource', 'crosses' , null=True)
 
     class Meta:
         queryset = Locus.objects.all()
@@ -60,7 +59,7 @@ class LocusResource(ModelResource):
 
 class CrossResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
-    loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci')
+    loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci', null=True)
     left_plant_parent = fields.ForeignKey(PlantResource, 'left_plant_parent', null=True, blank=True)
     right_plant_parent = fields.ForeignKey(PlantResource, 'right_plant_parent', null=True, blank=True)
 

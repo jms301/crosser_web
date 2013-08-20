@@ -316,8 +316,10 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
             }, 
         function (value) {
             // add the returned created locus values to the plant
+            console.log(value);
             plant.loci.push({
                 name: value.name,
+                id: value.id,
                 locus_type: value.locus_type,
                 linkage_group: value.linkage_group,
                 plant: value.plant,
@@ -325,10 +327,6 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
                 owner: value.owner,
                 position: value.position,
                 resource_uri: value.resource_uri
-            });
-            // add the new locus to the cross_data lists it needs to be in S
-            _.each($scope.scheme.crosses, function(cross){
-                //if(_.$scope.cross_data[cross.resource_uri])
             });
         });
     };
