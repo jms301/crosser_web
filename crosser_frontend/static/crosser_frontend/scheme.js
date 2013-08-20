@@ -375,9 +375,8 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
 
     // function to remvoe a locus from a cross
     $scope.remove_cross_locus = function (cross, locus) {
-        cross.loci = _.reject(cross.loci, function(l){
-            return locus == l;
-        });
+        cross.loci = _.without(cross.loci, locus); 
+        Cross.save(cross);
     }
 
     // function to remove a cross from the scheme & parent array
@@ -408,6 +407,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         function (value) {
             // add the returned created locus values to the plant
             cross = {
+                id: value.id,
                 name: null,
                 right_cross_parent: null, 
                 left_plant_parent: null, 
