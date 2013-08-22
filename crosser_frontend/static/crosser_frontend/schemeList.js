@@ -23,9 +23,11 @@ function SchemeListCtrl($scope, Scheme, $location) {
             {
                 "name": null,
                 "owner": "/api/v1/user/" + $scope.user_id,
-                "chunk_size": 0,
-                "recombination_prob": 0,
-                "tolerance": 0
+                "system": {
+                    "owner": "/api/v1/user/" + $scope.user_id,
+                    "convergence_chunk_size": 0,
+                    "convergence_tolerance": 0 
+                } 
             }, 
         function (scheme) { 
             window.location.href = $scope.get_url(scheme);

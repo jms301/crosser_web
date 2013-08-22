@@ -18,22 +18,26 @@ Cross Scheme
 {% endblock %}
 
 {% block content %}
-<div ng-app="scheme">
+<div ng:app="scheme">
 <div ng:hide="true">{% csrf_token %}</div>
 <div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
-<div ng-controller="PlanCtrl">
+<div ng:controller="PlanCtrl">
 
-<h1> Cross Scheme: </h1>
-<input type="text" ng-model="scheme.name" placeholder="Scheme Name"/> 
+<h1>Cross Scheme: </h1>
+<input type="text" ng:model="scheme.name" placeholder="Scheme Name"/> 
+<label>Chunk Size:</label>
+<input type="text" ng:model="scheme.system.convergence_chunk_size"/>
+<label>Tolerance:</label>
+<input type="text" ng:model="scheme.system.convergence_tolerance"/>
 <label>Species:</label>
-<select ng-model="scheme.species" ng-options="spec.resource_uri as spec.name for spec in species.objects" >
+<select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
 </select>
  
 <hr>
-<h1> Plants:</h1>
+<h1>Plants:</h1>
 <div ng:repeat="plant in scheme.plants | orderBy : 'resource_uri'">
-<b>Name:</b> <input type="text" ng-change="change_plant(plant)" ng-model="plant.name" placeholder="Plant Name"/>
-        <a class="btn btn-danger" ng-click="remove_plant(plant)" >
+<b>Name:</b> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name"/>
+        <a class="btn btn-danger" ng:click="remove_plant(plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
 <h4>Loci</h4> 
@@ -49,27 +53,28 @@ Cross Scheme
 </tr>
 </thead>
 <tr ng:repeat="l in plant.loci">
-    <td><input type="text" ng-model="l.name" placeholder="Loci Name"></td>
+    <td><input type="text" ng:model="l.name" placeholder="Loci Name"></td>
     <td>
-        <select ng-model="l.locus_type">
+        <select ng:model="l.locus_type">
             <option value="Tr">Trait</option>
             <option value="Ma">Marker</option>
         </select>
     </td>
-    <td><input type="text" ng-model="l.linkage_group"></td>
-    <td><input type="text" ng-model="l.position"></td>
+    <td><input type="text" ng:model="l.linkage_group"></td>
+    <td><input type="text" ng:model="l.position"></td>
     <td>
-        <a class="btn btn-danger" ng-click="remove_locus(l, plant)" >
+        <a class="btn btn-danger" ng:click="remove_locus(l, plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>
 </tr>
 </table>
-<button class="btn" ng-click="add_locus(plant)"><i class="icon-plus"></i>Add Locus</button>
+<button class="btn" ng:click="add_locus(plant)"><i class="icon-plus"></i>Add Locus</button>
 <hr>
 </div>
-<button class="btn" ng-click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
-<h1> Crosses:</h1>
+<button class="btn" ng:click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
+<hr>
+<h1>Crosses:</h1>
 <table class="table table-condensed">
 <thead>
 <tr>
@@ -83,35 +88,35 @@ Cross Scheme
 </thead>
 
 <tr ng:repeat="c in scheme.crosses | orderBy : 'resource_uri'">
-    <td><input type="text" ng-change="change_cross(c)" ng-model="c.name" placeholder="Cross Name"
+    <td><input type="text" ng:change="change_cross(c)" ng:model="c.name" placeholder="Cross Name"
                class="small-drop"></td>
     <td class="ng-binding">
-        <select ng-model="cross_data[c.resource_uri].left_parent" 
-                ng-change="change_left_parent(c)"
-                ng-options="item.resource_uri as item.name
+        <select ng:model="cross_data[c.resource_uri].left_parent" 
+                ng:change="change_left_parent(c)"
+                ng:options="item.resource_uri as item.name
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri : cross_data[c.resource_uri].descendants | orderBy: 'resource_uri'"
                 class="small-drop">
         </select>
     </td>
     <td class="ng-binding"> 
-        <select ng-model="cross_data[c.resource_uri].right_parent" 
-                ng-change="change_right_parent(c)"
-                ng-options="item.resource_uri as item.name 
+        <select ng:model="cross_data[c.resource_uri].right_parent" 
+                ng:change="change_right_parent(c)"
+                ng:options="item.resource_uri as item.name 
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri : cross_data[c.resource_uri].descendants | orderBy: 'resource_uri'"
                 class="small-drop">
         </select>
     </td>
     <td>
-        <select ng-model="c.protocol_zygosity" class="small-drop">
+        <select ng:model="c.protocol_zygosity" class="small-drop">
             <option value="He">Heterozygous</option>
             <option value="Ho">Homozygous</option>
         </select>
 
     <td>
         <span ng:repeat="l in c.loci" type="text">
-        <span class="badge badge-important"> {[{get_locus_by_uri(l).name}]} <i class="icon-remove icon-white" ng-click="remove_cross_locus(c, l)"></i>
+        <span class="badge badge-important"> {[{get_locus_by_uri(l).name}]} <i class="icon-remove icon-white" ng:click="remove_cross_locus(c, l)"></i>
         </span>
         &nbsp;
         </span>
@@ -119,20 +124,38 @@ Cross Scheme
         <a class="dropdown-toggle badge badge-info">Add<i class="icon-plus icon-white"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <rep ng:repeat="p in cross_data[c.resource_uri].ancestors">
-            <li ng:repeat="l in p.loci | without_loci: c.loci "><a ng-click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
+            <li ng:repeat="l in p.loci | without_loci: c.loci "><a ng:click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
             </rep>
         </ul>   
         </div> 
     </td>
     <td>
-        <a class="btn btn-danger" ng-click="remove_cross(c)" >
+        <a class="btn btn-danger" ng:click="remove_cross(c)" >
             <i class="icon-trash icon-white"></i>
         </a>
     </td>
 </tr>
 </table>
-<button class="btn" ng-click="add_cross(scheme)"><i class="icon-plus"></i>Add</button>
-<button class="btn btn-primary" ng-click="scheme_update(scheme)">Save Scheme</button>
+<button class="btn" ng:click="add_cross(scheme)"><i class="icon-plus"></i>Add</button>
+<hr>
+<h1>Output:</h1>
+<div ng:repeat="o in scheme.outputs">
+        Type:
+        <select ng:model="o.output_type" class="small-drop">
+            <option value="Cc">Cross Composition</option>
+            <option value="Sp">Success Probability</option>
+            <option value="Lc">Loci Composition</option>
+            <option value="Pd">Proportion Distribution</option>
+            <option value="Cm">Custom</option>
+        </select>
+
+        Data:     
+        <input type="text" ng:model="o.data" placeholder="Output Data"/> 
+</div>
+
+<button class="btn" ng:click="add_output(scheme)"><i class="icon-plus"></i>Add</button>
+
+<button class="btn btn-primary" ng:click="scheme_update(scheme)">Save Scheme</button>
 </div>
 </div>
 {% endblock %}

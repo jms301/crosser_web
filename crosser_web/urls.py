@@ -14,6 +14,7 @@ v1_api.register(CrossResource())
 v1_api.register(PlantResource())
 v1_api.register(LocusResource())
 v1_api.register(UserResource())
+v1_api.register(OutputResource())
 
 urlpatterns = patterns('',
     # Examples:

@@ -3,9 +3,8 @@ from tastypie.resources import ModelResource
 from tastypie.authentication import SessionAuthentication
 from tastypie.authorization import ReadOnlyAuthorization
 from crosser_frontend.auth import UserAuthorization
-from models import Scheme, Species, Cross, Plant, Locus
+from models import Scheme, Species, Cross, Plant, Locus, System, Output
 from django.contrib.auth.models import User
-
 
 class UserResource(ModelResource):
     class Meta:
@@ -22,16 +21,43 @@ class SpeciesResource(ModelResource):
         resource_name = 'species'
 
 class SchemeResource(ModelResource):
-    owner = fields.ForeignKey(UserResource, 'owner')    
-    plants = fields.ToManyField('crosser_frontend.api.PlantResource', 'plants', full=True, related_name='scheme', null=True)
     species = fields.ForeignKey(SpeciesResource, 'species', null=True)
+    owner = fields.ForeignKey(UserResource, 'owner')    
+
+    system = fields.ToOneField('crosser_frontend.api.SystemResource', 'system', full=True, related_name='scheme', null=True)
+    plants = fields.ToManyField('crosser_frontend.api.PlantResource', 'plants', full=True, related_name='scheme', null=True)
     crosses = fields.ToManyField('crosser_frontend.api.CrossResource', 'crosses', full=True, related_name='scheme', null=True)
+    outputs = fields.ToManyField('crosser_frontend.api.OutputResource', 
+        'outputs', full=True, related_name='scheme', null=True)
 
     class Meta:
         queryset = Scheme.objects.all()
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'scheme'
+        always_return_data=True
+
+class SystemResource(ModelResource):
+    owner = fields.ForeignKey(UserResource, 'owner')    
+    scheme = fields.ForeignKey(SchemeResource, 'scheme')
+
+    class Meta:
+        queryset = System.objects.all()
+        authentication = SessionAuthentication()
+        authorization = UserAuthorization()
+        resource_name = 'system'
+        always_return_data=True
+
+
+class OutputResource(ModelResource):
+    owner = fields.ForeignKey(UserResource, 'owner')    
+    scheme = fields.ForeignKey(SchemeResource, 'scheme')
+
+    class Meta: 
+        queryset = Output.objects.all()
+        authentication = SessionAuthentication()
+        authorization = UserAuthorization()
+        resource_name = 'output'
         always_return_data=True
 
 class PlantResource(ModelResource):
@@ -56,7 +82,6 @@ class LocusResource(ModelResource):
         resource_name = 'locus'
         always_return_data=True
 
-
 class CrossResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
     loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci', null=True)
@@ -74,4 +99,5 @@ class CrossResource(ModelResource):
         authorization = UserAuthorization()
         resource_name = 'cross'
         always_return_data=True
- 
+
+

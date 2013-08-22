@@ -14,20 +14,49 @@ class Species(models.Model):
 
 class Scheme(models.Model):
     owner = models.ForeignKey(User) 
-    chunk_size = models.IntegerField()
-    recombination_prob = models.FloatField()
-    tolerance = models.FloatField()
-    
-    
     name = models.CharField(max_length = 100)
     species = models.ForeignKey(Species, related_name='+', null=True)
+
     def __unicode__(self): 
         return self.name
+
+
+class System(models.Model):
+    owner = models.ForeignKey(User) 
+    convergence_chunk_size = models.IntegerField()
+    convergence_tolerance = models.FloatField()
+    scheme = models.OneToOneField(Scheme, related_name='system', null=True)
+
+class Output(models.Model):
+    owner = models.ForeignKey(User) 
+    scheme = models.ForeignKey(Scheme, related_name='outputs')
+
+    LOCI_COMP = 'Lc'
+    PROP_DIST = 'Pd'
+    SUCC_PROB = 'Sp'
+    CROS_COMP = 'Cc'
+
+    CONT_CHOICES = (
+        (CROS_COMP, 'cross_composition'),
+        (SUCC_PROB, 'success_probability'),
+        (LOCI_COMP, 'loci_composition'),
+        (PROP_DIST, 'proportion_distribution'),
+    ) 
+
+    output_type = models.CharField(max_length=2,
+                                    choices = CONT_CHOICES,
+                                    default = CROS_COMP)
+
+    data = models.CharField(max_length=200, null=True)
+
+    def __unicode__(self): 
+        return self.scheme.name + " : output"  
 
 class Plant(models.Model):
     owner = models.ForeignKey(User) 
     name = models.CharField(max_length = 100)
     scheme = models.ForeignKey(Scheme, related_name='plants')
+
     def __unicode__(self): 
         return self.name
 
@@ -47,6 +76,7 @@ class Locus(models.Model):
     position = models.IntegerField()
     
     plant =  models.ForeignKey(Plant, related_name='loci')
+
     def __unicode__(self): 
         return self.name
 
@@ -61,10 +91,9 @@ class Cross(models.Model):
         (HETEROZYGOUS, 'Heterozygous'),
         (HOMOZYGOUS, 'Homozygous'),
     )
+
     name = models.CharField(max_length = 100)
-
     loci = models.ManyToManyField(Locus, null=True, related_name='crosses')
-
     scheme =  models.ForeignKey(Scheme, related_name='crosses')
 
     left_plant_parent = models.ForeignKey(Plant, related_name='+', null=True, blank=True, default=None, on_delete=models.SET_NULL)
@@ -79,23 +108,6 @@ class Cross(models.Model):
 
     class Meta:
         verbose_name_plural = "Crosses"
-
-class OutputSubject(models.Model):
-    owner = models.ForeignKey(User) 
-    PREFVAR = 'Pv'
-    FOOBAR = 'Fb'
-    CONT_CHOICES = (
-        (PREFVAR, 'PreferredVariety'),
-        (FOOBAR, 'foobar'),
-    ) 
-    contribution = models.CharField(max_length=2,
-                                    choices = CONT_CHOICES,
-                                    default = PREFVAR)
-    scheme  = models.ForeignKey(Scheme)
-    subject = models.ForeignKey(Cross)
-
-    def __unicode__(self): 
-        return self.scheme.name + " : output"  
 
    
 #TODO: 

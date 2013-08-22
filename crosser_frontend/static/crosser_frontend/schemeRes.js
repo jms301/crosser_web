@@ -25,10 +25,13 @@ angular.module('schemecon', ['ngResource']).
     .factory('Plant', function($resource) { 
         var Plant = $resource('../../api/v1/plant/:id', {},
         {});
-        return Plant
-    })
-    .factory('Species', function($resource) {
+        return Plant;
+    }).factory('Output', function($resource) { 
+        var Output = $resource('../../api/v1/output/:id', {},
+        {});
+        return Output;
+    }).factory('Species', function($resource) {
         var Species = $resource('../../api/v1/species/', {},
-            {});
+        {});
         return Species;
     });

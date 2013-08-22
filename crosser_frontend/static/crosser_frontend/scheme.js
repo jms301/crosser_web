@@ -25,6 +25,8 @@ $scope.poss_parents  - a list of all possible parents (crosses & plants)
 
 TODO: 
 
+    * Put a floating save button always visible top right below login
+
     * on delete of a plant crosses will still let you add the loci of 
       that plant? 
 
@@ -39,7 +41,7 @@ angular.module('scheme', ['ui.bootstrap', 'schemecon', 'crosserFilters']).
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
     });
    
-function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
+function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $location) {
 
     /**********************************************************
         HOUSE KEEPING  - load or make scheme starting state
@@ -293,6 +295,29 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
             $scope.generate_parents();
         });
     };
+
+    // Function to create a new output, save it and if the save works
+    // add it to the scheme
+    $scope.add_output = function ( scheme ) {
+        Output.save(
+            {
+            "output_type": null, 
+            "data": null, 
+            "owner": "/api/v1/user/" + $scope.user_id,
+            "scheme": scheme.resource_uri
+            }, 
+        function (value) {
+            // add the returned created locus values to the plant
+            scheme.outputs.push({
+                output_type: null, 
+                data: null,
+                id: value.id,
+                owner: value.owner,
+                scheme: scheme.resource_uri, 
+            });
+        });
+    };
+
 
 
     // function to create a new locus, save it and if the save works add it 
