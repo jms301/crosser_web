@@ -283,6 +283,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
             // add the returned created locus values to the plant
             scheme.plants.push({
                 name: null, 
+                id: value.id,
                 owner: value.owner,
                 scheme: scheme.resource_uri, 
                 loci: [],
