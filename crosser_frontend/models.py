@@ -20,7 +20,7 @@ class Scheme(models.Model):
     
     
     name = models.CharField(max_length = 100)
-    species = models.ForeignKey(Species, related_name='+')
+    species = models.ForeignKey(Species, related_name='+', null=True)
     def __unicode__(self): 
         return self.name
 

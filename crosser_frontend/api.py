@@ -23,9 +23,9 @@ class SpeciesResource(ModelResource):
 
 class SchemeResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
-    plants = fields.ToManyField('crosser_frontend.api.PlantResource', 'plants', full=True, related_name='scheme')
-    species = fields.ForeignKey(SpeciesResource, 'species')
-    crosses = fields.ToManyField('crosser_frontend.api.CrossResource', 'crosses', full=True, related_name='scheme')
+    plants = fields.ToManyField('crosser_frontend.api.PlantResource', 'plants', full=True, related_name='scheme', null=True)
+    species = fields.ForeignKey(SpeciesResource, 'species', null=True)
+    crosses = fields.ToManyField('crosser_frontend.api.CrossResource', 'crosses', full=True, related_name='scheme', null=True)
 
     class Meta:
         queryset = Scheme.objects.all()

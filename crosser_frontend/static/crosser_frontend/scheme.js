@@ -60,28 +60,18 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, $location) {
         });
     });
    
-    if($scope.plan_id != 'new') { 
-        // pull down the scheme for the scope
-        $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
-            // add in fake left_parent & right_parent properties to the crosses
-            // this allows us to use convenient ng-options stuff in the frontend
-            // the properties will be split out before saving.
-            _.each($scope.scheme.crosses, $scope.create_cross_parents);
-            // setup an array of plants 'ancestors' in cross_data so 
-            // we can see which loci are available to add into a cross. 
-            _.each($scope.scheme.crosses, $scope.build_ancestors);
-            $scope.generate_parents();
-            $scope.generate_children();
-        });
-    } else {
-    // populate a new scheme object
-        $scope.scheme = { 
-            name: null,
-            species: null,
-            crosses:[],
-            plants: []
-        };
-    }
+    // pull down the scheme for the scope
+    $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
+        // add in fake left_parent & right_parent properties to the crosses
+        // this allows us to use convenient ng-options stuff in the frontend
+        // the properties will be split out before saving.
+        _.each($scope.scheme.crosses, $scope.create_cross_parents);
+        // setup an array of plants 'ancestors' in cross_data so 
+        // we can see which loci are available to add into a cross. 
+        _.each($scope.scheme.crosses, $scope.build_ancestors);
+        $scope.generate_parents();
+        $scope.generate_children();
+    });
 
      // update function 
     $scope.scheme_update = function (scheme) {

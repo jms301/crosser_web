@@ -1,25 +1,37 @@
 {% extends "crosser_frontend/base_site.html"%}
 
+{% load staticfiles %}
+
 {% block title %}
-My Crosses 
+Crosses 
+{% endblock %}
+
+{% block extra_head %}
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+
+<script src='{% static "crosser_frontend/schemeRes.js" %}'></script>
+<script src='{% static "crosser_frontend/schemeList.js" %}'></script>
+
 {% endblock %}
 
 {% block content %}
-<h1>My Crossing Schemes</h1>
+<h1>Schemes:</h1>
+<div ng:app="schemeList">
+<div ng:hide="true">{% csrf_token %}</div>
+<div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
+<div ng:controller="SchemeListCtrl">
+<ul ng:repeat="scheme in schemes.objects">
+    <a href="{[{get_url(scheme)}]}"><li>{[{scheme.name}]}</li></a>
+</ul>
 <p>
-<a href="" class="btn btn-primary">Create Crossing Scheme </a>
+<a ng:click="new_scheme()" class="btn btn-primary">Create Crossing Scheme </a>
 </p>
-{% if scheme_list %}
-    <ul>
-    {% for scheme in scheme_list %}
-        <li><a href="{%url 'scheme_detail' scheme.id%}">{{ scheme }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No schemes are available.</p>
-{% endif %}
-
-<h1>Public Crosses</h1>
+</div>
+</div>
 {% endblock %}
-
-{% block navid%}plans{% endblock %}
+{% block navid%}Schemes{% endblock %}
+{% block js_code%}
+{#empty block to wipe out code, sign in dropdown code#} 
+{% endblock %}
