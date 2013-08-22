@@ -24,8 +24,9 @@ $scope.poss_parents  - a list of all possible parents (crosses & plants)
                   drop down.
 
 TODO: 
-    * Implement saving the removal of a loci from a cross (currently you have no
-      choice but to delete the cross and re-implement which isn't ideal!) 
+
+    * on delete of a plant crosses will still let you add the loci of 
+      that plant? 
 
     * Update to use the latest version of the JSON data structure.
     

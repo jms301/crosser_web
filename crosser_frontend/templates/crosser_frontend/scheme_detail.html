@@ -24,7 +24,7 @@ Cross Scheme
 <div ng-controller="PlanCtrl">
 
 <h1> Cross Scheme: </h1>
-<input type="text" ng-model="scheme.name" placeholder="Plan Name Here"/> 
+<input type="text" ng-model="scheme.name" placeholder="Scheme Name"/> 
 <label>Species:</label>
 <select ng-model="scheme.species" ng-options="spec.resource_uri as spec.name for spec in species.objects" >
 </select>
@@ -32,7 +32,7 @@ Cross Scheme
 <hr>
 <h1> Plants:</h1>
 <div ng:repeat="plant in scheme.plants | orderBy : 'resource_uri'">
-<b>Name:</b> <input type="text" ng-change="change_plant(plant)" ng-model="plant.name" placeholder="Plant Name Here"/>
+<b>Name:</b> <input type="text" ng-change="change_plant(plant)" ng-model="plant.name" placeholder="Plant Name"/>
         <a class="btn btn-danger" ng-click="remove_plant(plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
