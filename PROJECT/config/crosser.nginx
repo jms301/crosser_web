@@ -1,0 +1,46 @@
+server {
+        listen       80;
+        server_name "crosser.callsar.com";
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        # project media assuming it's called at media/
+        # keep in mind that media/ will be maintained as a directory by the root command
+
+#        location ^~ /static/ {
+#            root   /home/lostcallsar;
+#        }
+
+        location / {
+            # host and port to fastcgi server
+            fastcgi_pass 127.0.0.1:8090;
+            fastcgi_param SERVER_NAME $server_name;
+            fastcgi_param SERVER_PORT $server_port;
+            fastcgi_param SERVER_PROTOCOL $server_protocol;
+            fastcgi_param PATH_INFO $fastcgi_script_name;
+            fastcgi_param REQUEST_METHOD $request_method;
+            fastcgi_param QUERY_STRING $query_string;
+            fastcgi_param CONTENT_TYPE $content_type;
+            fastcgi_param CONTENT_LENGTH $content_length;
+            fastcgi_pass_header Authorization;
+            fastcgi_intercept_errors off;
+            }
+
+        # todo: setup 404 for the /media directory.
+        # / directory will be handled by django url dispatcher
+        #error_page  404              /404.html;
+        #location = /404.html {
+        #    root   /var/www/nginx-default;
+        #}
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /var/www/nginx-default;
+        }
+
+    }
+
