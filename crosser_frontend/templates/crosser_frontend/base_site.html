@@ -30,7 +30,7 @@
         <ul class="nav">
             <li id='home'> <a href="{%url 'index'%}">Home</a> </li>
 {% if user.is_authenticated %}
-            <li id='crosses'> <a href="{%url 'schemes_list'%}">Crosses</a> </li>
+            <li id='crosses'> <a href="{%url 'schemes_list'%}">Schemes</a> </li>
 {%endif%}
         </ul>
         <div class="nav-collapse">
@@ -45,8 +45,8 @@
                     <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px;">
                         <form action={%url 'django.contrib.auth.views.login'%} method="post">
                         {%csrf_token%}
-                        <input id="id_username" type="text" name="username" value=""/>
-                        <input id="id_password" type="password" name="password" value=""/>
+                        <input id="id_username" type="text" name="username" value="" placeholder="username" />
+                        <input id="id_password" type="password" name="password" value="" placeholder="password"/>
                         <input type="submit" class="btn btn-primary" value="Submit"/>
                         <input type="hidden" name="next" value="/" />
                         </form>
