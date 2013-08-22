@@ -1,0 +1,12 @@
+Setup crosser user (nologin) 
+install missing INSTALLED-APPS
+install nginx & copy nginx config into sites-available
+symlink config into sites-enabled
+create postgres user
+create postgres database 
+edit /crosser_web/settings.py for database + password
+initialize database vi ./manage.py  (remember the default data fixtures!)
+test
+turn off DEBUG=true in settings.py
+generate static files (./manage.py collectstatic)
+
