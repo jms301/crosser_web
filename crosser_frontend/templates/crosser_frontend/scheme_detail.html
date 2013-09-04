@@ -52,7 +52,7 @@ Cross Scheme
     <th></th>
 </tr>
 </thead>
-<tr ng:repeat="l in plant.loci">
+<tr ng:repeat="l in plant.loci | orderBy : 'resource_uri'">
     <td><input type="text" ng:model="l.name" placeholder="Loci Name"></td>
     <td>
         <select ng:model="l.locus_type">
@@ -60,8 +60,19 @@ Cross Scheme
             <option value="Ma">Marker</option>
         </select>
     </td>
-    <td><input type="text" ng:model="l.linkage_group"></td>
-    <td><input type="text" ng:model="l.position"></td>
+    <td>
+        <select ng:model="l.linkage_group"
+                ng:options="n for n in get_linkage_array()"
+                class="tiny-drop">
+        </select>
+    </td>
+    <td>
+        <select ng:model="l.position"
+                ng:options="n for n in get_position_array(l.linkage_group)"
+                class="tiny-drop">
+        </select>
+
+    </td>
     <td>
         <a class="btn btn-danger" ng:click="remove_locus(l, plant)" >
             <i class="icon-trash icon-white"></i>

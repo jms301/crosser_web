@@ -194,7 +194,26 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         return _.findWhere(_.flatten(loci), {resource_uri: ref});
     };
 
-    
+    $scope.get_species = function () { 
+        spec = _.findWhere($scope.species.objects, {resource_uri: $scope.scheme.species});
+        if(spec)
+            return spec.chromosome_lengths;
+        else
+            return [];
+    };
+   
+    $scope.get_linkage_array = function() { 
+        return _.range($scope.get_species().length); 
+    };
+
+    $scope.get_position_array = function(linkage_group) { 
+        if(linkage_group)
+            return _.range($scope.get_species()[linkage_group]);
+        else
+            return [];
+    };
+
+
     // build the ancestor list for a cross. 
     $scope.build_ancestors = function(cross, index, crosses) {
         plants = [];
@@ -326,9 +345,9 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         Locus.save(
             {"name": null, 
             "locus_type": "Tr", 
-            "linkage_group": 0, 
+            "linkage_group": null, 
             "plant": plant.resource_uri, 
-            "position" : 0, 
+            "position" : null, 
              "owner": "/api/v1/user/" + $scope.user_id 
             }, 
         function (value) {

@@ -72,8 +72,8 @@ class Locus(models.Model):
     locus_type = models.CharField(max_length=2, 
                                 choices = TYPE_CHOICES, 
                                 default=TRAIT)
-    linkage_group = models.IntegerField()
-    position = models.IntegerField()
+    linkage_group = models.IntegerField(null=True)
+    position = models.IntegerField(null=True)
     
     plant =  models.ForeignKey(Plant, related_name='loci')
 
