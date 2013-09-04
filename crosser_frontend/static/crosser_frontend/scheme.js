@@ -207,8 +207,10 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     };
 
     $scope.get_position_array = function(linkage_group) { 
-        if(linkage_group)
-            return _.range($scope.get_species()[linkage_group]);
+        spec = $scope.get_species();
+
+        if(spec && linkage_group != null)
+            return _.range(spec[linkage_group]);
         else
             return [];
     };

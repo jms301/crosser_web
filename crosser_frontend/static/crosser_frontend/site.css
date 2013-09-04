@@ -90,3 +90,8 @@ div.signup-button {
   min-width: 0px;
   width: 180px;
 }
+
+.tiny-drop {
+  min-width: 0px;
+  width: 60px;
+}
