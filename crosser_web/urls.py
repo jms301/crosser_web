@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from crosser_frontend.api import *
+from crosser_frontend.backapi import *
 from tastypie.api import Api
 
 
@@ -15,6 +16,13 @@ v1_api.register(PlantResource())
 v1_api.register(LocusResource())
 v1_api.register(UserResource())
 v1_api.register(OutputResource())
+ 
+back_api = Api(api_name='backend')
+back_api.register(BackSchemeResource())
+back_api.register(BackCrossResource())
+back_api.register(BackPlantResource())
+back_api.register(BackLocusResource())
+back_api.register(BackOutputResource())
 
 urlpatterns = patterns('',
     # Examples:
@@ -26,6 +34,7 @@ urlpatterns = patterns('',
     #Uncomment the next line to enable the admin:
     url(r'^su-config/', include(admin.site.urls)),
     url(r'^api/', include(v1_api.urls)),
+    url(r'^api/', include(back_api.urls)),
     #crosser frontend as default
     url(r'^', include('crosser_frontend.urls')),
     url(r'^', include('django.contrib.auth.urls')),
