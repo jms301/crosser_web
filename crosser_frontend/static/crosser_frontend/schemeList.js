@@ -26,7 +26,8 @@ function SchemeListCtrl($scope, Scheme, $location) {
                 "system": {
                     "owner": "/api/v1/user/" + $scope.user_id,
                     "convergence_chunk_size": 0,
-                    "convergence_tolerance": 0 
+                    "convergence_tolerance": 0,
+                    "convergence_fewest_plants": 100 
                 } 
             }, 
         function (scheme) { 

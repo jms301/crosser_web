@@ -25,6 +25,7 @@ class System(models.Model):
     owner = models.ForeignKey(User) 
     convergence_chunk_size = models.IntegerField()
     convergence_tolerance = models.FloatField()
+    convergence_fewest_plants = models.IntegerField()
     scheme = models.OneToOneField(Scheme, related_name='system', null=True)
 
 class Output(models.Model):
