@@ -395,7 +395,6 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         });
    };
 
-    $scope.wobble = function () {console.log("blur event"); };
     // function to remove a locus from a plant & any crosses
     $scope.remove_locus = function (locus, plant) {
         id = locus.resource_uri.split('/').pop();

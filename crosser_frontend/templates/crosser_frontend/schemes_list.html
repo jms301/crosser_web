@@ -23,7 +23,11 @@ Crosses
 <div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
 <div ng:controller="SchemeListCtrl">
 <ul ng:repeat="scheme in schemes.objects">
-    <a href="{[{get_url(scheme)}]}"><li>{[{scheme.name}]}</li></a>
+    <li>
+    <a href="{[{get_url(scheme)}]}">{[{scheme.name}]}</a> <a class="btn btn-danger" ng:click="remove_scheme(scheme)" >
+        <i class="icon-trash icon-white"></i>
+    </a>
+    </li>
 </ul>
 <p>
 <a ng:click="new_scheme()" class="btn btn-primary">Create Crossing Scheme </a>

@@ -34,26 +34,13 @@ function SchemeListCtrl($scope, Scheme, $location) {
         });        
     }; 
 
-    // Function to create a new plant, save it and if the save works
-    // add it to the scheme
-    $scope.add_plant = function ( scheme ) {
-        Plant.save(
-            {"name": null,
-            "scheme": scheme.resource_uri,
-            "owner": "/api/v1/user/" + $scope.user_id
-            },
-        function (value) {
-            // add the returned created locus values to the plant
-            scheme.plants.push({
-                name: null,
-                owner: value.owner,
-                scheme: scheme.resource_uri,
-                loci: [],
-                resource_uri: value.resource_uri
+   $scope.remove_scheme = function (scheme) {
+        id = scheme.resource_uri.split('/').pop();
+        if(id)
+        Scheme.delete({id: id}, function(value) { 
+            $scope.schemes.objects = _.reject($scope.schemes.objects, 
+                function (item) { return item.resource_uri == scheme.resource_uri}); 
             });
-            // re-calculate the local data possible parents list 
-            $scope.generate_parents();
-        });
     };
-
+   
 }
