@@ -6,5 +6,15 @@
     "chromosome_lengths": "12,34,22,11,15,18,10", 
     "name": "Test Bean"
   }
+
+},
+{
+  "pk": 2, 
+  "model": "crosser_frontend.species", 
+  "fields": {
+    "chromosome_lengths": "203, 276, 236, 200, 133, 163, 188, 206, 143, 132, 164", 
+    "name": "Phaseolus Vulgaris"
+  }
+
 }
 ]
