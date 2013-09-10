@@ -240,7 +240,12 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         $scope.cross_data[cross.resource_uri].ancestors = plants;
     };
 
-
+    $scope.add_all_cross_loci = function(c) { 
+        c.loci = _.pluck(_.flatten(
+            _.pluck($scope.cross_data[c.resource_uri].ancestors, "loci")),
+        "resource_uri");
+    
+    }; 
 
     $scope.strip_invalid_loci = function(cross_uri) { 
         data = $scope.cross_data[cross_uri];

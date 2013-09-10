@@ -25,16 +25,19 @@ Cross Scheme
 
 <h1>Cross Scheme: </h1>
 <input type="text" ng:model="scheme.name" placeholder="Scheme Name"/> 
+<label>Species:</label>
+<select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
+</select>
+<div id="advanced" ng:show="toggleAdvanced">
 <label>Chunk Size:</label>
 <input type="text" ng:model="scheme.system.convergence_chunk_size"/>
 <label>Tolerance:</label>
 <input type="text" ng:model="scheme.system.convergence_tolerance"/>
 <label>Fewest Plants:</label>
 <input type="text" ng:model="scheme.system.convergence_fewest_plants"/>
-<label>Species:</label>
-<select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
-</select>
- 
+</div> 
+<br/>
+<a id="show-advanced" ng:click="toggleAdvanced = !toggleAdvanced">Show & Hide Advanced settings</a>
 <hr>
 <h1>Plants:</h1>
 <div ng:repeat="plant in scheme.plants | orderBy : 'resource_uri'">
@@ -64,13 +67,13 @@ Cross Scheme
     </td>
     <td>
         <select ng:model="l.linkage_group"
-                ng:options="n for n in get_linkage_array()"
+                ng:options="(n + 1) for n in get_linkage_array()"
                 class="tiny-drop">
         </select>
     </td>
     <td>
         <select ng:model="l.position"
-                ng:options="n for n in get_position_array(l.linkage_group)"
+                ng:options="(n + 1) for n in get_position_array(l.linkage_group)"
                 class="tiny-drop">
         </select>
 
@@ -139,6 +142,7 @@ Cross Scheme
             <rep ng:repeat="p in cross_data[c.resource_uri].ancestors">
             <li ng:repeat="l in p.loci | without_loci: c.loci | orderBy: 'resource_uri'"><a ng:click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
             </rep>
+            <rep><li><a ng:click="add_all_cross_loci(c)">Add All</a></li></rep>
         </ul>   
         </div> 
     </td>
