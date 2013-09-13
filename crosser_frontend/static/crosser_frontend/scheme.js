@@ -203,14 +203,14 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     };
    
     $scope.get_linkage_array = function() { 
-        return _.range($scope.get_species().length); 
+        return _.range(1, $scope.get_species().length + 1); 
     };
 
     $scope.get_position_array = function(linkage_group) { 
         spec = $scope.get_species();
 
         if(spec && linkage_group != null)
-            return _.range(spec[linkage_group]);
+            return _.range(1, spec[linkage_group -1]);
         else
             return [];
     };
@@ -359,7 +359,6 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
             }, 
         function (value) {
             // add the returned created locus values to the plant
-            console.log(value);
             plant.loci.push({
                 name: value.name,
                 id: value.id,

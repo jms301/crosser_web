@@ -5,6 +5,7 @@ from models import Scheme, Species, Cross, Plant, Locus, System, Output
 
 class BackSchemeResource(ModelResource):
 
+    species = fields.ToOneField('crosser_frontend.backapi.BackSpeciesResource', 'species', full=True, related_name='scheme', null=True)
     system = fields.ToOneField('crosser_frontend.backapi.BackSystemResource', 'system', full=True, related_name='scheme', null=True)
     plants = fields.ToManyField('crosser_frontend.backapi.BackPlantResource', 'plants', full=True, related_name='scheme', null=True)
     crosses = fields.ToManyField('crosser_frontend.backapi.BackCrossResource', 'crosses', full=True, related_name='scheme', null=True)
@@ -22,12 +23,20 @@ class BackSchemeResource(ModelResource):
         plants = {} 
         loci = {} 
 
-        #print bundle.data
+        #setup hashes that map from resource_uri to name so that we can
+        #convert the output to use names instead of resource_uri (dirty but
+        #it's the requeted feature) 
+
         for plant in bundle.data['plants']:
             plants[plant.data['resource_uri']] = plant.data['name']
             for locus in plant.data['loci']:
                 loci[locus.data['resource_uri']] = locus.data['name']
-
+                if locus.data['locus_type'] == Locus.TRAIT:
+                    locus.data['type'] = 'Trait'
+                elif locus.data['locus_type'] == Locus.MARKER:
+                    locus.data['type'] = 'Marker'
+                del locus.data['locus_type']
+ 
         for cross in bundle.data['crosses']:
             crosses[cross.data['resource_uri']] = cross.data['name']
 
@@ -50,12 +59,48 @@ class BackSchemeResource(ModelResource):
             crosses[cross.data['resource_uri']] = cross.data['name']
             for i, locus in enumerate(cross.data['loci']):
                 cross.data['loci'][i] = loci[locus]
+        
+        # map the left_cross_parent and left_plant_parent fields into a single 
+        # left_parent field & Expand the Zygosity field
+        for cross in bundle.data['crosses']:
+            if cross.data['left_plant_parent']:
+                cross.data['left_parent'] = cross.data['left_plant_parent']
+            else:
+                cross.data['left_parent'] = cross.data['left_cross_parent']
+
+            if cross.data['right_plant_parent']:
+                cross.data['right_parent'] = cross.data['right_plant_parent']
+            else:
+                cross.data['right_parent'] = cross.data['right_cross_parent']
+
+            del cross.data['right_plant_parent']
+            del cross.data['left_plant_parent']
+            del cross.data['right_cross_parent']
+            del cross.data['left_cross_parent']
+
+            if cross.data['protocol_zygosity'] == Cross.HETEROZYGOUS:
+                cross.data['protocol_zygosity'] = 'Heterozygous'
+            elif cross.data['protocol_zygosity'] == Cross.HOMOZYGOUS:
+                cross.data['protocol_zygosity'] = 'Homozygous'
                 
 
-        print plants
+        #output an array of numbers rather than a string of comma seperated
+        # numbers.    
+        if bundle.data['species']: 
+            bundle.data['species'].data['chromosome_lengths'] = map(
+                int, bundle.data['species'].data['chromosome_lengths'].
+                split(','))
+        
         return bundle    
 
 
+class BackSpeciesResource(ModelResource): 
+    class Meta: 
+        queryset = Species.objects.all()
+        authorization = ReadOnlyAuthorization()
+        resource_name = 'scheme' 
+        always_return_data=True
+ 
 class BackSystemResource(ModelResource):
     scheme = fields.ForeignKey(BackSchemeResource, 'scheme')
     class Meta:
