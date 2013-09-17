@@ -10,3 +10,13 @@ test
 turn off DEBUG=true in settings.py
 generate static files (./manage.py collectstatic)
 
+
+rabbitmq:
+  sudo aptitude install rabbitmq-server
+  sudo rabbitmqctl
+  sudo rabbitmqctl add_user rabbit c14h2002
+  sudo rabbitmqctl add_vhost /django_crosser
+
+
+
+django-celery: 
