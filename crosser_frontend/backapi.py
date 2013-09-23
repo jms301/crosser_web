@@ -13,7 +13,7 @@ class BackSchemeResource(ModelResource):
         'outputs', full=True, related_name='scheme', null=True)
 
     class Meta:
-        queryset = Scheme.objects.all()
+        queryset = Scheme.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
         resource_name = 'scheme'
         always_return_data=True
@@ -104,7 +104,7 @@ class BackSpeciesResource(ModelResource):
 class BackSystemResource(ModelResource):
     scheme = fields.ForeignKey(BackSchemeResource, 'scheme')
     class Meta:
-        queryset = System.objects.all()
+        queryset = System.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
         resource_name = 'system'
         always_return_data=True
@@ -114,7 +114,7 @@ class BackOutputResource(ModelResource):
     scheme = fields.ForeignKey(BackSchemeResource, 'scheme')
 
     class Meta: 
-        queryset = Output.objects.all()
+        queryset = Output.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
         resource_name = 'output'
         always_return_data=True
@@ -122,7 +122,7 @@ class BackOutputResource(ModelResource):
 class BackPlantResource(ModelResource):
     loci = fields.ToManyField('crosser_frontend.backapi.BackLocusResource', 'loci', full=True, related_name='plant', null=True)
     class Meta:
-        queryset = Plant.objects.all()
+        queryset = Plant.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
         resource_name = 'plant'
         always_return_data=True
@@ -130,7 +130,7 @@ class BackPlantResource(ModelResource):
 class BackLocusResource(ModelResource): 
 
     class Meta:
-        queryset = Locus.objects.all()
+        queryset = Locus.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
         resource_name = 'locus'
         always_return_data=True
@@ -145,7 +145,7 @@ class BackCrossResource(ModelResource):
     right_cross_parent = fields.ForeignKey('self', 'right_cross_parent', null=True, blank=True)
     
     class Meta: 
-        queryset = Cross.objects.all()
+        queryset = Cross.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
         resource_name = 'cross'
         always_return_data=True

@@ -3,7 +3,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from crosser_frontend.models import Scheme
+
 import sys
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -21,3 +24,7 @@ def signup(request):
         form = UserCreationForm(initial={'username': 'UserName'})
         return render(request, 'crosser_frontend/signup.html', {'form' : form,})
 
+def process(request, id): 
+    scheme = Scheme.objects.get(pk=id)    
+    scheme.freeze(id)
+    return HttpResponseRedirect('/')

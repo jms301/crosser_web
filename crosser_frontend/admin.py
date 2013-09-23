@@ -1,5 +1,5 @@
 from django.contrib import admin
-from crosser_frontend.models import Scheme, Plant, Species, Locus, Cross, Output, System
+from crosser_frontend.models import Scheme, Plant, Species, Locus, Cross, Output, System, SchemeStatus
 from guardian.admin import GuardedModelAdmin
 
 
@@ -13,3 +13,4 @@ admin.site.register(Plant)
 admin.site.register(Species)
 admin.site.register(Locus)
 admin.site.register(Cross)
+admin.site.register(SchemeStatus)

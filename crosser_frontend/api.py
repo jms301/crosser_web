@@ -31,7 +31,7 @@ class SchemeResource(ModelResource):
         'outputs', full=True, related_name='scheme', null=True)
 
     class Meta:
-        queryset = Scheme.objects.all()
+        queryset = Scheme.objects.filter(frozen=False)
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'scheme'
@@ -42,7 +42,7 @@ class SystemResource(ModelResource):
     scheme = fields.ForeignKey(SchemeResource, 'scheme')
 
     class Meta:
-        queryset = System.objects.all()
+        queryset = System.objects.filter(frozen=False)
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'system'
@@ -54,7 +54,7 @@ class OutputResource(ModelResource):
     scheme = fields.ForeignKey(SchemeResource, 'scheme')
 
     class Meta: 
-        queryset = Output.objects.all()
+        queryset = Output.objects.filter(frozen=False)
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'output'
@@ -65,7 +65,7 @@ class PlantResource(ModelResource):
     loci = fields.ToManyField('crosser_frontend.api.LocusResource', 'loci', full=True, related_name='plant', null=True)
     scheme = fields.ForeignKey(SchemeResource, 'scheme')
     class Meta:
-        queryset = Plant.objects.all()
+        queryset = Plant.objects.filter(frozen=False)
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'plant'
@@ -76,7 +76,7 @@ class LocusResource(ModelResource):
     plant = fields.ForeignKey(PlantResource, 'plant', null=True)
 
     class Meta:
-        queryset = Locus.objects.all()
+        queryset = Locus.objects.filter(frozen=False)
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'locus'
@@ -94,7 +94,7 @@ class CrossResource(ModelResource):
     scheme = fields.ForeignKey(SchemeResource, 'scheme')
     
     class Meta: 
-        queryset = Cross.objects.all()
+        queryset = Cross.objects.filter(frozen=False)
         authentication = SessionAuthentication()
         authorization = UserAuthorization()
         resource_name = 'cross'

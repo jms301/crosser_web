@@ -1,0 +1,55 @@
+{% extends "crosser_frontend/base_site.html"%}
+{% load staticfiles %}
+
+{% block title %}
+Cross Scheme Status 
+{% endblock %}
+
+{% block extra_head %}
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.4.0/ui-bootstrap-tpls.min.js"></script>
+
+<script src='{% static "crosser_frontend/filters.js" %}'></script>
+<script src='{% static "crosser_frontend/schemeRes.js" %}'></script>
+<script src='{% static "crosser_frontend/scheme.js" %}'></script>
+
+{% endblock %}
+
+{% block content %}
+<div ng:app="scheme">
+<div ng:hide="true">{% csrf_token %}</div>
+<div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
+<div ng:controller="PlanCtrl">
+
+<h1>Scheme Status: </h1>
+
+<ul>
+<li>
+Scheme ID / link to (if owner)
+</li>
+<li>
+Version of output
+</li>
+<li>
+Current Status of processing
+</li>
+<li>
+View frozen JSON version
+</li>
+<li>
+View stdout &amp; stderr
+</li>
+<li>
+View Output
+</li>
+</ul>
+
+</div>
+</div>
+{% endblock %}
+
+{% block navid%}crosses{% endblock %}
+{% block js_code%}{#empty block to wipe out code#}{% endblock %}
+

@@ -8,11 +8,16 @@ urlpatterns = patterns('',
             template_name = 'crosser_frontend/index.html'),
         name='index'),
         
-    url(r'^cross/(?P<pk>\d+)/$',
-        TemplateView.as_view(
+    url(r'^scheme/(\d+)/process', 'crosser_frontend.views.process', 
+        name='process'),
+
+    url(r'^scheme/(?P<pk>\d+)/$',
+        DetailView.as_view(
+            model = Scheme,
             template_name = 'crosser_frontend/scheme_detail.html'),
         name='scheme_detail'),
-    url(r'^crosses/$',
+
+    url(r'^schemes/$',
         TemplateView.as_view(
             template_name = 'crosser_frontend/schemes_list.html'),
         name='schemes_list'),

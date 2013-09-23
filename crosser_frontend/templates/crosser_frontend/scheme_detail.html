@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-Cross Scheme 
+Crosser | Edit Scheme 
 {% endblock %}
 
 {% block extra_head %}
@@ -23,7 +23,7 @@ Cross Scheme
 <div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
 <div ng:controller="PlanCtrl">
 
-<h1>Cross Scheme: </h1>
+<h1>Edit Scheme: </h1>
 <input type="text" ng:model="scheme.name" placeholder="Scheme Name"/> 
 <label>Species:</label>
 <select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
@@ -175,7 +175,7 @@ Cross Scheme
 <button class="btn btn-primary" ng:click="scheme_update(scheme)">Save Scheme</button>
 <br/>
 <br/>
-<a href="../../api/backend/scheme/{[{scheme.id}]}?format=json" download="Scheme.json" >Download Scheme</a>
+<a href="{%url "process" scheme.id%}">Process Scheme</a>
 </div>
 </div>
 {% endblock %}

@@ -14,7 +14,7 @@ function SchemeListCtrl($scope, Scheme, $location) {
     $scope.user_id = document.getElementsByName('userid')[0].value;
 
     $scope.get_url = function(scheme) { 
-        return "/cross/" + scheme.id + '/';
+        return "/scheme/" + scheme.id + '/';
     }; 
 
     $scope.new_scheme = function() { 
