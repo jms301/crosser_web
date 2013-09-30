@@ -82,6 +82,11 @@ class BackSchemeResource(ModelResource):
                 cross.data['protocol_zygosity'] = 'Heterozygous'
             elif cross.data['protocol_zygosity'] == Cross.HOMOZYGOUS:
                 cross.data['protocol_zygosity'] = 'Homozygous'
+
+        #modify output field names
+        for output in bundle.data['outputs']:
+            output.data['type'] = Output.type_lookup(output.data['output_type'])
+            del output.data['output_type']
                 
 
         #output an array of numbers rather than a string of comma seperated
