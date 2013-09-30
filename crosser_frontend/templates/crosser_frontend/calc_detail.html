@@ -1,0 +1,28 @@
+{% extends "crosser_frontend/base_site.html"%}
+
+{% load staticfiles %}
+
+{% block title %}
+Calculations 
+{% endblock %}
+
+{% block extra_head %}
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<h1>{{object}}</h1>
+<P>
+Status: {{object.show_status}}
+</P>
+<P>
+Raw JSON: <a href="../../api/backend/scheme/{{object.frozen_scheme.id}}?format=json"> link </a>
+</P>
+{% endblock %}
+{% block navid%}Schemes{% endblock %}
+{% block js_code%}
+{#empty block to wipe out code, sign in dropdown code#} 
+{% endblock %}

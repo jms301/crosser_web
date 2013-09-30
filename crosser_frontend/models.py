@@ -21,16 +21,19 @@ class Scheme(models.Model):
     species = models.ForeignKey(Species, related_name='+', null=True)
     frozen = models.BooleanField(default = False)
 
-    def freeze(self, version): 
+    def freeze(self): 
 
+        
         # detect the current version
         # attempt to save static_dir/cross_id/version
         # attempt to create status object
         # load status object page. 
         copy = self.copy()
-        print "NEW SCHEME AT:"
-        print copy.id 
-        return 0 
+        calculation = Calculation(owner = self.owner, scheme = self,
+                        frozen_scheme = copy) 
+        calculation.save()
+
+        return calculation
 
     def copy(self, freeze=True):
         new_scheme = Scheme(name = self.name, frozen=freeze, 
@@ -97,17 +100,22 @@ class Scheme(models.Model):
         return new_scheme
 
     def __unicode__(self): 
-        return self.name
+        if self.frozen:
+            return self.name + " (f)"
+        else:
+            return self.name
 
-class SchemeStatus(models.Model):
+class Calculation(models.Model):
     TO_RUN = 'TR'
-    NOW_RUNNING = 'NR'
+    RUNNING_CROSS= 'RC'
+    RUNNING_OUTPUT = 'RO'
     FINISHED_ERR = 'FR' 
     FINISHED_SUCC = 'FS' 
 
     STATUS_CHOICES = (
         (TO_RUN, 'To Run'),
-        (NOW_RUNNING, 'Now Running'),
+        (RUNNING_CROSS, 'Running Cross'),
+        (RUNNING_OUTPUT, 'Running Output'),
         (FINISHED_ERR, 'Ended with Error'),
         (FINISHED_SUCC, 'Finished in Success'),
     ) 
@@ -117,12 +125,28 @@ class SchemeStatus(models.Model):
                                     default = TO_RUN)
 
     owner = models.ForeignKey(User)
-    version = models.IntegerField()
+    version = models.IntegerField(default = 0)
     scheme = models.ForeignKey(Scheme, related_name='statuses')
+    frozen_scheme = models.ForeignKey(Scheme, related_name='calculation')
+    
+    @property 
+    def show_status(self):
+        return dict(self.STATUS_CHOICES)[self.status]
  
     def __unicode__(self):
-        return self.scheme.name + " status" 
+        return self.scheme.name + " calculation v:" + str(self.version)
 
+    def save(self, force_insert=False, force_update=False):
+        # Only modify number if creating for the first time (is default 0)
+        if self.version == 0:
+            # Grab the highest current index (if it exists)
+            try:
+                recent = Calculation.objects.filter(scheme=self.scheme).order_by('-version')[0]
+                self.version = recent.version + 1
+            except IndexError:
+                self.version = 1
+        # Call the "real" save() method
+        super(Calculation, self).save(force_insert, force_update)
 
 class System(models.Model):
     owner = models.ForeignKey(User) 
@@ -143,7 +167,7 @@ class Output(models.Model):
     CROS_COMP = 'Cc'
 
     CONT_CHOICES = (
-        (CROS_COMP, 'cross_composition'),
+        (CROS_COMP, 'mean_cross_composition'),
         (SUCC_PROB, 'success_probability'),
         (LOCI_COMP, 'loci_composition'),
         (PROP_DIST, 'proportion_distribution'),

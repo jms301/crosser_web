@@ -1,0 +1,25 @@
+{% extends "crosser_frontend/base_site.html"%}
+
+{% load staticfiles %}
+
+{% block title %}
+Calculations 
+{% endblock %}
+
+{% block extra_head %}
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<h1>Calculations:</h1>
+{%for calc in object_list %}
+ <a href="{%url "calc" calc.id %}">{{calc}}</a></br>
+{%endfor %} 
+{% endblock %}
+{% block navid%}Calculations{% endblock %}
+{% block js_code%}
+{#empty block to wipe out code, sign in dropdown code#} 
+{% endblock %}

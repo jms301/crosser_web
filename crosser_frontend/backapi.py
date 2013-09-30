@@ -64,14 +64,14 @@ class BackSchemeResource(ModelResource):
         # left_parent field & Expand the Zygosity field
         for cross in bundle.data['crosses']:
             if cross.data['left_plant_parent']:
-                cross.data['left_parent'] = cross.data['left_plant_parent']
+                cross.data['left'] = cross.data['left_plant_parent']
             else:
-                cross.data['left_parent'] = cross.data['left_cross_parent']
+                cross.data['left'] = cross.data['left_cross_parent']
 
             if cross.data['right_plant_parent']:
-                cross.data['right_parent'] = cross.data['right_plant_parent']
+                cross.data['right'] = cross.data['right_plant_parent']
             else:
-                cross.data['right_parent'] = cross.data['right_cross_parent']
+                cross.data['right'] = cross.data['right_cross_parent']
 
             del cross.data['right_plant_parent']
             del cross.data['left_plant_parent']

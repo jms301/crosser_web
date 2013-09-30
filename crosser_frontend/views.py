@@ -26,5 +26,5 @@ def signup(request):
 
 def process(request, id): 
     scheme = Scheme.objects.get(pk=id)    
-    scheme.freeze(id)
+    print scheme.freeze()
     return HttpResponseRedirect('/')

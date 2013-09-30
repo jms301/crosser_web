@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 from django.views.generic import DetailView, ListView, TemplateView
-from crosser_frontend.models import Scheme
+from crosser_frontend.models import Scheme, Calculation
 
 urlpatterns = patterns('',
     url(r'^$',
@@ -21,6 +21,19 @@ urlpatterns = patterns('',
         TemplateView.as_view(
             template_name = 'crosser_frontend/schemes_list.html'),
         name='schemes_list'),
+
+    url(r'^calculations/$',
+        ListView.as_view(
+            model = Calculation,
+            queryset = Calculation.objects.all().order_by('scheme', '-version'),
+            template_name = 'crosser_frontend/calcs_list.html'),
+        name='calcs_list'),
+
+    url(r'^calculation/(?P<pk>\d+)/$',
+        DetailView.as_view(
+            model = Calculation,
+            template_name = 'crosser_frontend/calc_detail.html'),
+        name='calc'),
 
     url(r'^signup/$', 'crosser_frontend.views.signup',
         name='signup'),
