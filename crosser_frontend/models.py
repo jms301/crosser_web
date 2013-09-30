@@ -180,8 +180,8 @@ class Output(models.Model):
     data = models.CharField(max_length=200, null=True)
 
     @classmethod 
-    def type_lookup(self, foobar):
-        return dict(self.CONT_CHOICES)[foobar]
+    def type_lookup(cls, choice):
+        return dict(cls.CONT_CHOICES)[choice]
 
     def __unicode__(self): 
         return self.scheme.name + " : output"  

@@ -79,9 +79,10 @@ class BackSchemeResource(ModelResource):
             del cross.data['left_cross_parent']
 
             if cross.data['protocol_zygosity'] == Cross.HETEROZYGOUS:
-                cross.data['protocol_zygosity'] = 'Heterozygous'
+                cross.data['zygosity'] = 'Heterozygous'
             elif cross.data['protocol_zygosity'] == Cross.HOMOZYGOUS:
-                cross.data['protocol_zygosity'] = 'Homozygous'
+                cross.data['zygosity'] = 'Homozygous'
+            del cross.data['protocol_zygosity']
 
         #modify output field names
         for output in bundle.data['outputs']:
