@@ -7,8 +7,8 @@ def process_scheme(calc_id):
     calc = Calculation.objects.get(pk=calc_id)
     calc.start_time = datetime.datetime.now() 
     calc.save()
-    output_dir = "../static/" + calc.output_dir()
-    url = calc.backend_url()
+    output_dir = "../static/" + calc.output_dir
+    url = calc.backend_url
     cmd = ["mkdir", "-p",  output_dir] 
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 
