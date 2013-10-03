@@ -14,9 +14,9 @@ Calculations
 {% endblock %}
 
 {% block content %}
-<h1>{{object}}</h1>
+<h1><a href="{%url 'scheme_detail' object.scheme.id%}">{{object.scheme.name}}</a> - V:{{object.version}}</h1>
 <P>
-Status: {{object.show_status}}
+Status: <span class="{{object.show_status}}">{{object.show_status}}</span>
 </P>
 <P>
 Start Time: {{object.start_time}}
@@ -24,16 +24,20 @@ Start Time: {{object.start_time}}
 <P>
 End Time: {{object.end_time}}
 </P>
+{% if object.show_status == "SUCCESS" %} 
+<P>
+Results: <a href="../../static/{{object.output_dir}}">directory</a> &amp; <a href="../../static/{{object.output_dir}}plots.pdf" >pdf</a> 
+</P>
+{% endif %}
+<h3> debug: </h3>
+<div>
 <P>
 Task Id: {{object.task_id}}
 </P>
 <P>
-Results: <a href="../../static/{{object.output_dir}}">directory</a> &amp; <a href="../../static/{{object.output_dir}}plots.pdf" >pdf</a> 
-</P>
-
-<P>
 Raw JSON: <a href="{{object.backend_url}}"> link </a>
 </P>
+</div>
 {% endblock %}
 {% block navid%}Schemes{% endblock %}
 {% block js_code%}
