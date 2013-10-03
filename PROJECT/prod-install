@@ -20,3 +20,4 @@ rabbitmq:
 
 
 django-celery: 
+  sudo pip install django-celery

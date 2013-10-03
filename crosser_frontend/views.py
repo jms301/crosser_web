@@ -1,9 +1,10 @@
 # Create your views here.
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from crosser_frontend.models import Scheme
+from crosser_frontend.tasks import process_scheme
 
 import sys
 
@@ -25,6 +26,10 @@ def signup(request):
         return render(request, 'crosser_frontend/signup.html', {'form' : form,})
 
 def process(request, id): 
-    scheme = Scheme.objects.get(pk=id)    
-    print scheme.freeze()
-    return HttpResponseRedirect('/')
+    scheme = Scheme.objects.get(pk=id)
+    
+    calc = scheme.freeze()
+    result = process_scheme.delay(calc.id)
+    calc.task_id = result.task_id
+    calc.save()
+    return redirect('calc', calc.id)

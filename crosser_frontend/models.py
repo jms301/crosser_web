@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
+from django.contrib.sites.models import Site
 
 import subprocess
 
@@ -22,12 +22,9 @@ class Scheme(models.Model):
     frozen = models.BooleanField(default = False)
 
     def freeze(self): 
-
-        
-        # detect the current version
-        # attempt to save static_dir/cross_id/version
-        # attempt to create status object
-        # load status object page. 
+        # create a frozen copy 
+        # attempt to create calc object (auto versioned) 
+        # save the new calculation.
         copy = self.copy()
         calculation = Calculation(owner = self.owner, scheme = self,
                         frozen_scheme = copy) 
@@ -35,12 +32,14 @@ class Scheme(models.Model):
 
         return calculation
 
-    def copy(self, freeze=True):
+    def copy(self, freeze=True, owner=None):
+        if owner is None:
+            owner = self.owner
         new_scheme = Scheme(name = self.name, frozen=freeze, 
-                            species=self.species, owner=self.owner)
+                            species=self.species, owner=owner)
         new_scheme.save()
 
-        new_system = System(owner=self.owner, 
+        new_system = System(owner=owner, 
             scheme=new_scheme,
             frozen = freeze,
             convergence_fewest_plants = self.system.convergence_fewest_plants,
@@ -55,18 +54,18 @@ class Scheme(models.Model):
         plant_map = {}
 
         for output in self.outputs.all().order_by('id'): 
-            new_output = Output(owner=output.owner, frozen=freeze, 
+            new_output = Output(owner=owner, frozen=freeze, 
                 scheme=new_scheme, output_type = output.output_type, 
                 data = output.data)
             new_output.save()
 
         for plant in self.plants.all().order_by('id'):
-            plant_map[plant] = Plant(owner=plant.owner, name=plant.name, 
+            plant_map[plant] = Plant(owner=owner, name=plant.name, 
                 scheme = new_scheme, frozen = freeze)
             plant_map[plant].save()
 
             for locus in plant.loci.all().order_by('id'):
-                locus_map[locus] = Locus(owner=locus.owner, name = locus.name,
+                locus_map[locus] = Locus(owner=owner, name = locus.name,
                     locus_type = locus.locus_type, 
                     linkage_group = locus.linkage_group,
                     position = locus.position,
@@ -75,7 +74,7 @@ class Scheme(models.Model):
                 locus_map[locus].save()
       
         for cross in self.crosses.all().order_by('id'): 
-            new_cross = Cross(owner=cross.owner, name = cross.name, 
+            new_cross = Cross(owner=owner, name = cross.name, 
                 protocol_zygosity = cross.protocol_zygosity,
                 scheme = new_scheme, frozen = freeze)
             new_cross.save()
@@ -106,33 +105,29 @@ class Scheme(models.Model):
             return self.name
 
 class Calculation(models.Model):
-    TO_RUN = 'TR'
-    RUNNING_CROSS= 'RC'
-    RUNNING_OUTPUT = 'RO'
-    FINISHED_ERR = 'FR' 
-    FINISHED_SUCC = 'FS' 
 
-    STATUS_CHOICES = (
-        (TO_RUN, 'To Run'),
-        (RUNNING_CROSS, 'Running Cross'),
-        (RUNNING_OUTPUT, 'Running Output'),
-        (FINISHED_ERR, 'Ended with Error'),
-        (FINISHED_SUCC, 'Finished in Success'),
-    ) 
-
-    status = models.CharField(max_length=2,
-                                   choices = STATUS_CHOICES,
-                                    default = TO_RUN)
 
     owner = models.ForeignKey(User)
     version = models.IntegerField(default = 0)
-    scheme = models.ForeignKey(Scheme, related_name='statuses')
+    scheme = models.ForeignKey(Scheme, related_name='calculations')
     frozen_scheme = models.ForeignKey(Scheme, related_name='calculation')
-    
+    task_id = models.CharField(max_length=255) 
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+  
     @property 
     def show_status(self):
-        return dict(self.STATUS_CHOICES)[self.status]
- 
+        return process_scheme.AsyncResult(self.task_id).state
+
+    @property 
+    def backend_url(self):
+        domain = Site.objects.get_current().domain
+        return "http://" + domain + "/api/backend/scheme/" + str(self.frozen_scheme.id) + "?format=json"
+
+    @property 
+    def output_dir(self):
+        return "calcs/" + str(self.id) + "/" 
+
     def __unicode__(self):
         return self.scheme.name + " calculation v:" + str(self.version)
 
@@ -147,6 +142,7 @@ class Calculation(models.Model):
                 self.version = 1
         # Call the "real" save() method
         super(Calculation, self).save(force_insert, force_update)
+
 
 class System(models.Model):
     owner = models.ForeignKey(User) 
@@ -251,3 +247,4 @@ class Cross(models.Model):
 # How long can the species cromosome length comma seperated list be? 
 #( what is 4 x max chromosome number??)
 #
+from crosser_frontend.tasks import process_scheme
