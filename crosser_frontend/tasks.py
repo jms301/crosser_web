@@ -2,7 +2,7 @@ import subprocess
 import datetime
 from celery import task
  
-@task()
+@task(name='crosser_frontend.tasks.process_scheme')
 def process_scheme(calc_id): 
     calc = Calculation.objects.get(pk=calc_id)
     calc.start_time = datetime.datetime.now() 
