@@ -95,3 +95,13 @@ div.signup-button {
   min-width: 0px;
   width: 60px;
 }
+
+span.SUCCESS { 
+    color: #1f2;   
+    font-weight:bold;
+}
+
+span.FAILURE { 
+    color: #f12;   
+    font-weight:bold;
+}

@@ -28,7 +28,11 @@ Crosser | Edit Scheme
 <label>Species:</label>
 <select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
 </select>
-<div id="advanced" ng:show="toggleAdvanced">
+
+<label>Quality:</label>
+<select ng:model="quality.state" ng:options="qual.id as qual.name for qual in quality.opts" ng:click="set_quality(quality.state)">
+</select>
+<div id="advanced" ng:show="quality.state == -1">
 <label>Chunk Size:</label>
 <input type="text" ng:model="scheme.system.convergence_chunk_size"/>
 <label>Tolerance:</label>
@@ -37,7 +41,6 @@ Crosser | Edit Scheme
 <input type="text" ng:model="scheme.system.convergence_fewest_plants"/>
 </div> 
 <br/>
-<a id="show-advanced" ng:click="toggleAdvanced = !toggleAdvanced">Show & Hide Advanced settings</a>
 <hr>
 <h1>Plants:</h1>
 <div ng:repeat="plant in scheme.plants | orderBy : 'resource_uri'">

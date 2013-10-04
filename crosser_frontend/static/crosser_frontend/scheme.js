@@ -3,6 +3,12 @@ Data Structure used in this controller:
 
 $scope.scheme - The whole scheme object as returned by tastypie
 $scope.species - a list of species names & their genome array fetched from tastypie.
+$scope.quality - object holding the 'quality' drop down data.
+                 Includes:
+                    * 'state' value of current state 
+                    * 'opts' array for the drop down options & 
+                        their related values.
+  
 $scope.cross_data - object holding local data for the display of crosses, 
                     each key is the cross resource_uri and holds:
                      *  left_parent & right_parent - the parent resource_uris 
@@ -55,6 +61,27 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     // to msg the API)
     $scope.cross_data = {};
 
+    // initialize quality data
+    $scope.quality = {
+        'state': -1,
+        'opts' : [ 
+            {'name': 'draft', 'id' : 0, 
+                'chunk_size' : 1000,
+                'tolerance' : 0.5,
+                'fewest_plants': 10},
+            {'name': 'low', 'id' : 1,
+                'chunk_size' : 500,
+                'tolerance' : 0.05,
+                'fewest_plants': 100},
+            {'name': 'high', 'id' : 2,
+                'chunk_size' : 50,
+                'tolerance' : 0.005,
+                'fewest_plants': 500},
+            {'name': 'custom', 'id' : -1} 
+                
+        ]
+    };
+
     // pull down list of species
     $scope.species = Species.get(function () {
         _.each($scope.species.objects, function(element, index, list) { 
@@ -72,6 +99,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         // setup an array of plants 'ancestors' in cross_data so 
         // we can see which loci are available to add into a cross. 
         _.each($scope.scheme.crosses, $scope.build_ancestors);
+        $scope.update_quality();
         $scope.generate_parents();
         $scope.generate_children();
     });
@@ -86,7 +114,27 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         attached to the scheme data. 
 
     **********************************************************/
-    
+
+    $scope.update_quality = function () { 
+        _.each($scope.quality.opts, function (opt) { 
+            if($scope.scheme.system.convergence_tolerance == opt.tolerance &&
+               $scope.scheme.system.convergence_chunk_size == opt.chunk_size &&
+               $scope.scheme.system.convergence_fewest_plants == opt.fewest_plants) {
+               $scope.quality.state = opt.id; 
+            
+        }
+    });
+    };
+
+    $scope.set_quality = function(id) { 
+        if (id != -1) { 
+            opt = _.where($scope.quality.opts, {'id' :id })[0];
+            $scope.scheme.system.convergence_tolerance = opt.tolerance;
+            $scope.scheme.system.convergence_chunk_size = opt.chunk_size;
+            $scope.scheme.system.convergence_fewest_plants = opt.fewest_plants;
+        }
+    }; 
+
     $scope.generate_children = function () { 
         _.each($scope.cross_data, function (cross){
             cross.descendants = [];
