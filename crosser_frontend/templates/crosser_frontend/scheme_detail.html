@@ -61,7 +61,7 @@ Crosser | Edit Scheme
 </tr>
 </thead>
 <tr ng:repeat="l in plant.loci | orderBy : 'resource_uri'">
-    <td><input type="text" ng:model="l.name" placeholder="Loci Name"></td>
+    <td><input type="text" ng:model="l.name" placeholder="Locus Name"></td>
     <td>
         <select ng:model="l.locus_type">
             <option value="Tr">Trait</option>
@@ -156,7 +156,7 @@ Crosser | Edit Scheme
     </td>
 </tr>
 </table>
-<button class="btn" ng:click="add_cross(scheme)"><i class="icon-plus"></i>Add</button>
+<button class="btn" ng:click="add_cross(scheme)"><i class="icon-plus"></i>Add Cross</button>
 <hr>
 <h1>Output:</h1>
 <div ng:repeat="o in scheme.outputs">

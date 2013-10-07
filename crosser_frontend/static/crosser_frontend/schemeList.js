@@ -1,9 +1,10 @@
-angular.module('schemeList', ['schemecon']).
+var app = angular.module('schemeList', ['schemecon']).
     config(function($interpolateProvider){
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
     });
-   
-function SchemeListCtrl($scope, Scheme, $location) {
+
+  
+app.controller('SchemeListCtrl', function($scope, Scheme, $location) {
 
     /**********************************************************
         HOUSE KEEPING  - load schemes 
@@ -37,11 +38,11 @@ function SchemeListCtrl($scope, Scheme, $location) {
 
    $scope.remove_scheme = function (scheme) {
         id = scheme.resource_uri.split('/').pop();
-        if(id)
+        if(id && confirm("WARNING: this will delete the whole scheme, are you sure?"))
         Scheme.delete({id: id}, function(value) { 
             $scope.schemes.objects = _.reject($scope.schemes.objects, 
                 function (item) { return item.resource_uri == scheme.resource_uri}); 
-            });
+        });
     };
    
-}
+});

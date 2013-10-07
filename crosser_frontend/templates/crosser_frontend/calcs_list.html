@@ -15,9 +15,27 @@ Calculations
 
 {% block content %}
 <h1>Calculations:</h1>
+
+{%regroup object_list by scheme as calc_list %}
+
+<ul>
+{% for scheme in calc_list  %}
+    <li>{{scheme.grouper}}
+        <ul>
+            {% for item in scheme.list %}
+                <li><a href="{%url "calc" item.id%}">{{item}}</a> <span class="{{item.show_status}}">{{item.show_status}}</span></li>
+            {%endfor%}
+        </ul>
+    </li>
+{%endfor%}
+</ul>
+
+{% comment %}
 {%for calc in object_list %}
- <a href="{%url "calc" calc.id %}">{{calc}}</a></br>
+<li> <a href="{%url "calc" calc.id %}">{{calc}}</a></li>
 {%endfor %} 
+
+{%endcomment%}
 {% endblock %}
 {% block navid%}Calculations{% endblock %}
 {% block js_code%}
