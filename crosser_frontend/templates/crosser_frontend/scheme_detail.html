@@ -29,7 +29,7 @@ Crosser | Edit Scheme
 <select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
 </select>
 
-<label>Quality:</label>
+<label>Simulation Granularity:</label>
 <select ng:model="quality.state" ng:options="qual.id as qual.name for qual in quality.opts" ng:click="set_quality(quality.state)">
 </select>
 <div id="advanced" ng:show="quality.state == -1">
@@ -94,7 +94,7 @@ Crosser | Edit Scheme
 <button class="btn" ng:click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
 <hr>
 <h1>Crosses:</h1>
-<table class="table table-condensed">
+<table class="table table-condensed" ng:hide="scheme.crosses.length == 0">
 <thead>
 <tr>
     <th>Name:</th> 
@@ -158,19 +158,65 @@ Crosser | Edit Scheme
 </table>
 <button class="btn" ng:click="add_cross(scheme)"><i class="icon-plus"></i>Add Cross</button>
 <hr>
-<h1>Output:</h1>
+<h1>Outputs:</h1>
 <div ng:repeat="o in scheme.outputs">
-        Type:
-        <select ng:model="o.output_type" class="small-drop">
-            <option value="Cc">Cross Composition</option>
-            <option value="Sp">Success Probability</option>
-            <option value="Lc">Loci Composition</option>
-            <option value="Pd">Proportion Distribution</option>
+        <select ng:model="output_data[o.resource_uri].output_type"
+                ng:change="change_output_type(o)"
+            class="small-drop">
+            <option value="mean_cross_composition">Mean Cross Composition</option>
+            <option value="success_probability">Success Probability</option>
+            <option value="loci_composition">Loci Composition</option>
+            <option value="proportion_distribution">Proportion Distribution</option>
             <option value="Cm">Custom</option>
         </select>
+        <br/>
 
+        <span ng:hide="output_data[o.resource_uri].output_type != 'mean_cross_composition'">
+            <select multiple ng:model="output_data[o.resource_uri].data"
+                    ng:change="change_output_data(o)"
+                    ng:options="item.name as item.name
+                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+        </span>
+        <span ng:hide="output_data[o.resource_uri].output_type != 'success_probability'">
+            <select multiple ng:model="output_data[o.resource_uri].data"
+                    ng:change="change_output_data(o)"
+                    ng:options="item.name as item.name
+                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+ 
+        </span>
+        <span ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
+            Cross: 
+            <select ng:model="output_data[o.resource_uri].cross"
+                    ng:change="change_output_data(o)"
+                    ng:options="item.name as item.name
+                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+        </span>
+        <span ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
+            Donor: 
+            <select ng:model="output_data[o.resource_uri].donor"
+                    ng:change="change_output_data(o)"
+                    ng:options="item.name as item.name
+                            for item in scheme.plants | orderBy: 'resource_uri'" > </select>
+ 
+            Cross: 
+            <select ng:model="output_data[o.resource_uri].cross"
+                    ng:change="change_output_data(o)"
+                    ng:options="item.name as item.name
+                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+ 
+
+        </span>
+        <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
+        Type:
+        <input type="text" ng:model="o.output_type"/>
         Data:     
         <input type="text" ng:model="o.data" placeholder="Output Data"/> 
+        </span>
+
+        <a class="btn btn-danger" ng:click="remove_output(o)" >
+            <i class="icon-trash icon-white"></i>
+        </a>
+<hr> 
 </div>
 
 <button class="btn" ng:click="add_output(scheme)"><i class="icon-plus"></i>Add</button>

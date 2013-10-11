@@ -157,27 +157,9 @@ class Output(models.Model):
     scheme = models.ForeignKey(Scheme, related_name='outputs')
     frozen = models.BooleanField(default = False)
 
-    LOCI_COMP = 'Lc'
-    PROP_DIST = 'Pd'
-    SUCC_PROB = 'Sp'
-    CROS_COMP = 'Cc'
-
-    CONT_CHOICES = (
-        (CROS_COMP, 'mean_cross_composition'),
-        (SUCC_PROB, 'success_probability'),
-        (LOCI_COMP, 'loci_composition'),
-        (PROP_DIST, 'proportion_distribution'),
-    ) 
-
-    output_type = models.CharField(max_length=2,
-                                    choices = CONT_CHOICES,
-                                    default = CROS_COMP)
+    output_type = models.CharField(max_length=100, null=True)
 
     data = models.CharField(max_length=200, null=True)
-
-    @classmethod 
-    def type_lookup(cls, choice):
-        return dict(cls.CONT_CHOICES)[choice]
 
     def __unicode__(self): 
         return self.scheme.name + " : output"  

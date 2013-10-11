@@ -8,7 +8,12 @@ $scope.quality - object holding the 'quality' drop down data.
                     * 'state' value of current state 
                     * 'opts' array for the drop down options & 
                         their related values.
-  
+
+$scope.output_data - object holding local data for the display of outputs, 
+                    each key is the output resource_uri and holds: 
+                    *   custom_type - either blank or a custom type that will
+                        be subbed in for the output_type upon upload. 
+
 $scope.cross_data - object holding local data for the display of crosses, 
                     each key is the cross resource_uri and holds:
                      *  left_parent & right_parent - the parent resource_uris 
@@ -60,12 +65,13 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     // set up a cross_data array (allows us to keep the JSON clean 
     // to msg the API)
     $scope.cross_data = {};
+    $scope.output_data = {};
 
     // initialize quality data
     $scope.quality = {
         'state': -1,
         'opts' : [ 
-            {'name': 'draft', 'id' : 0, 
+            {'name': 'draft (very low)', 'id' : 0, 
                 'chunk_size' : 1000,
                 'tolerance' : 0.5,
                 'fewest_plants': 10},
@@ -99,12 +105,14 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
         // setup an array of plants 'ancestors' in cross_data so 
         // we can see which loci are available to add into a cross. 
         _.each($scope.scheme.crosses, $scope.build_ancestors);
+        _.each($scope.scheme.outputs, $scope.build_output_data);
+
         $scope.update_quality();
         $scope.generate_parents();
         $scope.generate_children();
     });
 
-     // update function 
+    // update function 
     $scope.scheme_update = function (scheme) {
         scheme.update(); 
     };
@@ -134,6 +142,45 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
             $scope.scheme.system.convergence_fewest_plants = opt.fewest_plants;
         }
     }; 
+
+    $scope.build_output_data = function (output) { 
+
+        var crosses_type_list = 
+        ['mean_cross_composition', 
+         'success_probability'] 
+        var donor_cross_type_list =  ['proportion_distribution']
+        var cross_type_list =  ['loci_composition'] 
+
+        if(_.contains(crosses_type_list, output.output_type)) {
+            var data = {};
+            try { 
+                data = angular.fromJson(output.data);
+            } catch(e) {
+                data.crosses = []; 
+            }
+            $scope.output_data[output.resource_uri] = {output_type : output.output_type, data: data.crosses };
+        } else if(_.contains(donor_cross_type_list, output.output_type)) {
+            var data = {};
+            try { 
+                data = angular.fromJson(output.data);
+            }catch(e){
+                data.donor = ""; 
+                data.cross = ""; 
+            } 
+            $scope.output_data[output.resource_uri] = {output_type : output.output_type, cross: data.cross, donor: data.donor};
+        } else if(_.contains(cross_type_list, output.output_type)) {
+            var data = {};
+            try { 
+                data = angular.fromJson(output.data);
+            }catch(e){
+                data.cross = ""; 
+            } 
+            $scope.output_data[output.resource_uri] = {output_type : output.output_type, cross: data.cross};
+ 
+        } else {
+            $scope.output_data[output.resource_uri] = {output_type : "Cm", data : null};
+        }
+    };
 
     $scope.generate_children = function () { 
         _.each($scope.cross_data, function (cross){
@@ -215,8 +262,9 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
             $scope.cross_data[c.resource_uri].right_parent = c.right_cross_parent;
     };
 
-    // TODO - This is fairly  innefficient, be better to just update the single
-    // cross or plant that has changed.
+    // This is fairly  innefficient, be better to just update the single
+    // cross or plant that has changed. Not worth fixing unless the performance
+    // becomes an issue though.
     $scope.change_cross = function(cross) { 
         $scope.generate_parents();
     };
@@ -228,6 +276,40 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     $scope.change_locus = function(locus) { 
 
     };
+
+    $scope.change_output_type = function(output) {
+        if($scope.output_data[output.resource_uri].output_type != "Cm")
+            output.output_type = $scope.output_data[output.resource_uri].output_type;
+        //else {  //This will wipe out the previously selected output type
+                  // when a custom output is selected
+        // output.output_type = "";
+        //} 
+    };
+
+    $scope.change_output_data = function(output) { 
+        var crosses_type_list = 
+        ['mean_cross_composition', 
+         'success_probability'] 
+        var donor_cross_type_list =  ['proportion_distribution']
+        var cross_type_list =  ['loci_composition'] 
+
+        if(_.contains(crosses_type_list, output.output_type)) {
+            output.data = "{\"crosses\": " +
+                angular.toJson($scope.output_data[output.resource_uri].data) +
+                "}";
+        } else if(_.contains(donor_cross_type_list, output.output_type)) {
+            output.data = "{\"donor\": \""+ 
+                $scope.output_data[output.resource_uri].donor +
+                          "\", \"cross\": \"" + 
+                $scope.output_data[output.resource_uri].cross + "\" }"
+        } else if(_.contains(cross_type_list, output.output_type)) { 
+            output.data = "{\"cross\": \""+ 
+                $scope.output_data[output.resource_uri].cross + 
+                        "\" }"
+            
+        }
+
+    }; 
 
     $scope.get_plant_by_uri = function (ref) { 
         return _.findWhere($scope.scheme.plants, {resource_uri: ref});
@@ -388,7 +470,9 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
                 id: value.id,
                 owner: value.owner,
                 scheme: scheme.resource_uri, 
+                resource_uri: value.resource_uri,
             });
+            $scope.output_data[value.resource_uri] = {custom_type:""};
         });
     };
 
@@ -472,16 +556,29 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     $scope.remove_cross = function (cross) {
         id = cross.resource_uri.split('/').pop();
         if(id)
-        Cross.delete({id: id}, function(value) { 
-            $scope.poss_parents = _.reject($scope.poss_parents, function (item){ return item.resource_uri == cross.resource_uri}); 
+            Cross.delete({id: id}, function(value) { 
+                $scope.poss_parents = _.reject($scope.poss_parents, function (item){ return item.resource_uri == cross.resource_uri}); 
 
             $scope.scheme.crosses = _.reject($scope.scheme.crosses, function (item){ return item.resource_uri == cross.resource_uri}); 
         });
     };
+   
+    // function to remove an output from the scheme & output_data array
+    $scope.remove_output = function (output) {
+        id = output.resource_uri.split('/').pop();
+        if(id) { 
+            Output.delete({id: id}, function(value) {
+                $scope.scheme.outputs = _.reject($scope.scheme.outputs, function (item){return item.resource_uri == output.resource_uri});
+            
+            delete $scope.output_data[output.resource_uri];
+            });
+        }
+    };
+         
 
     // function to create a new cross, save it and if the save works add it 
     //     to the scheme
-    $scope.add_cross =   function ( plant ) {
+    $scope.add_cross =   function ( ) {
         Cross.save(
             {"name": null, 
              "owner": "/api/v1/user/" + $scope.user_id,
