@@ -52,7 +52,8 @@ angular.module('scheme', ['ui.bootstrap', 'schemecon', 'crosserFilters']).
         $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
     });
    
-function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $location) {
+function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) { 
+//, $location) {
 
     /**********************************************************
         HOUSE KEEPING  - load or make scheme starting state
@@ -115,6 +116,19 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output, $locatio
     // update function 
     $scope.scheme_update = function (scheme) {
         scheme.update(); 
+    };
+
+    // process function
+    $scope.process_scheme = function (proc_url) {
+        msg = "Running crosses can take a long time (~5hrs) " 
+            + "are you sure you want to continue?"
+        if(confirm(msg))
+        {
+            Scheme.update({id: $scope.scheme.id}, $scope.scheme, 
+                function (s, header) { 
+                    window.location = proc_url;
+            });
+        }
     };
 
  /**********************************************************
