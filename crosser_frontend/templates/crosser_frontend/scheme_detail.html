@@ -219,12 +219,13 @@ Crosser | Edit Scheme
 <hr> 
 </div>
 
-<button class="btn" ng:click="add_output(scheme)"><i class="icon-plus"></i>Add</button>
-
+<button class="btn" ng:click="add_output(scheme)"><i class="icon-plus"></i>Add Output</button>
+<br/>
+<br/>
 <button class="btn btn-primary" ng:click="scheme_update(scheme)">Save Scheme</button>
 <br/>
 <br/>
-<a href="{%url "process" scheme.id%}">Process Scheme</a>
+<button class="btn btn-primary" ng:click="process_scheme('{%url "process" scheme.id%}')">Save &amp; Process Scheme</a>
 </div>
 </div>
 {% endblock %}
