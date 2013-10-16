@@ -10,7 +10,9 @@ Calculations
  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
-
+{% if object.show_status != "STARTED" and object.show_status != "FAILURE" %} 
+<meta http-equiv="refresh" content="10" />
+{%endif%}
 {% endblock %}
 
 {% block content %}
