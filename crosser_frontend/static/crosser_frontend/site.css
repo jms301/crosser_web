@@ -105,3 +105,21 @@ span.FAILURE {
     color: #f12;   
     font-weight:bold;
 }
+
+.ng-dirty.ng-invalid { 
+    border-color: #E9332D;
+    box-shadow: 0 0 6px #F8B9B7;
+}
+
+.ng-pristine.ng-invalid { 
+    border-color: rgb(192, 152, 83);
+    box-shadow: 0 0 6px rgb(192, 152, 83);
+}
+form.ng-dirty.ng-invalid { 
+    border-color: #FFFFFF;
+    box-shadow: 0 0 0px #FFFFFF;
+}
+form.ng-pristine.ng-invalid { 
+    border-color: #FFFFFF;
+    box-shadow: 0 0 0px #FFFFFF;
+}

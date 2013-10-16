@@ -90,6 +90,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
     };
 
     // pull down list of species
+    // split into array of ints (starts as csv of ints)
     $scope.species = Species.get(function () {
         _.each($scope.species.objects, function(element, index, list) { 
             element.chromosome_lengths = _.map(element.chromosome_lengths.split(","), 
@@ -122,7 +123,17 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
     $scope.process_scheme = function (proc_url) {
         msg = "Running crosses can take a long time (~5hrs) " 
             + "are you sure you want to continue?"
-        if(confirm(msg))
+        console.log($scope.scheme_form);
+        if($scope.scheme.crosses.length == 0)
+    
+            alert("Your scheme has no crosses and cannot be processed");
+        else if($scope.scheme.plants.length == 0)
+            alert("Your scheme has no plants and cannot be processed");
+        else if($scope.scheme.outputs.length == 0)
+            alert("Your scheme has no outputs and cannot be processed");
+        else if($scope.scheme_form.$invalid) 
+            alert("Your scheme is invalid, look for yellow or red items in the form?"); 
+        else if(confirm(msg))
         {
             Scheme.update({id: $scope.scheme.id}, $scope.scheme, 
                 function (s, header) { 
@@ -345,20 +356,22 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
         else
             return [];
     };
-   
-    $scope.get_linkage_array = function() { 
-        return _.range(1, $scope.get_species().length + 1); 
-    };
-
-    $scope.get_position_array = function(linkage_group) { 
+ 
+    $scope.get_max_link_group = function () { 
         spec = $scope.get_species();
-
-        if(spec && linkage_group != null)
-            return _.range(1, spec[linkage_group -1]);
+        if(spec.length !=0 )
+            return (spec.length - 1);
         else
-            return [];
+            return "??"; 
     };
-
+ 
+    $scope.get_max_position = function( link_group ) { 
+        spec = $scope.get_species();
+        if(spec.length != 0 && link_group != null && link_group < spec.length )
+            return spec[link_group - 1];
+        else
+            return "??";
+    }; 
 
     // build the ancestor list for a cross. 
     $scope.build_ancestors = function(cross, index, crosses) {
@@ -600,6 +613,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
              "left_plant_parent": null, 
              "right_plant_parent": null, 
              "left_plant_parent": null, 
+             "protocol_zygosity": "He",
              "loci":[],
              "scheme": $scope.scheme.resource_uri 
             }, 
@@ -612,7 +626,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
                 right_cross_parent: null, 
                 left_plant_parent: null, 
                 right_plant_parent: null, 
-                protocol_zygosity: null, 
+                protocol_zygosity: "He", 
                 loci: value.loci,
                 owner: value.owner,
                 resource_uri: value.resource_uri

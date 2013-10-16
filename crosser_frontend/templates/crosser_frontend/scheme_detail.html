@@ -22,11 +22,11 @@ Crosser | Edit Scheme
 <div ng:hide="true">{% csrf_token %}</div>
 <div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
 <div ng:controller="PlanCtrl">
-
+<form name="scheme_form" novalidate>
 <h1>Edit Scheme: </h1>
-<input type="text" ng:model="scheme.name" placeholder="Scheme Name"/> 
+<input name="name" type="text" ng:model="scheme.name" placeholder="Scheme Name" required/> 
 <label>Species:</label>
-<select ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" >
+<select name="species" ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" required>
 </select>
 
 <label>Simulation Granularity:</label>
@@ -34,17 +34,17 @@ Crosser | Edit Scheme
 </select>
 <div id="advanced" ng:show="quality.state == -1">
 <label>Chunk Size:</label>
-<input type="text" ng:model="scheme.system.convergence_chunk_size"/>
+<input name="conv_chunk_size" type="text" ng:model="scheme.system.convergence_chunk_size" required/>
 <label>Tolerance:</label>
-<input type="text" ng:model="scheme.system.convergence_tolerance"/>
+<input name="conv_tolerance" type="text" ng:model="scheme.system.convergence_tolerance" required/>
 <label>Fewest Plants:</label>
-<input type="text" ng:model="scheme.system.convergence_fewest_plants"/>
+<input name="fewest_plants" type="text" ng:model="scheme.system.convergence_fewest_plants" required/>
 </div> 
 <br/>
 <hr>
 <h1>Plants:</h1>
-<div ng:repeat="plant in scheme.plants | orderBy : 'resource_uri'">
-<b>Name:</b> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name"/>
+<div ng:repeat="plant in scheme.plants | orderBy : 'id'">
+<b>Name:</b> <input name="pname{[{plant.id}]}" type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
         <a class="btn btn-danger" ng:click="remove_plant(plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
@@ -60,24 +60,18 @@ Crosser | Edit Scheme
     <th></th>
 </tr>
 </thead>
-<tr ng:repeat="l in plant.loci | orderBy : 'resource_uri'">
-    <td><input type="text" ng:model="l.name" placeholder="Locus Name"></td>
+<tr ng:repeat="l in plant.loci | orderBy : 'id'">
+    <td><input name="lname{[{l.id}]}" type="text" ng:model="l.name" placeholder="Locus Name" required> </td>
     <td>
         <select ng:model="l.locus_type">
             <option value="Tr">Trait</option>
             <option value="Ma">Marker</option>
         </select>
     </td>
-    <td>
-        <select ng:model="l.linkage_group"
-                ng:options="n for n in get_linkage_array()"
-                class="tiny-drop">
-        </select>
+    <td> <input ng:model="l.linkage_group" type="number" placeholder="1-{[{get_max_link_group()}]}" min="1" max="{[{get_max_link_group()}]}" required>
     </td>
     <td>
-        <select ng:model="l.position"
-                ng:options="n for n in get_position_array(l.linkage_group)"
-                class="tiny-drop">
+        <input ng:model="l.position" type="number" placeholder="1-{[{get_max_position(l.linkage_group)}]}" min="1" max="{[{get_max_position(l.linkage_group)}]}" required>
         </select>
 
     </td>
@@ -106,16 +100,15 @@ Crosser | Edit Scheme
 </tr>
 </thead>
 
-<tr ng:repeat="c in scheme.crosses | orderBy : 'resource_uri'">
-    <td><input type="text" ng:change="change_cross(c)" ng:model="c.name" placeholder="Cross Name"
-               class="small-drop"></td>
+<tr ng:repeat="c in scheme.crosses | orderBy : 'id'">
+    <td><input type="text" ng:change="change_cross(c)" ng:model="c.name" placeholder="Cross Name" class="small-drop" required></td>
     <td class="ng-binding">
         <select ng:model="cross_data[c.resource_uri].left_parent" 
                 ng:change="change_left_parent(c)"
                 ng:options="item.resource_uri as item.name
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri : cross_data[c.resource_uri].descendants | orderBy: 'resource_uri'"
-                class="small-drop">
+                class="small-drop" required>
         </select>
     </td>
     <td class="ng-binding"> 
@@ -124,11 +117,11 @@ Crosser | Edit Scheme
                 ng:options="item.resource_uri as item.name 
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri : cross_data[c.resource_uri].descendants | orderBy: 'resource_uri'"
-                class="small-drop">
+                class="small-drop" required>
         </select>
     </td>
     <td>
-        <select ng:model="c.protocol_zygosity" class="small-drop">
+        <select ng:model="c.protocol_zygosity" class="small-drop" required>
             <option value="He">Heterozygous</option>
             <option value="Ho">Homozygous</option>
         </select>
@@ -143,7 +136,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle badge badge-info">Add<i class="icon-plus icon-white"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <rep ng:repeat="p in cross_data[c.resource_uri].ancestors">
-            <li ng:repeat="l in p.loci | without_loci: c.loci | orderBy: 'resource_uri'"><a ng:click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
+            <li ng:repeat="l in p.loci | without_loci: c.loci | orderBy: 'id'"><a ng:click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
             </rep>
             <rep><li><a ng:click="add_all_cross_loci(c)">Add All</a></li></rep>
         </ul>   
@@ -162,7 +155,7 @@ Crosser | Edit Scheme
 <div ng:repeat="o in scheme.outputs">
         <select ng:model="output_data[o.resource_uri].output_type"
                 ng:change="change_output_type(o)"
-            class="small-drop">
+            class="small-drop" required>
             <option value="mean_cross_composition">Mean Cross Composition</option>
             <option value="success_probability">Success Probability</option>
             <option value="loci_composition">Loci Composition</option>
@@ -175,13 +168,13 @@ Crosser | Edit Scheme
             <select multiple ng:model="output_data[o.resource_uri].data"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+                            for item in scheme.crosses | orderBy: 'id'" required> </select>
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'success_probability'">
             <select multiple ng:model="output_data[o.resource_uri].data"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+                            for item in scheme.crosses | orderBy: 'id'" required> </select>
  
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
@@ -189,28 +182,28 @@ Crosser | Edit Scheme
             <select ng:model="output_data[o.resource_uri].cross"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+                            for item in scheme.crosses | orderBy: 'id'" required> </select>
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
             Donor: 
             <select ng:model="output_data[o.resource_uri].donor"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.plants | orderBy: 'resource_uri'" > </select>
+                            for item in scheme.plants | orderBy: 'id'"  required> </select>
  
             Cross: 
             <select ng:model="output_data[o.resource_uri].cross"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'resource_uri'" > </select>
+                            for item in scheme.crosses | orderBy: 'id'" required> </select>
  
 
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
         Type:
-        <input type="text" ng:model="o.output_type"/>
+        <input type="text" ng:model="o.output_type" required/>
         Data:     
-        <input type="text" ng:model="o.data" placeholder="Output Data"/> 
+        <input type="text" ng:model="o.data" placeholder="Output Data" required/> 
         </span>
 
         <a class="btn btn-danger" ng:click="remove_output(o)" >
@@ -226,6 +219,8 @@ Crosser | Edit Scheme
 <br/>
 <br/>
 <button class="btn btn-primary" ng:click="process_scheme('{%url "process" scheme.id%}')">Save &amp; Process Scheme</a>
+
+</form>
 </div>
 </div>
 {% endblock %}
