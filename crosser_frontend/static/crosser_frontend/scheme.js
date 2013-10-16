@@ -128,8 +128,12 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
             if(outp.data == null || outp.data.length < 2)
                 outputs_msg = "You have outputs which don't specify what to output, delete them or specify donors / crosses to output" 
         });
+        if($scope.scheme.plants.length != _.uniq(_.pluck($scope.scheme.plants, "name")).length)
+            alert("Two of your plants have the same name, cross names must be unique")
+        else if($scope.scheme.crosses.length != _.uniq(_.pluck($scope.scheme.crosses, "name")).length)
+            alert("Two of your crosses have the same name, cross names must be unique")
 
-        if($scope.scheme.crosses.length == 0)
+        else if($scope.scheme.crosses.length == 0)
             alert("Your scheme has no crosses and cannot be processed");
         else if($scope.scheme.plants.length == 0)
             alert("Your scheme has no plants and cannot be processed");
