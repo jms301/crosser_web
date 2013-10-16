@@ -16,7 +16,16 @@ Calculations
 {% block content %}
 <h1><a href="{%url 'scheme_detail' object.scheme.id%}">{{object.scheme.name}}</a> - V:{{object.version}}</h1>
 <P>
-Status: <span class="{{object.show_status}}">{{object.show_status}}</span>
+Status: 
+    
+<span class="{{object.show_status}}">
+
+{% if object.show_status == "STARTED" %} 
+    RUNNING
+{% else %} 
+    {{object.show_status}}
+{% endif %}
+</span>
 </P>
 <P>
 Start Time: {{object.start_time}}
