@@ -44,7 +44,7 @@ Crosser | Edit Scheme
 <hr>
 <h1>Plants:</h1>
 <div ng:repeat="plant in scheme.plants | orderBy : 'id'">
-<b>Name:</b> <input name="pname{[{plant.id}]}" type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
+<b>Name:</b> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
         <a class="btn btn-danger" ng:click="remove_plant(plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
@@ -61,7 +61,7 @@ Crosser | Edit Scheme
 </tr>
 </thead>
 <tr ng:repeat="l in plant.loci | orderBy : 'id'">
-    <td><input name="lname{[{l.id}]}" type="text" ng:model="l.name" placeholder="Locus Name" required> </td>
+    <td><input type="text" ng:model="l.name" placeholder="Locus Name" required> </td>
     <td>
         <select ng:model="l.locus_type">
             <option value="Tr">Trait</option>
@@ -168,13 +168,13 @@ Crosser | Edit Scheme
             <select multiple ng:model="output_data[o.resource_uri].data"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'" required> </select>
+                            for item in scheme.crosses | orderBy: 'id'"> </select>
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'success_probability'">
             <select multiple ng:model="output_data[o.resource_uri].data"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'" required> </select>
+                            for item in scheme.crosses | orderBy: 'id'"> </select>
  
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
@@ -182,28 +182,28 @@ Crosser | Edit Scheme
             <select ng:model="output_data[o.resource_uri].cross"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'" required> </select>
+                            for item in scheme.crosses | orderBy: 'id'"> </select>
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
             Donor: 
             <select ng:model="output_data[o.resource_uri].donor"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.plants | orderBy: 'id'"  required> </select>
+                            for item in scheme.plants | orderBy: 'id'"> </select>
  
             Cross: 
             <select ng:model="output_data[o.resource_uri].cross"
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'" required> </select>
+                            for item in scheme.crosses | orderBy: 'id'"> </select>
  
 
         </span>
         <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
         Type:
-        <input type="text" ng:model="o.output_type" required/>
+        <input type="text" ng:model="o.output_type"/>
         Data:     
-        <input type="text" ng:model="o.data" placeholder="Output Data" required/> 
+        <input type="text" ng:model="o.data" placeholder="Output Data"/> 
         </span>
 
         <a class="btn btn-danger" ng:click="remove_output(o)" >

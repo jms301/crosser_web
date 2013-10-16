@@ -123,14 +123,20 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
     $scope.process_scheme = function (proc_url) {
         msg = "Running crosses can take a long time (~5hrs) " 
             + "are you sure you want to continue?"
-        console.log($scope.scheme_form);
+        outputs_msg = ""; 
+        _.each($scope.scheme.outputs, function (outp) { 
+            if(outp.data == null || outp.data.length < 2)
+                outputs_msg = "You have outputs which don't specify what to output, delete them or specify donors / crosses to output" 
+        });
+
         if($scope.scheme.crosses.length == 0)
-    
             alert("Your scheme has no crosses and cannot be processed");
         else if($scope.scheme.plants.length == 0)
             alert("Your scheme has no plants and cannot be processed");
         else if($scope.scheme.outputs.length == 0)
             alert("Your scheme has no outputs and cannot be processed");
+        else if(outputs_msg != "") 
+            alert(outputs_msg);
         else if($scope.scheme_form.$invalid) 
             alert("Your scheme is invalid, look for yellow or red items in the form?"); 
         else if(confirm(msg))
