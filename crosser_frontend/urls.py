@@ -7,8 +7,14 @@ urlpatterns = patterns('',
         TemplateView.as_view(
             template_name = 'crosser_frontend/index.html'),
         name='index'),
-        
-    url(r'^scheme/(\d+)/process', 'crosser_frontend.views.process', 
+    
+    url(r'^taskadmin/$', 'crosser_frontend.views.task_admin',
+        name='task_admin'),
+
+    url(r'^taskkill/(\d+)/$', 'crosser_frontend.views.kill_task',
+        name='kill_task'),
+       
+    url(r'^scheme/(\d+)/process$', 'crosser_frontend.views.process', 
         name='process'),
 
     url(r'^scheme/(?P<pk>\d+)/$',
@@ -22,6 +28,7 @@ urlpatterns = patterns('',
             template_name = 'crosser_frontend/schemes_list.html'),
         name='schemes_list'),
 
+    
     url(r'^calculations/$',
         ListView.as_view(
             model = Calculation,

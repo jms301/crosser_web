@@ -1,0 +1,54 @@
+{% extends "crosser_frontend/base_site.html"%}
+
+{% load staticfiles %}
+
+{% block title %}
+Calculations 
+{% endblock %}
+
+{% block extra_head %}
+ <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
+
+{% endblock %}
+
+{% block content %}
+<h1>Calculations:</h1>
+
+<h2> active</h2>
+{%for worker, jobs in active.items %}
+    <h3> {{worker}} </h3>
+    {%for job in jobs%} 
+
+    scheme name: <a href="{%url 'scheme_detail' job.id.scheme.id %}">{{job.id.scheme}}</a><br/>
+    frozen scheme id: <a href="{{job.id.backend_url}}">{{job.id.frozen_scheme.id}}</a><br/>
+    job name: {{job.name}}<br/>
+    time start: {{job.time_start}}<br/>
+    worker pid: {{job.worker_pid}}<br/>
+    kill task: <a href='{%url 'kill_task' job.id.id%}'>{{job.id.task_id}}</a>
+    <hr>
+    {%endfor%}
+{%endfor%}
+
+<br/>
+<h2> pending</h2>
+{%for worker, jobs in pending.items%}
+    <h3> {{worker}} </h3>
+    {%for job in jobs%} 
+
+    scheme name: <a href="{%url 'scheme_detail' job.id.scheme.id %}">{{job.id.scheme}}</a><br/>
+    frozen scheme id: {{job.id.frozen_scheme.id}}<br/>
+    job name: {{job.name}}<br/>
+    time start: {{job.time_start}}<br/>
+    worker pid: {{job.worker_pid}}<br/>
+    kill task: <a href='{%url 'kill_task' job.id.id%}'>{{job.id.task_id}}</a>
+    <hr>
+    {%endfor%}
+{%endfor%}
+
+{% endblock %}
+{% block navid%}Admin{% endblock %}
+{% block js_code%}
+{#empty block to wipe out code, sign in dropdown code#} 
+{% endblock %}

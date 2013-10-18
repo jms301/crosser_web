@@ -3,9 +3,15 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from crosser_frontend.models import Scheme
-from crosser_frontend.tasks import process_scheme
+from django.contrib.auth.decorators import login_required, user_passes_test
 
+from crosser_frontend.models import Scheme, Calculation
+from crosser_frontend.tasks import process_scheme
+#from kombu import Connection as BrokerConnection   
+#from django.conf import settings
+
+#import celery.worker.control
+import celery 
 import sys
 
 def signup(request):
@@ -25,7 +31,9 @@ def signup(request):
         form = UserCreationForm(initial={'username': 'UserName'})
         return render(request, 'crosser_frontend/signup.html', {'form' : form,})
 
+@login_required
 def process(request, id): 
+
     scheme = Scheme.objects.get(pk=id)
     
     calc = scheme.freeze()
@@ -33,3 +41,27 @@ def process(request, id):
     calc.task_id = result.task_id
     calc.save()
     return redirect('calc', calc.id)
+
+@user_passes_test(lambda u: u.is_superuser)
+def kill_task(request, id): 
+    calc = Calculation.objects.get(pk=id)
+    celery.current_app.control.revoke(calc.task_id, terminate=True)
+    return redirect('task_admin')
+
+@user_passes_test(lambda u: u.is_superuser)
+def task_admin(request): 
+
+    nodes = celery.current_app.control.inspect()
+    active = nodes.active() 
+    pending = nodes.reserved()
+    print(active)
+    for key, tasks in active.items():
+        for task in tasks: 
+            task['id'] = Calculation.objects.get(task_id=task['id'])
+
+    for key, tasks in pending.items():
+        for task in tasks: 
+            task['id'] = Calculation.objects.get(task_id=task['id'])
+
+    return render(request, 'crosser_frontend/task_admin.html', 
+            {'active' : active, 'pending' : pending})

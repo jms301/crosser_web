@@ -33,6 +33,9 @@
             <li id='crosses'> <a href="{%url 'schemes_list'%}">Schemes</a> </li>
 {%endif%}
             <li id='calculations'> <a href="{%url 'calcs_list'%}">Calculations</a> </li>
+{% if user.is_authenticated and user.is_superuser %}
+        <li id='tasks'> <a href="{%url 'task_admin'%}">Task Admin</a>
+{%endif%}
         </ul>
         <div class="nav-collapse">
             <ul class="nav pull-right">
