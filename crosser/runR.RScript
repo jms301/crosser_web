@@ -1,4 +1,4 @@
-#! /usr/bin/Rscript
+#!/usr/bin/Rscript
 
 workingDir <- commandArgs(TRUE)[1]
 
