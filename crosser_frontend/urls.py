@@ -33,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^calculations/$',
         ListView.as_view(
             model = Calculation,
-            queryset = Calculation.objects.all().order_by('scheme', '-version'),
+            queryset = Calculation.objects.all().order_by('owner', 'scheme', '-version'),
             template_name = 'crosser_frontend/calcs_list.html'),
         name='calcs_list'),
 
