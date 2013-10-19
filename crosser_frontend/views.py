@@ -65,3 +65,13 @@ def task_admin(request):
 
     return render(request, 'crosser_frontend/task_admin.html', 
             {'active' : active, 'pending' : pending})
+
+def dupe_scheme(request, id): 
+    calc = Calculation.objects.get(pk=id)
+    new_scheme = calc.frozen_scheme.copy(freeze=False, owner=request.user)
+    new_scheme.name = calc.scheme.name + " (Copy)"
+    new_scheme.save()
+
+    return redirect('scheme_detail', new_scheme.id)
+
+

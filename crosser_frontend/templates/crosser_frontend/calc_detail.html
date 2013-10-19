@@ -44,7 +44,12 @@ Logs: <a href="../../static/{{object.output_dir}}">directory</a> &amp; <a href="
 {% endif %}
 
 
+<h3> Tools: </h3>
+<div> 
+<p> Make own copy of scheme:  <a href="{%url 'dupe_scheme' object.id%}">Dupe</a>
+</div>
 
+{% if user.is_authenticated and user.is_superuser %}
 <h3> debug: </h3>
 <div>
 <P>
@@ -54,6 +59,9 @@ Task Id: {{object.task_id}}
 Raw JSON: <a href="{{object.backend_url}}"> link </a>
 </P>
 </div>
+{%endif%}
+
+
 {% endblock %}
 {% block navid%}Schemes{% endblock %}
 {% block js_code%}

@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^scheme/(\d+)/process$', 'crosser_frontend.views.process', 
         name='process'),
 
+
     url(r'^scheme/(?P<pk>\d+)/$',
         DetailView.as_view(
             model = Scheme,
@@ -35,6 +36,9 @@ urlpatterns = patterns('',
             queryset = Calculation.objects.all().order_by('scheme', '-version'),
             template_name = 'crosser_frontend/calcs_list.html'),
         name='calcs_list'),
+
+    url(r'^calculation/(\d+)/dupe', 'crosser_frontend.views.dupe_scheme', 
+        name='dupe_scheme'),
 
     url(r'^calculation/(?P<pk>\d+)/$',
         DetailView.as_view(
