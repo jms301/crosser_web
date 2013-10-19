@@ -117,7 +117,14 @@ class Calculation(models.Model):
   
     @property 
     def show_status(self):
-        return process_scheme.AsyncResult(self.task_id).state
+        status = process_scheme.AsyncResult(self.task_id).state  
+        if status == "STARTED":
+            status = "RUNNING"
+        elif status == "FAILURE":
+            status = "ERROR"
+        elif status == "REVOKED":
+            status = "CANCELLED"
+        return status
 
     @property 
     def backend_url(self):

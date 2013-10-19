@@ -96,12 +96,26 @@ div.signup-button {
   width: 60px;
 }
 
+span.PENDING { 
+    color: #12F;
+    font-weight:bold;
+}
+span.RUNNING { 
+    color: #00A7FA;
+    font-weight:bold;
+}
+
+span.CANCELLED { 
+    color: #FFB812;
+    font-weight:bold;
+}
+
 span.SUCCESS { 
     color: #1f2;   
     font-weight:bold;
 }
 
-span.FAILURE { 
+span.ERROR { 
     color: #f12;   
     font-weight:bold;
 }
