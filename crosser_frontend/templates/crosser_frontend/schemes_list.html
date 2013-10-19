@@ -24,7 +24,7 @@ Crosses
 <div ng:controller="SchemeListCtrl">
 <ul ng:repeat="scheme in schemes.objects">
     <li>
-    <a href="{[{get_url(scheme)}]}">{[{scheme.name}]}</a> <a class="btn btn-danger" ng:click="remove_scheme(scheme)" >
+    <a href="{[{get_url(scheme)}]}">{[{scheme.name}]}<span ng:show="scheme.name==''">(empty name)</span></a> <a class="btn btn-small btn-danger" ng:click="remove_scheme(scheme)" >
         <i class="icon-trash icon-white"></i>
     </a>
     </li>

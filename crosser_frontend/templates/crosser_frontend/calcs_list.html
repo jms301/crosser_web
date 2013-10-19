@@ -10,25 +10,69 @@ Calculations
  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.js"></script>
-
+<script src='{% static "crosser_frontend/calcList.js" %}'></script>
 {% endblock %}
 
 {% block content %}
+<div ng:app="calcList" ng:controller="CalcListCtrl">
 <h1>Calculations:</h1>
 
-{%regroup object_list by scheme as calc_list %}
-
+{%regroup object_list by owner as user_set %}
 <ul>
-{% for scheme in calc_list  %}
-    <li>{{scheme.grouper}}
+{% for thisuser in user_set %}
+  <li>{{thisuser.grouper}} 
+        {%if user != thisuser.grouper%}
+        <a ng:show="user{{thisuser.grouper.id}}"
+              ng:click="user{{thisuser.grouper.id}}=!user{{thisuser.grouper.id}}">
+        (-)</a>
+        <a ng:hide="user{{thisuser.grouper.id}}"
+              ng:click="user{{thisuser.grouper.id}}=!user{{thisuser.grouper.id}}">
+        (+)</a>
+        {%else%}
+         <a ng:hide="user{{thisuser.grouper.id}}"
+              ng:click="user{{thisuser.grouper.id}}=!user{{thisuser.grouper.id}}">
+        (-)</a>
+        <a ng:show="user{{thisuser.grouper.id}}"
+              ng:click="user{{thisuser.grouper.id}}=!user{{thisuser.grouper.id}}">
+        (+)</a>
+        {%endif%} 
+        </li>
+    {%regroup thisuser.list by scheme as scheme_set %} 
+    {%if user != thisuser.grouper%}
+        <ul ng:show="user{{thisuser.grouper.id}}">
+    {%else%}
+        <ul ng:hide="user{{thisuser.grouper.id}}">
+    {%endif%} 
+    {%for scheme in scheme_set%} 
+    {%if user == thisuser.grouper%}
+        <li><a href="{%url 'scheme_detail' scheme.grouper.id%}">{{scheme.grouper}}</a></li>
+    {%else%}
+        <li>{{scheme.grouper}}</li>
+    {%endif%} 
         <ul>
-            {% for item in scheme.list %}
-                <li><a href="{%url "calc" item.id%}">{{item}}</a> <span class="{{item.show_status}}">{{item.show_status}}</span></li>
-            {%endfor%}
+        {%for calc in scheme.list %}
+            {% if forloop.counter == 2 %} 
+            <div ng:show="toggle{{scheme.grouper.id}}">
+            {%endif%}
+            <li><a href="{%url "calc" calc.id%}">{{calc}}</a> <span class="{{calc.show_status}}">{{calc.show_status}}</span></li>
+
+
+        {% if forloop.last and forloop.counter > 1%} 
+            </div>
+            <div ng:hide="toggle{{scheme.grouper.id}}">
+                <li><a ng:click="toggle{{scheme.grouper.id}}=!toggle{{scheme.grouper.id}}">(more)</a></li>
+            </div>
+            <div ng:show="toggle{{scheme.grouper.id}}">
+                <li><a ng:click="toggle{{scheme.grouper.id}}=!toggle{{scheme.grouper.id}}">(less)</a></li>
+            </div>
+            {%endif%}
+        {%endfor%}
         </ul>
-    </li>
+    {%endfor%}
+    </ul>
 {%endfor%}
 </ul>
+  
 
 {% comment %}
 {%for calc in object_list %}
@@ -36,6 +80,7 @@ Calculations
 {%endfor %} 
 
 {%endcomment%}
+</div>
 {% endblock %}
 {% block navid%}Calculations{% endblock %}
 {% block js_code%}
