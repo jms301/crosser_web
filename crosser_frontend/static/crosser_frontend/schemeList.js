@@ -38,7 +38,7 @@ app.controller('SchemeListCtrl', function($scope, Scheme, $location) {
 
    $scope.remove_scheme = function (scheme) {
         id = scheme.resource_uri.split('/').pop();
-        if(id && confirm("WARNING: this will delete the whole scheme, are you sure?"))
+        if(id && confirm("WARNING: this will delete the whole scheme it is only possible if the scheme has not been processed, are you sure?"))
         Scheme.delete({id: id}, function(value) { 
             $scope.schemes.objects = _.reject($scope.schemes.objects, 
                 function (item) { return item.resource_uri == scheme.resource_uri}); 

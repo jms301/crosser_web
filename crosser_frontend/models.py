@@ -109,7 +109,7 @@ class Calculation(models.Model):
 
     owner = models.ForeignKey(User)
     version = models.IntegerField(default = 0)
-    scheme = models.ForeignKey(Scheme, related_name='calculations')
+    scheme = models.ForeignKey(Scheme, related_name='calculations', on_delete=models.PROTECT)
     frozen_scheme = models.ForeignKey(Scheme, related_name='calculation')
     task_id = models.CharField(max_length=255) 
     start_time = models.DateTimeField(null=True)
