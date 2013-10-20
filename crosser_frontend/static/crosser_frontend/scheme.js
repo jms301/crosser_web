@@ -370,14 +370,14 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
     $scope.get_max_link_group = function () { 
         spec = $scope.get_species();
         if(spec.length !=0 )
-            return (spec.length - 1);
+            return (spec.length);
         else
             return "??"; 
     };
  
     $scope.get_max_position = function( link_group ) { 
         spec = $scope.get_species();
-        if(spec.length != 0 && link_group != null && link_group < spec.length )
+        if(spec.length != 0 && link_group != null && link_group <= spec.length )
             return spec[link_group - 1];
         else
             return "??";
