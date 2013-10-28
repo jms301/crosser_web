@@ -20,6 +20,8 @@ class Scheme(models.Model):
     name = models.CharField(max_length = 100)
     species = models.ForeignKey(Species, related_name='+', null=True)
     frozen = models.BooleanField(default = False)
+    pref_var = models.ForeignKey('Plant', related_name='+', null=True)
+
 
     def freeze(self): 
         # create a frozen copy 
@@ -36,7 +38,7 @@ class Scheme(models.Model):
         if owner is None:
             owner = self.owner
         new_scheme = Scheme(name = self.name, frozen=freeze, 
-                            species=self.species, owner=owner)
+                    pref_var = self.pref_var, species=self.species, owner=owner)
         new_scheme.save()
 
         new_system = System(owner=owner, 
@@ -48,7 +50,8 @@ class Scheme(models.Model):
         new_system.save()
 
 
-
+        #dicts mapping the old model to the new model. ie
+        #cross_map[old_cross] = new_cross 
         locus_map = {}
         cross_map = {}
         plant_map = {}
@@ -95,6 +98,10 @@ class Scheme(models.Model):
             if cross.right_plant_parent:
                 cross_map[cross].right_plant_parent = plant_map[cross.right_plant_parent]
             cross_map[cross].save() 
+
+        if self.pref_var:
+            new_scheme.pref_var = plant_map[self.pref_var]
+            new_scheme.save()
 
         return new_scheme
 

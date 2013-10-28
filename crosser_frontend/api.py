@@ -25,6 +25,7 @@ class SchemeResource(ModelResource):
     owner = fields.ForeignKey(UserResource, 'owner')    
  
     system = fields.ToOneField('crosser_frontend.api.SystemResource', 'system', full=True, related_name='scheme', null=True)
+    pref_var = fields.ToOneField('crosser_frontend.api.SPlantResource', 'pref_var', null=True) 
     plants = fields.ToManyField('crosser_frontend.api.SPlantResource', 'plants', full=True, related_name='scheme', null=True)
     crosses = fields.ToManyField('crosser_frontend.api.SCrossResource', 'crosses', full=True, related_name='scheme', null=True)
     outputs = fields.ToManyField('crosser_frontend.api.SOutputResource', 

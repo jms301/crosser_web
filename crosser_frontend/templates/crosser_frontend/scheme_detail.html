@@ -45,6 +45,8 @@ Crosser | Edit Scheme
 <h1>Plants:</h1>
 <div ng:repeat="plant in scheme.plants | orderBy : 'id'">
 <b>Name:</b> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
+
+<b>Pref Var:</b> <input name="pv" ng:model="scheme.pref_var" value="{[{plant.resource_uri}]}" type="radio">
         <a class="btn btn-danger" ng:click="remove_plant(plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
@@ -60,6 +62,7 @@ Crosser | Edit Scheme
     <th></th>
 </tr>
 </thead>
+
 <tr ng:repeat="l in plant.loci | orderBy : 'id'">
     <td><input type="text" ng:model="l.name" placeholder="Locus Name" required> </td>
     <td>

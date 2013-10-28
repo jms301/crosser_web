@@ -7,11 +7,12 @@ class BackSchemeResource(ModelResource):
 
     species = fields.ToOneField('crosser_frontend.backapi.BackSpeciesResource', 'species', full=True, related_name='scheme', null=True)
     system = fields.ToOneField('crosser_frontend.backapi.BackSystemResource', 'system', full=True, related_name='scheme', null=True)
+    pref_var = fields.ToOneField('crosser_frontend.backapi.BackPlantResource', 'pref_var', null=True)
     plants = fields.ToManyField('crosser_frontend.backapi.BackPlantResource', 'plants', full=True, related_name='scheme', null=True)
     crosses = fields.ToManyField('crosser_frontend.backapi.BackCrossResource', 'crosses', full=True, related_name='scheme', null=True)
     outputs = fields.ToManyField('crosser_frontend.backapi.BackOutputResource', 
         'outputs', full=True, related_name='scheme', null=True)
-
+    
     class Meta:
         queryset = Scheme.objects.filter(frozen=True)
         authorization = ReadOnlyAuthorization()
@@ -36,6 +37,11 @@ class BackSchemeResource(ModelResource):
                 elif locus.data['locus_type'] == Locus.MARKER:
                     locus.data['type'] = 'Marker'
                 del locus.data['locus_type']
+
+        if 'pref_var' in bundle.data and bundle.data['pref_var'] in plants:
+            bundle.data['pref_var'] = plants[bundle.data['pref_var']] 
+        else: 
+            bundle.data['pref_var'] = ""
  
         for cross in bundle.data['crosses']:
             crosses[cross.data['resource_uri']] = cross.data['name']
