@@ -23,8 +23,9 @@ Crosser | Edit Scheme
 <div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
 <div ng:controller="PlanCtrl">
 <form name="scheme_form" novalidate>
-<h1>Edit Scheme: </h1>
-<input name="name" type="text" ng:model="scheme.name" placeholder="Scheme Name" required/> 
+<h1 class="inline-h">Edit Scheme: </h1> <input name="name" type="text" ng:model="scheme.name" placeholder="Scheme Name" required/> 
+<div id="config-title"><h1 id="config-title">Config:</h1></div>
+<div id="config-list">
 <label>Species:</label>
 <select name="species" ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" required>
 </select>
@@ -39,20 +40,26 @@ Crosser | Edit Scheme
 <input name="conv_tolerance" type="text" ng:model="scheme.system.convergence_tolerance" required/>
 <label>Fewest Plants:</label>
 <input name="fewest_plants" type="text" ng:model="scheme.system.convergence_fewest_plants" required/>
-</div> 
-<br/>
-<hr>
-<h1>Plants:</h1>
-<div ng:repeat="plant in scheme.plants | orderBy : 'id'">
-<b>Name:</b> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
+</div><!--id="advanced"-->
+</div><!-- id="config-list"-->
 
-<b>Pref Var:</b> <input name="pv" ng:model="scheme.pref_var" value="{[{plant.resource_uri}]}" type="radio">
+
+<div id="plant-title"><h1 id="plant-title">Plants:</h1></div>
+<div id="plant-list">
+<div class="plant" ng:repeat="plant in scheme.plants | orderBy : 'id'">
+<div class="form-horizontal">
+<h4 class="inline-h">Plant Name:</h4> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
+
+<!--<b>Pref Var:</b> <input name="pv" ng:model="scheme.pref_var" value="{[{plant.resource_uri}]}" type="radio">-->
+        <div class="pull-right">
         <a class="btn btn-danger" ng:click="remove_plant(plant)" >
             <i class="icon-trash icon-white"></i>
         </a>
-<h4>Loci</h4> 
-
-<table ng:hide="plant.loci.length == 0" class="table table-condensed">
+        </div>
+  </div>
+<div class="loci-title"><h4 class="loci-title">Loci:</h4></div>
+<div class="loci-list">
+<!--table ng:hide="plant.loci.length == 0"--> <table class="table table-condensed loci-table">
 <thead>
 <tr>
     <th>Name:</th>
@@ -84,14 +91,21 @@ Crosser | Edit Scheme
         </a>
     </td>
 </tr>
+<tr><td>
+<button class="btn btn-info" ng:click="add_locus(plant)"><i class="icon-plus"></i>Add Locus</button>
+</td><td></td><td></td><td></td><td></td></tr>
 </table>
-<button class="btn" ng:click="add_locus(plant)"><i class="icon-plus"></i>Add Locus</button>
-<hr>
+</div><!-- class="loci-list"-->
+</div><!-- plant -->
+<div class="plant">
+<button class="btn btn-info" ng:click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
 </div>
-<button class="btn" ng:click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
-<hr>
-<h1>Crosses:</h1>
-<table class="table table-condensed" ng:hide="scheme.crosses.length == 0">
+</div><!-- plant-list-->
+
+
+<div id="cross-title"> <h1 id="cross-title">Crosses:</h1></div>
+<div id="cross-list">
+<table class="table table-condensed cross-table"> <!-- ng:hide="scheme.crosses.length == 0">-->
 <thead>
 <tr>
     <th>Name:</th> 
@@ -151,71 +165,93 @@ Crosser | Edit Scheme
         </a>
     </td>
 </tr>
+<tr>
+<td>
+<button class="btn btn-info" ng:click="add_cross(scheme)"><i class="icon-plus"></i>Add Cross</button>
+</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
 </table>
-<button class="btn" ng:click="add_cross(scheme)"><i class="icon-plus"></i>Add Cross</button>
-<hr>
-<h1>Outputs:</h1>
-<div ng:repeat="o in scheme.outputs">
-        <select ng:model="output_data[o.resource_uri].output_type"
-                ng:change="change_output_type(o)"
-            class="small-drop" required>
-            <option value="mean_cross_composition">Mean Cross Composition</option>
-            <option value="success_probability">Success Probability</option>
-            <option value="loci_composition">Loci Composition</option>
-            <option value="proportion_distribution">Proportion Distribution</option>
-            <option value="Cm">Custom</option>
-        </select>
-        <br/>
+</div><!-- id="cross-list"-->
 
-        <span ng:hide="output_data[o.resource_uri].output_type != 'mean_cross_composition'">
-            <select multiple ng:model="output_data[o.resource_uri].data"
-                    ng:change="change_output_data(o)"
-                    ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'"> </select>
-        </span>
-        <span ng:hide="output_data[o.resource_uri].output_type != 'success_probability'">
-            <select multiple ng:model="output_data[o.resource_uri].data"
-                    ng:change="change_output_data(o)"
-                    ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'"> </select>
- 
-        </span>
-        <span ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
-            Cross: 
-            <select ng:model="output_data[o.resource_uri].cross"
-                    ng:change="change_output_data(o)"
-                    ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'"> </select>
-        </span>
-        <span ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
-            Donor: 
-            <select ng:model="output_data[o.resource_uri].donor"
-                    ng:change="change_output_data(o)"
-                    ng:options="item.name as item.name
-                            for item in scheme.plants | orderBy: 'id'"> </select>
- 
-            Cross: 
-            <select ng:model="output_data[o.resource_uri].cross"
-                    ng:change="change_output_data(o)"
-                    ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'"> </select>
- 
-
-        </span>
-        <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
-        Type:
-        <input type="text" ng:model="o.output_type"/>
-        Data:     
-        <input type="text" ng:model="o.data" placeholder="Output Data"/> 
-        </span>
-
+<div id="chart-title"><h1 id="chart-title">Charts:</h1></div>
+<div id="chart-list">
+<div class="chart" ng:repeat="o in scheme.outputs">
+  <div class="chart-head">
+  <h4 class="inline-h">Chart #{[{$index + 1}]} </h4>
+      <div class="pull-right">
         <a class="btn btn-danger" ng:click="remove_output(o)" >
             <i class="icon-trash icon-white"></i>
         </a>
-<hr> 
-</div>
+      </div>
+  </div>
+  <div class="chart-type">
+  <select ng:model="output_data[o.resource_uri].output_type"
+          ng:change="change_output_type(o)" class="small-drop" required>
+    <option value="mean_cross_composition">Mean Cross Composition</option>
+    <option value="success_probability">Success Probability</option>
+    <option value="loci_composition">Loci Composition</option>
+    <option value="proportion_distribution">Proportion Distribution</option>
+    <option value="Cm">Custom</option>
+  </select>
+  </div> <!-- class="chart-type"-->
+  <div class="chart-data">
+  <span ng:hide="output_data[o.resource_uri].output_type != 'mean_cross_composition'">
+            <select multiple ng:model="output_data[o.resource_uri].data"
+                    ng:change="change_output_data(o)"
+                    ng:options="item.name as item.name
+                            for item in scheme.crosses | orderBy: 'id'"> </select>
+    <br/>
+    (CTRL-Click to select multiple crosses)
+  </span>
+  <span ng:hide="output_data[o.resource_uri].output_type != 'success_probability'">
+    <select multiple ng:model="output_data[o.resource_uri].data"
+                     ng:change="change_output_data(o)"
+                     ng:options="item.name as item.name
+                      for item in scheme.crosses | orderBy: 'id'"> </select>
+ 
+    <br/>
+    (CTRL-Click to select multiple crosses)
+  </span>
+  <span ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
+    Cross: 
+    <select ng:model="output_data[o.resource_uri].cross"
+            ng:change="change_output_data(o)"
+            ng:options="item.name as item.name
+              for item in scheme.crosses | orderBy: 'id'"> </select>
+  </span>
+  <span ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
+    Donor: 
+    <select ng:model="output_data[o.resource_uri].donor"
+            ng:change="change_output_data(o)"
+            ng:options="item.name as item.name
+              for item in scheme.plants | orderBy: 'id'"> </select> 
+            Cross: 
+    <select ng:model="output_data[o.resource_uri].cross"
+            ng:change="change_output_data(o)"
+            ng:options="item.name as item.name
+              for item in scheme.crosses | orderBy: 'id'"> </select>
+ 
 
-<button class="btn" ng:click="add_output(scheme)"><i class="icon-plus"></i>Add Output</button>
+  </span>
+  <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
+    Type:
+    <input type="text" ng:model="o.output_type"/>
+    Data:     
+    <input type="text" ng:model="o.data" placeholder="Output Data"/> 
+  </span>
+</div><!-- class="chart-data"-->
+</div><!-- class="chart" -->
+<div class="chart">
+<button class="btn btn-info" ng:click="add_output(scheme)"><i class="icon-plus"></i>Add Chart</button>
+</div>
+</div><!-- id="chart-list"-->
+
 <br/>
 <br/>
 <button class="btn btn-primary" ng:click="scheme_update(scheme)">Save Scheme</button>

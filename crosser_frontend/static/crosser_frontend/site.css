@@ -137,3 +137,209 @@ form.ng-pristine.ng-invalid {
     border-color: #FFFFFF;
     box-shadow: 0 0 0px #FFFFFF;
 }
+
+/* Scheme Details */
+
+.inline-h { 
+  display: inline;
+} 
+div.pull-right { 
+  float:right;
+  padding-right:20px;
+}
+
+div#config-title {
+  position:relative; 
+  top: 30px;
+  left: 50px;
+  width:20px;
+}
+
+h1#config-title {
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  display: table-caption;
+  background: teal;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+div#config-list {
+  padding-top: 30px;
+  padding-left: 30px;
+  padding-bottom:15px;
+  background: teal;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  max-width: 30%;
+}
+
+div#plant-title {
+  position:relative; 
+  top: 30px;
+  left: 50px;
+  width:20px;
+}
+
+h1#plant-title {
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  display: table-caption;
+  background: teal;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+div#plant-list {
+  padding-top: 30px;
+  background: teal;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  padding-bottom:15px;
+}
+div.plant {
+  padding-left: 20px;
+  padding-top: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: black;
+
+}
+
+div.loci-list {
+  background: orange;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  padding-top: 10px;
+  margin-right:20px;
+ /*
+  padding-bottom:15px;*/
+}
+
+div.loci-title {
+  position:relative; 
+  top: 22px;
+  left: 40px;
+  width:20px;
+}
+
+h4.loci-title {
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  display: table-caption;
+  background: orange;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+table.loci-table tr td:first-child  { 
+  padding-left: 10px;
+}
+table.loci-table tr td  { 
+  border-top: 1px solid black; 
+}
+table.loci-table tr td input  { 
+  margin-bottom: 0px;
+}
+
+table.loci-table tr td select  { 
+  margin-bottom: 0px;
+}
+
+table.loci-table tr td button  { 
+  margin-bottom: 4px;
+}
+
+div#cross-title {
+  position:relative; 
+  top: 30px;
+  left: 50px;
+  width:20px;
+}
+
+h1#cross-title {
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  display: table-caption;
+  background: teal;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+div#cross-list {
+  padding-top: 30px;
+  background: teal;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  padding-bottom:0px;
+}
+
+table.cross-table tr td:first-child,th:first-child  { 
+  padding-left: 20px;
+}
+table.cross-table tr td  { 
+  border-top: 1px solid black; 
+}
+table.cross-table tr td input  { 
+  margin-bottom: 0px;
+}
+
+table.cross-table tr td select  { 
+  margin-bottom: 0px;
+}
+
+table.cross-table tr td button  { 
+  margin-top: 5px;
+  margin-bottom: 12px;
+}
+
+div#chart-title {
+  position:relative; 
+  top: 30px;
+  left: 50px;
+  width:20px;
+}
+
+h1#chart-title {
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  display: table-caption;
+  background: teal;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+}
+
+div#chart-list {
+  padding-top: 30px;
+  background: teal;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  padding-bottom:15px;
+}
+div.chart {
+  padding-left: 20px;
+  padding-top: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: black;
+
+}
+
+div.chart-head {
+  margin-bottom:5px;
+}
+
+div.chart-type {
+  margin-bottom:5px;
+}
+
+div.chart-data {
+  margin-bottom:5px;
+}
+
+

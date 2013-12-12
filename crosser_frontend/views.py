@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import ObjectDoesNotExist
 
 from crosser_frontend.models import Scheme, Calculation
 from crosser_frontend.tasks import process_scheme
@@ -57,11 +58,17 @@ def task_admin(request):
     print(active)
     for key, tasks in active.items():
         for task in tasks: 
-            task['id'] = Calculation.objects.get(task_id=task['id'])
+            try:
+                task['id'] = Calculation.objects.get(task_id=task['id'])
+            except ObjectDoesNotExist:
+                task['id'] = None 
 
     for key, tasks in pending.items():
         for task in tasks: 
-            task['id'] = Calculation.objects.get(task_id=task['id'])
+            try:
+                task['id'] = Calculation.objects.get(task_id=task['id'])
+            except ObjectDoesNotExist:
+                task['id'] = None 
 
     return render(request, 'crosser_frontend/task_admin.html', 
             {'active' : active, 'pending' : pending})
