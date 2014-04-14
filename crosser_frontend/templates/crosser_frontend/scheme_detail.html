@@ -82,7 +82,6 @@ Crosser | Edit Scheme
     </td>
     <td>
         <input ng:model="l.position" type="number" placeholder="1-{[{get_max_position(l.linkage_group)}]}" min="1" max="{[{get_max_position(l.linkage_group)}]}" required>
-        </select>
 
     </td>
     <td>
@@ -194,7 +193,7 @@ Crosser | Edit Scheme
   <select ng:model="output_data[o.resource_uri].output_type"
           ng:change="change_output_type(o)" class="small-drop" required>
     <option value="mean_cross_composition">Mean Cross Composition</option>
-    <option value="success_probability">Success Probability</option>
+    <option value="success_table">Success Table</option>
     <option value="loci_composition">Loci Composition</option>
     <option value="proportion_distribution">Proportion Distribution</option>
     <option value="Cm">Custom</option>
@@ -206,15 +205,6 @@ Crosser | Edit Scheme
                     ng:change="change_output_data(o)"
                     ng:options="item.name as item.name
                             for item in scheme.crosses | orderBy: 'id'"> </select>
-    <br/>
-    (CTRL-Click to select multiple crosses)
-  </span>
-  <span ng:hide="output_data[o.resource_uri].output_type != 'success_probability'">
-    <select multiple ng:model="output_data[o.resource_uri].data"
-                     ng:change="change_output_data(o)"
-                     ng:options="item.name as item.name
-                      for item in scheme.crosses | orderBy: 'id'"> </select>
- 
     <br/>
     (CTRL-Click to select multiple crosses)
   </span>
@@ -239,6 +229,51 @@ Crosser | Edit Scheme
  
 
   </span>
+<span ng:hide="output_data[o.resource_uri].output_type != 'success_table'">
+    <table class="table table-condensed cross-table"> 
+    <thead>
+    <tr>
+    <th>Cross:</th> 
+    <th>Quantity:</th>
+    <th>Confidence:</th>
+    <th></th>
+    </tr>
+    </thead>
+
+    <tr ng:repeat="c in output_data[o.resource_uri].require" >
+    <td class="ng-binding">
+      <select ng:model="c.cross"
+                ng:change="change_output_data(o)"
+                ng:options="item.name as item.name
+                            for item in scheme.crosses | orderBy: 'id'" required> 
+      </select>
+    </td>
+    <td> <input ng:change="change_output_data(o)" ng:model="c.quantity" type="number" placeholder="20"
+                min="1" step="1" required>
+    </td>
+    <td> <input ng:change="change_output_data(o)" ng:model="c.confidence" type="number" placeholder="0.9" 
+                  step="any" min="0" max="1" required>
+    </td>
+    <td>
+      <a class="btn btn-danger" ng:click="remove_success_table_cross(o, c)" >
+        <i class="icon-trash icon-white"></i>
+      </a>
+    </td>
+  </tr>
+  <tr>
+  <td>
+  <button class="btn btn-info" ng:click="add_required(o)"><i class="icon-plus"></i>Add Cross</button>
+  </td>
+  <td></td>
+  <td></td>
+  <td></td>
+
+  </tr>
+  </table>
+
+
+  </span>
+
   <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
     Type:
     <input type="text" ng:model="o.output_type"/>

@@ -102,11 +102,13 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
     $scope.scheme = Scheme.get({id: $scope.plan_id}, function () {
         // add in fake left_parent & right_parent properties to the crosses
         // this allows us to use convenient ng-options stuff in the frontend
-        // the properties will be split out before saving.
+        // the properties will be split out into crosses/plants before saving.
         _.each($scope.scheme.crosses, $scope.create_cross_parents);
         // setup an array of plants 'ancestors' in cross_data so 
         // we can see which loci are available to add into a cross. 
         _.each($scope.scheme.crosses, $scope.build_ancestors);
+        // build_output_data unpacks the json stored within an output.data 
+        // string into the objects used by the angular page.
         _.each($scope.scheme.outputs, $scope.build_output_data);
 
         $scope.update_quality();
@@ -180,17 +182,19 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
 
     $scope.build_output_data = function (output) { 
 
+        var require_type_list = ['success_table'];
         var crosses_type_list = 
         ['mean_cross_composition', 
-         'success_probability'] 
-        var donor_cross_type_list =  ['proportion_distribution']
-        var cross_type_list =  ['loci_composition'] 
+         'success_probability']; 
+        var donor_cross_type_list =  ['proportion_distribution'];
+        var cross_type_list =  ['loci_composition'];
 
         if(_.contains(crosses_type_list, output.output_type)) {
             var data = {};
             try { 
                 data = angular.fromJson(output.data);
             } catch(e) {
+                alert("there was an error loading your cross output data");
                 data.crosses = []; 
             }
             $scope.output_data[output.resource_uri] = {output_type : output.output_type, data: data.crosses };
@@ -199,6 +203,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
             try { 
                 data = angular.fromJson(output.data);
             }catch(e){
+                alert("there was an error loading your cross output data");
                 data.donor = ""; 
                 data.cross = ""; 
             } 
@@ -208,11 +213,28 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
             try { 
                 data = angular.fromJson(output.data);
             }catch(e){
+                alert("there was an error loading your cross output data");
                 data.cross = ""; 
             } 
             $scope.output_data[output.resource_uri] = {output_type : output.output_type, cross: data.cross};
- 
+        } else if(_.contains(require_type_list, output.output_type)) {
+          var data = {};
+          try {
+                data = angular.fromJson(output.data);
+                console.log(data);
+                
+            }catch(e){
+                alert("there was an error loading your cross output data");
+                data.require = []; 
+           }
+           if(data != null) {
+              $scope.output_data[output.resource_uri] = {output_type : output.output_type, require: data.require};
+           } else { 
+              alert("require bla data is null"); 
+              $scope.output_data[output.resource_uri] = {output_type : output.output_type, require: []};
+           }
         } else {
+            // note this sets the local convenience "output_data"'s data to null. But the values are held in the schemes.outputs object.
             $scope.output_data[output.resource_uri] = {output_type : "Cm", data : null};
         }
     };
@@ -312,21 +334,27 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
 
     };
 
+    $scope.add_required = function(output) {
+      if(!$scope.output_data[output.resource_uri].require)
+        $scope.output_data[output.resource_uri].require = [];
+      $scope.output_data[output.resource_uri].require.push({'cross' : '',
+                                                            'quantity' : 20,
+                                                            'confidence' : 0.9});
+    }
+
+
     $scope.change_output_type = function(output) {
         if($scope.output_data[output.resource_uri].output_type != "Cm")
             output.output_type = $scope.output_data[output.resource_uri].output_type;
-        //else {  //This will wipe out the previously selected output type
-                  // when a custom output is selected
-        // output.output_type = "";
-        //} 
     };
 
     $scope.change_output_data = function(output) { 
+        var require_type_list = ['success_table'];
         var crosses_type_list = 
         ['mean_cross_composition', 
-         'success_probability'] 
-        var donor_cross_type_list =  ['proportion_distribution']
-        var cross_type_list =  ['loci_composition'] 
+         'success_probability'];
+        var donor_cross_type_list =  ['proportion_distribution'];
+        var cross_type_list =  ['loci_composition']; 
 
         if(_.contains(crosses_type_list, output.output_type)) {
             output.data = "{\"crosses\": " +
@@ -336,15 +364,28 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
             output.data = "{\"donor\": \""+ 
                 $scope.output_data[output.resource_uri].donor +
                           "\", \"cross\": \"" + 
-                $scope.output_data[output.resource_uri].cross + "\" }"
+                $scope.output_data[output.resource_uri].cross + "\" }";
         } else if(_.contains(cross_type_list, output.output_type)) { 
             output.data = "{\"cross\": \""+ 
                 $scope.output_data[output.resource_uri].cross + 
-                        "\" }"
+                        "\" }";
             
+        } else if(_.contains(require_type_list, output.output_type)) { 
+            output.data = "{\"require\": "+ 
+               angular.toJson($scope.output_data[output.resource_uri].require) + 
+                        "}";
         }
 
     }; 
+
+    $scope.remove_success_table_cross = function(output, cross_obj) { 
+        $scope.output_data[output.resource_uri].require = 
+            _.filter($scope.output_data[output.resource_uri].require, 
+                function(obj) {
+                    return obj.cross !== cross_obj.cross;
+        });
+        $scope.change_output_data(output);
+    };
 
     $scope.get_plant_by_uri = function (ref) { 
         return _.findWhere($scope.scheme.plants, {resource_uri: ref});
@@ -500,7 +541,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
             "scheme": scheme.resource_uri
             }, 
         function (value) {
-            // add the returned created locus values to the plant
+            // add the returned output values to the scheme
             scheme.outputs.push({
                 output_type: null, 
                 data: null,
@@ -509,7 +550,8 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
                 scheme: scheme.resource_uri, 
                 resource_uri: value.resource_uri,
             });
-            $scope.output_data[value.resource_uri] = {custom_type:""};
+            $scope.output_data[value.resource_uri] = {custom_type:"", 
+                                                      require:[]};
         });
     };
 
