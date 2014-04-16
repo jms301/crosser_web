@@ -30,16 +30,53 @@ Crosser | Edit Scheme
 <select name="species" ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" required>
 </select>
 
-<label>Simulation Granularity:</label>
+<label>Simulation Granularity: 
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Simulation Granularity. </a></li>
+        </ul>   
+        </div> 
+</label>
+<div> </div>
 <select ng:model="quality.state" ng:options="qual.id as qual.name for qual in quality.opts" ng:click="set_quality(quality.state)">
 </select>
-<div id="advanced" ng:show="quality.state == -1">
-<label>Chunk Size:</label>
-<input name="conv_chunk_size" type="text" ng:model="scheme.system.convergence_chunk_size" required/>
-<label>Tolerance:</label>
-<input name="conv_tolerance" type="text" ng:model="scheme.system.convergence_tolerance" required/>
-<label>Fewest Plants:</label>
-<input name="fewest_plants" type="text" ng:model="scheme.system.convergence_fewest_plants" required/>
+<div id="advanced">
+<label>Chunk Size:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Chunk Size. </a></li>
+        </ul>   
+        </div> 
+</label>
+<input name="conv_chunk_size" type="text" ng:model="scheme.system.convergence_chunk_size" required ng:disabled="quality.state != -1"/>
+<label>Tolerance:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Tolerance. </a></li>
+        </ul>   
+        </div> 
+</label>
+<input name="conv_tolerance" type="text" ng:model="scheme.system.convergence_tolerance" required ng:disabled="quality.state != -1"/>
+<label>Fewest Plants:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Fewest Plants. </a></li>
+        </ul>   
+        </div> 
+</label>
+<input name="fewest_plants" type="text" ng:model="scheme.system.convergence_fewest_plants" required ng:disabled="quality.state != -1"/>
 </div><!--id="advanced"-->
 </div><!-- id="config-list"-->
 
@@ -63,9 +100,36 @@ Crosser | Edit Scheme
 <thead>
 <tr>
     <th>Name:</th>
-    <th>Type:</th>
-    <th>LinkageGroup:</th>
-    <th>Position:</th>
+    <th>Type:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Loci type.  </a></li>
+        </ul>   
+        </div> 
+</th>
+    <th>LinkageGroup:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Linkage Group. </a></li>
+        </ul>   
+        </div> 
+</th>
+    <th>Position:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Position. </a></li>
+        </ul>   
+        </div> 
+</th>
     <th></th>
 </tr>
 </thead>
@@ -108,9 +172,36 @@ Crosser | Edit Scheme
 <thead>
 <tr>
     <th>Name:</th> 
-    <th>L Parent:</th>
-    <th>R Parent:</th>
-    <th>Protocol Zygosity:</th>
+    <th>L Parent:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Left Parent. </a></li>
+        </ul>   
+        </div> 
+</th>
+    <th>R Parent:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Right Parent. </a></li>
+        </ul>   
+        </div> 
+</th>
+    <th>Protocol Zygosity:
+        <div class="inline-div dropdown">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Protocol Zygosity. </a></li>
+        </ul>   
+        </div>
+</th>
     <th>Loci To Select For:</th>
     <th></th>
 </tr>
@@ -148,7 +239,7 @@ Crosser | Edit Scheme
         </span>
         &nbsp;
         </span>
-        <div class="dropdown">
+        <div class="dropdown" style="margin-top:1px;">
         <a class="dropdown-toggle badge badge-info">Add<i class="icon-plus icon-white"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <rep ng:repeat="p in cross_data[c.resource_uri].ancestors">
@@ -198,6 +289,45 @@ Crosser | Edit Scheme
     <option value="proportion_distribution">Proportion Distribution</option>
     <option value="Cm">Custom</option>
   </select>
+
+
+        <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'mean_cross_composition'">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Mean Cross Composition.</a></li>
+        </ul>   
+        </div>
+        <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'success_table'">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Success Table.</a></li>
+        </ul>   
+        </div>
+        <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Loci Composition.</a></li>
+        </ul>   
+        </div>
+        <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
+        <a class="dropdown-toggle ">
+            <i class="icon-info-sign"></i>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+            <li><a>TODO: Make this box explain Proportion Disribution.</a></li>
+        </ul>   
+        </div>
+
+
+
+
+   
   </div> <!-- class="chart-type"-->
   <div class="chart-data">
   <span ng:hide="output_data[o.resource_uri].output_type != 'mean_cross_composition'">

@@ -140,6 +140,9 @@ form.ng-pristine.ng-invalid {
 
 /* Scheme Details */
 
+.inline-div { 
+  display: inline;
+} 
 .inline-h { 
   display: inline;
 } 
