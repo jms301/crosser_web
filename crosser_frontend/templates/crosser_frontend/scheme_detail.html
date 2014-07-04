@@ -43,7 +43,7 @@ Crosser | Edit Scheme
 <div> </div>
 <select ng:model="quality.state" ng:options="qual.id as qual.name for qual in quality.opts" ng:click="set_quality(quality.state)">
 </select>
-<div id="advanced">
+<div id="advanced" ng:hide="quality.state != -1 ">
 <label>Chunk Size:
         <div class="inline-div dropdown">
         <a class="dropdown-toggle ">
