@@ -30,12 +30,12 @@ Crosser | Edit Scheme
 <select name="species" ng:model="scheme.species" ng:options="spec.resource_uri as spec.name for spec in species.objects" required>
 </select>
 
-<label>Simulation Granularity: 
+<label>Simulation Resolution:
         <div class="inline-div dropdown">
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Simulation Granularity. </a></li>
         </ul>   
         </div> 
@@ -49,7 +49,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Chunk Size. </a></li>
         </ul>   
         </div> 
@@ -60,7 +60,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Tolerance. </a></li>
         </ul>   
         </div> 
@@ -71,7 +71,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Fewest Plants. </a></li>
         </ul>   
         </div> 
@@ -81,11 +81,11 @@ Crosser | Edit Scheme
 </div><!-- id="config-list"-->
 
 
-<div id="plant-title"><h1 id="plant-title">Plants:</h1></div>
+<div id="plant-title"><h1 id="plant-title">Parents:</h1></div>
 <div id="plant-list">
 <div class="plant" ng:repeat="plant in scheme.plants | orderBy : 'id'">
 <div class="form-horizontal">
-<h4 class="inline-h">Plant Name:</h4> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="Plant Name" required/>
+<h4 class="inline-h">Parent Name:</h4> <input type="text" ng:change="change_plant(plant)" ng:model="plant.name" placeholder="eg SN02, Phg2" required/>
 
 <!--<b>Pref Var:</b> <input name="pv" ng:model="scheme.pref_var" value="{[{plant.resource_uri}]}" type="radio">-->
         <div class="pull-right">
@@ -105,17 +105,17 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Loci type.  </a></li>
         </ul>   
         </div> 
 </th>
-    <th>LinkageGroup:
+    <th>Linkage Group / Chromosome:
         <div class="inline-div dropdown">
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Linkage Group. </a></li>
         </ul>   
         </div> 
@@ -125,7 +125,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Position. </a></li>
         </ul>   
         </div> 
@@ -161,7 +161,7 @@ Crosser | Edit Scheme
 </div><!-- class="loci-list"-->
 </div><!-- plant -->
 <div class="plant">
-<button class="btn btn-info" ng:click="add_plant(scheme)"><i class="icon-plus"></i>Add Plant</button>
+<button class="btn btn-info" ng:click="add_plant(scheme)"><i class="icon-plus"></i>Add Parent</button>
 </div>
 </div><!-- plant-list-->
 
@@ -177,7 +177,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Left Parent. </a></li>
         </ul>   
         </div> 
@@ -187,17 +187,17 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Right Parent. </a></li>
         </ul>   
         </div> 
 </th>
-    <th>Protocol Zygosity:
+    <th>Selection Zygosity:
         <div class="inline-div dropdown">
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Protocol Zygosity. </a></li>
         </ul>   
         </div>
@@ -295,7 +295,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Mean Cross Composition.</a></li>
         </ul>   
         </div>
@@ -303,7 +303,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Success Table.</a></li>
         </ul>   
         </div>
@@ -311,7 +311,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Loci Composition.</a></li>
         </ul>   
         </div>
@@ -319,7 +319,7 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+        <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Proportion Disribution.</a></li>
         </ul>   
         </div>
