@@ -346,3 +346,10 @@ div.chart-data {
 }
 
 
+.dropdown-menu > rep > a > li:hover,
+.dropdown-menu > rep > a > li:focus {
+  color: #262626;
+  text-decoration: none;
+  background-color: #c5c5c5;
+}
+

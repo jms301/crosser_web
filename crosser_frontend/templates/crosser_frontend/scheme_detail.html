@@ -243,9 +243,11 @@ Crosser | Edit Scheme
         <a class="dropdown-toggle badge badge-info">Add<i class="icon-plus icon-white"></i></a>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
             <rep ng:repeat="p in cross_data[c.resource_uri].ancestors">
-            <li ng:repeat="l in p.loci | without_loci: c.loci | orderBy: 'id'"><a ng:click="c.loci.push(l.resource_uri)">{[{l.name}]}</a></li>
+            <a ng:repeat="l in p.loci | without_loci: c.loci | orderBy: 'id'">
+            <li ng:click="c.loci.push(l.resource_uri)">{[{l.name}]}</li>
+            </a>
             </rep>
-            <rep><li><a ng:click="add_all_cross_loci(c)">Add All</a></li></rep>
+            <rep><a><li ng:click="add_all_cross_loci(c)">Add All</li></a></rep>
         </ul>   
         </div> 
     </td>
