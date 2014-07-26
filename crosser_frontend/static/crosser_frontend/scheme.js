@@ -84,7 +84,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
                 'chunk_size' : 50,
                 'tolerance' : 0.005,
                 'fewest_plants': 500},
-            {'name': 'custom', 'id' : -1} 
+            {'name': 'advanced', 'id' : -1} 
                 
         ]
     };
@@ -285,7 +285,7 @@ function PlanCtrl($scope, Scheme, Plant, Cross, Locus, Species, Output) {
 
             tmp_plants =  _.map(tmp_plants, 
             function(plant, index, parents){
-                return {type: "Plants", name: plant.name, 
+                return {type: "Parents", name: plant.name, 
                         resource_uri: plant.resource_uri};
             });
             tmp_cross = _.map(tmp_cross, 
