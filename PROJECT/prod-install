@@ -1,4 +1,14 @@
+sudo aptitude install python-pip
+sudo pip install django==1.5.1
+sudo apt-get install libpq-dev python-dev
+sudo pip install psycopg2
+
+sudo pip install django-tastypie
+sudo pip install django-guardian
+sudo pip install django-celery
+
 Setup crosser user (nologin) 
+
 install missing INSTALLED-APPS
 install nginx & copy nginx config into sites-available
 symlink config into sites-enabled
@@ -17,7 +27,21 @@ rabbitmq:
   sudo rabbitmqctl add_user rabbit c14h2002
   sudo rabbitmqctl add_vhost /django_crosser
 
+R
+install rScript! (duh)
+sudo aptitude install r-base r-base-dev r-base-html
+u
+install libs
+sudo R
+install.packages("ggplot2")
+install.packages("reshape")
 
 
-django-celery: 
-  sudo pip install django-celery
+copy the fastcgi.conf and celery.conf files from ../PROJECT/config to /etc/init/
+Start them with sudo service celery start; sudo service fastcgi start; 
+
+install flup
+sudo pip install flup
+
+
+
