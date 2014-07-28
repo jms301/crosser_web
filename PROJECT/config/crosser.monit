@@ -1,0 +1,14 @@
+# alert if process matching 'java' has uptime over 3 hours. 
+# We have to surpess missing process alerts in the monitrc otherwise 
+# you get constant alerts for that. 
+
+
+#copy the below lines into the monitrc 
+#set mailserver smtp.gmail.com port 587 username "CrosserTwo@gmail.com" password "CARBON-PASS" using tlsv1 with timeout 30 seconds
+
+#set alert jms301@gmail.com not on { nonexist } # receive all alerts
+
+
+check process java 
+	matching "java"
+	if uptime > 3 hours then alert
