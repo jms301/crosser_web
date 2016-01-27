@@ -3,17 +3,17 @@ sudo pip install django==1.5.1
 sudo apt-get install libpq-dev python-dev
 sudo pip install psycopg2
 
-sudo pip install django-tastypie
-sudo pip install django-guardian
-sudo pip install django-celery
+sudo pip install django-tastypie==0.11.1
+sudo pip install django-guardian==1.2.4
+sudo pip install django-celery==3.1.10
 
-Setup crosser user (nologin) 
+Setup crosser user (nologin)
 
 install missing INSTALLED-APPS
 install nginx & copy nginx config into sites-available
 symlink config into sites-enabled
 create postgres user
-create postgres database 
+create postgres database
 edit /crosser_web/settings.py for database + password
 initialize database vi ./manage.py  (remember the default data fixtures!)
 test
@@ -38,10 +38,10 @@ install.packages("reshape")
 
 
 copy the fastcgi.conf and celery.conf files from ../PROJECT/config to /etc/init/
-Start them with sudo service celery start; sudo service fastcgi start; 
+Start them with sudo service celery start; sudo service fastcgi start;
 
 install flup
-sudo pip install flup
+sudo pip install flup==1.0.2
 
 
 

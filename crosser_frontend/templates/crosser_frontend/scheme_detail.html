@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block title %}
-Crosser | Edit Scheme 
+Crosser | Edit Scheme
 {% endblock %}
 
 {% block extra_head %}
@@ -23,7 +23,7 @@ Crosser | Edit Scheme
 <div ng:hide="true"><input type='hidden' name='userid' value='{{ user.id }}'/></div>
 <div ng:controller="PlanCtrl">
 <form name="scheme_form" novalidate>
-<h1 class="inline-h">Edit Scheme: </h1> <input name="name" type="text" ng:model="scheme.name" placeholder="Scheme Name" required/> 
+<h1 class="inline-h">Edit Scheme: </h1> <input name="name" type="text" ng:model="scheme.name" placeholder="Scheme Name" required/>
 <div id="config-title"><h1 id="config-title">Config:</h1></div>
 <div id="config-list">
 <label>Species:</label>
@@ -37,8 +37,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Simulation Granularity. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </label>
 <div> </div>
 <select ng:model="quality.state" ng:options="qual.id as qual.name for qual in quality.opts" ng:click="set_quality(quality.state)">
@@ -51,8 +51,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Chunk Size. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </label>
 <input name="conv_chunk_size" type="text" ng:model="scheme.system.convergence_chunk_size" required ng:disabled="quality.state != -1"/>
 <label>Tolerance:
@@ -62,8 +62,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Tolerance. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </label>
 <input name="conv_tolerance" type="text" ng:model="scheme.system.convergence_tolerance" required ng:disabled="quality.state != -1"/>
 <label>Fewest Plants:
@@ -73,8 +73,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Fewest Plants. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </label>
 <input name="fewest_plants" type="text" ng:model="scheme.system.convergence_fewest_plants" required ng:disabled="quality.state != -1"/>
 </div><!--id="advanced"-->
@@ -107,8 +107,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Loci type.  </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </th>
     <th>Linkage Group / Chromosome:
         <div class="inline-div dropdown">
@@ -117,8 +117,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Linkage Group. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </th>
     <th>Position:
         <div class="inline-div dropdown">
@@ -127,8 +127,8 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Position. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </th>
     <th></th>
 </tr>
@@ -138,7 +138,7 @@ Crosser | Edit Scheme
     <td><input type="text" ng:model="l.name" placeholder="Locus Name" required> </td>
     <td>
         <select ng:model="l.locus_type">
-            <option value="Tr">Trait</option>
+            <option value="Tr">Target gene</option>
             <option value="Ma">Marker</option>
         </select>
     </td>
@@ -171,26 +171,30 @@ Crosser | Edit Scheme
 <table class="table table-condensed cross-table"> <!-- ng:hide="scheme.crosses.length == 0">-->
 <thead>
 <tr>
-    <th>Name:</th> 
-    <th>L Parent:
+    <th>Name:</th>
+    <th>
+      <i class="fa fa-mars"></i>
+      Parent:
         <div class="inline-div dropdown">
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Left Parent. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </th>
-    <th>R Parent:
+    <th>
+      <i class="fa fa-venus"></i>
+      Parent:
         <div class="inline-div dropdown">
         <a class="dropdown-toggle ">
             <i class="icon-info-sign"></i>
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Right Parent. </a></li>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
 </th>
     <th>Selection Zygosity:
         <div class="inline-div dropdown">
@@ -199,7 +203,7 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Protocol Zygosity. </a></li>
-        </ul>   
+        </ul>
         </div>
 </th>
     <th>Loci To Select For:</th>
@@ -210,7 +214,7 @@ Crosser | Edit Scheme
 <tr ng:repeat="c in scheme.crosses | orderBy : 'id'">
     <td><input type="text" ng:change="change_cross(c)" ng:model="c.name" placeholder="Cross Name" class="small-drop" required></td>
     <td class="ng-binding">
-        <select ng:model="cross_data[c.resource_uri].left_parent" 
+        <select ng:model="cross_data[c.resource_uri].left_parent"
                 ng:change="change_left_parent(c)"
                 ng:options="item.resource_uri as item.name
                             group by item.type
@@ -218,10 +222,10 @@ Crosser | Edit Scheme
                 class="small-drop" required>
         </select>
     </td>
-    <td class="ng-binding"> 
-        <select ng:model="cross_data[c.resource_uri].right_parent" 
+    <td class="ng-binding">
+        <select ng:model="cross_data[c.resource_uri].right_parent"
                 ng:change="change_right_parent(c)"
-                ng:options="item.resource_uri as item.name 
+                ng:options="item.resource_uri as item.name
                             group by item.type
                             for item in poss_parents | parents: c.resource_uri : cross_data[c.resource_uri].descendants | orderBy: 'resource_uri'"
                 class="small-drop" required>
@@ -248,8 +252,8 @@ Crosser | Edit Scheme
             </a>
             </rep>
             <rep><a><li ng:click="add_all_cross_loci(c)">Add All</li></a></rep>
-        </ul>   
-        </div> 
+        </ul>
+        </div>
     </td>
     <td>
         <a class="btn btn-danger" ng:click="remove_cross(c)" >
@@ -299,7 +303,7 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Mean Cross Composition.</a></li>
-        </ul>   
+        </ul>
         </div>
         <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'success_table'">
         <a class="dropdown-toggle ">
@@ -307,7 +311,7 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Success Table.</a></li>
-        </ul>   
+        </ul>
         </div>
         <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
         <a class="dropdown-toggle ">
@@ -315,7 +319,7 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Loci Composition.</a></li>
-        </ul>   
+        </ul>
         </div>
         <div class="inline-div dropdown" ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
         <a class="dropdown-toggle ">
@@ -323,13 +327,13 @@ Crosser | Edit Scheme
         </a>
         <ul class="dropdown-menu" role="note" aria-labelledby="dLabel">
             <li><a>TODO: Make this box explain Proportion Disribution.</a></li>
-        </ul>   
+        </ul>
         </div>
 
 
 
 
-   
+
   </div> <!-- class="chart-type"-->
   <div class="chart-data">
   <span ng:hide="output_data[o.resource_uri].output_type != 'mean_cross_composition'">
@@ -341,31 +345,31 @@ Crosser | Edit Scheme
     (CTRL-Click to select multiple crosses)
   </span>
   <span ng:hide="output_data[o.resource_uri].output_type != 'loci_composition'">
-    Cross: 
+    Cross:
     <select ng:model="output_data[o.resource_uri].cross"
             ng:change="change_output_data(o)"
             ng:options="item.name as item.name
               for item in scheme.crosses | orderBy: 'id'"> </select>
   </span>
   <span ng:hide="output_data[o.resource_uri].output_type != 'proportion_distribution'">
-    Donor: 
+    Donor:
     <select ng:model="output_data[o.resource_uri].donor"
             ng:change="change_output_data(o)"
             ng:options="item.name as item.name
-              for item in scheme.plants | orderBy: 'id'"> </select> 
-            Cross: 
+              for item in scheme.plants | orderBy: 'id'"> </select>
+            Cross:
     <select ng:model="output_data[o.resource_uri].cross"
             ng:change="change_output_data(o)"
             ng:options="item.name as item.name
               for item in scheme.crosses | orderBy: 'id'"> </select>
- 
+
 
   </span>
 <span ng:hide="output_data[o.resource_uri].output_type != 'success_table'">
-    <table class="table table-condensed cross-table"> 
+    <table class="table table-condensed cross-table">
     <thead>
     <tr>
-    <th>Cross:</th> 
+    <th>Cross:</th>
     <th>Number Required:</th>
     <th>Confidence:</th>
     <th></th>
@@ -377,13 +381,13 @@ Crosser | Edit Scheme
       <select ng:model="c.cross"
                 ng:change="change_output_data(o)"
                 ng:options="item.name as item.name
-                            for item in scheme.crosses | orderBy: 'id'" required> 
+                            for item in scheme.crosses | orderBy: 'id'" required>
       </select>
     </td>
     <td> <input ng:change="change_output_data(o)" ng:model="c.quantity" type="number" placeholder="20"
                 min="1" step="1" required>
     </td>
-    <td> <input ng:change="change_output_data(o)" ng:model="c.confidence" type="number" placeholder="0.9" 
+    <td> <input ng:change="change_output_data(o)" ng:model="c.confidence" type="number" placeholder="0.9"
                   step="any" min="0" max="1" required>
     </td>
     <td>
@@ -409,8 +413,8 @@ Crosser | Edit Scheme
   <span ng:hide="output_data[o.resource_uri].output_type != 'Cm'">
     Type:
     <input type="text" ng:model="o.output_type"/>
-    Data:     
-    <input type="text" ng:model="o.data" placeholder="Output Data"/> 
+    Data:
+    <input type="text" ng:model="o.data" placeholder="Output Data"/>
   </span>
 </div><!-- class="chart-data"-->
 </div><!-- class="chart" -->
@@ -431,6 +435,6 @@ Crosser | Edit Scheme
 </div>
 {% endblock %}
 {% block navid%}crosses{% endblock %}
-{% block js_code%}{#empty block to wipe out code#} 
+{% block js_code%}{#empty block to wipe out code#}
 {% endblock %}
 
