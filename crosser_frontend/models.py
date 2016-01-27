@@ -173,7 +173,7 @@ class Output(models.Model):
 
     output_type = models.CharField(max_length=100, null=True)
 
-    data = models.CharField(max_length=200, null=True)
+    data = models.CharField(max_length=2000, null=True)
 
     def __unicode__(self): 
         return self.scheme.name + " : output"  
