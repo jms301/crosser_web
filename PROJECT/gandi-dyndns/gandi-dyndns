@@ -192,11 +192,11 @@ def check_if_record_exists(apikey, zone_id, record, rtype):
 def check_if_ip_changed(apikey, zone_id, record, rtype, external_ip):
     recordListOptions = {"name": record,
                          "type": rtype}
-    
+
     records = api.domain.zone.record.list(apikey, zone_id, 0, recordListOptions)
     if len(records) > 0:
         for record in records:
-            if record['value'] == external_ip:
+            if record['value'].strip() == external_ip.strip():
                 return False
             
         return True
